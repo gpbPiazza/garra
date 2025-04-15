@@ -6,24 +6,8 @@ import (
 	"time"
 )
 
-type RepalceKey string
-
-func (r RepalceKey) String() string {
-	return string(r)
-}
-
 const (
 	DayMonthYearFormat = "02/01/2006"
-)
-
-var (
-	TypeAto       RepalceKey = "{{TYPE_ATO}}"
-	NumAto        RepalceKey = "{{NUM_ATO}}"
-	TitleAto      RepalceKey = "{{TITLE_ATO}}"
-	Matricula     RepalceKey = "{{MATRICULA}}"
-	DataRegistro  RepalceKey = "{{DATA_REGISTRO}}"
-	Protocolo     RepalceKey = "{{PROTOCOLO}}"
-	DataProtocolo RepalceKey = "{{DATA_PROTOCOLO}}"
 )
 
 const cabecalhoTemplate = `
