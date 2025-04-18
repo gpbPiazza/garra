@@ -23,6 +23,15 @@ func TestMinuta(t *testing.T) {
 			ItbiValor:             "2.900,00",
 			ItbiIncidenciaValor:   "145.000,00",
 		}
+		//Adiquirente nome
+		//Adiquirente nacionalidade
+		//Adiquirente estado civil
+		//Adiquirente CPF/CPNJ
+		//Adiquirente Endereco Rua
+		// Adiquirente Endereco N
+		// Adiquirente Endereco bairro
+		// Adiquirente Endereco Cidade
+		// Adiquirente Endereco Estado
 
 		expected := `
 <fragmento indice="CABECALHO" />

@@ -1,5 +1,13 @@
 package minuta
 
+// ReplaceKey -> é para substiuir elementos no minuta template
+// Eu preciso relacionar A chave que eu irei substituir no template
+// Com as propriedades necessário para achar o valor dessa chave
+
+// Então podemos dizer que um Template Tem N chaves para serem substituídas
+// Cada chave sabe dizer qual seu formato a ser substituído no template
+// Cada chave sabe dizer qual é seu Start e End Key para encontrarmos o valor dessa chave
+
 type ReplaceKey string
 
 func (r ReplaceKey) String() string {
