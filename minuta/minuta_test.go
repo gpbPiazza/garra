@@ -12,8 +12,7 @@ func TestMinuta(t *testing.T) {
 			Transmitente:          "RUZZU CONSTRUTORA E INCORPORADORA LTDA., supraqualificada.",
 			Adquirente:            "SIDNEI ANTÔNIO GATTIS, brasileiro, solteiro, CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC.",
 			TitleAto:              "Compra e Venda",
-			TabelionatoNum:        "1º",
-			TabelionatoName:       "Tabelionato de Notas e Protesto",
+			TabelionatoName:       "1º Tabelionato de Notas e Protesto",
 			TabelionatoCityState:  "Brusque/SC",
 			BookNum:               "965",
 			BookPages:             "121/123V",
@@ -23,15 +22,6 @@ func TestMinuta(t *testing.T) {
 			ItbiValor:             "2.900,00",
 			ItbiIncidenciaValor:   "145.000,00",
 		}
-		//Adiquirente nome
-		//Adiquirente nacionalidade
-		//Adiquirente estado civil
-		//Adiquirente CPF/CPNJ
-		//Adiquirente Endereco Rua
-		// Adiquirente Endereco N
-		// Adiquirente Endereco bairro
-		// Adiquirente Endereco Cidade
-		// Adiquirente Endereco Estado
 
 		expected := `
 <fragmento indice="CABECALHO" />

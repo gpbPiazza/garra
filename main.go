@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"log"
 
+	"github.com/gpbPiazza/alemao-bigodes/minuta"
 	"github.com/ledongthuc/pdf"
 )
 
@@ -27,8 +28,9 @@ func main() {
 
 	logFileInfo(fileInfo)
 
-	// extractor := minuta.NewExtractor()
+	extractor := minuta.NewExtractor()
 
+	var allDoc string
 	for pIndex := 1; pIndex <= r.NumPage(); pIndex++ {
 		page := r.Page(pIndex)
 		if page.V.IsNull() {
@@ -39,11 +41,17 @@ func main() {
 		if err != nil {
 			log.Fatalf("err at page %d - on GetPlainText err: %s", pIndex, err)
 		}
-		fmt.Println(pText)
-		// extractor.Extract(pText)
+		allDoc += "newPage\n" + pText
+		extractor.Extract(pText)
 	}
+	// fmt.Println(allDoc)
 
-	// valuesByReplaceKeys := extractor.Result()
+	extractor.Extract(allDoc)
+	valuesByReplaceKeys := extractor.Result()
+
+	for key, val := range valuesByReplaceKeys {
+		fmt.Printf("key: '%s' -- value: '%s'\n", key, val)
+	}
 
 	// params := minuta.MinutaParams{
 	// 	Transmitente:          valuesByReplaceKeys[minuta.Transmitente],

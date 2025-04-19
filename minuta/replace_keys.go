@@ -25,16 +25,38 @@ var (
 	DataProtocolo ReplaceKey = "{{DATA_PROTOCOLO}}"
 
 	// MINUTA KEYS
-	Transmitente          ReplaceKey = "{{TRANSMITENTE}}"
-	Adquirente            ReplaceKey = "{{ADQUIRENTE}}"
-	TabelionatoNum        ReplaceKey = "{{TABELIONATO_NUM}}"
-	TabelionatoName       ReplaceKey = "{{TABELIONATO_NAME}}"
-	TabelionatoCityState  ReplaceKey = "{{TABELIONATO_CITY_STATE}}"
-	BookNum               ReplaceKey = "{{BOOK_NUM}}"
-	BookPages             ReplaceKey = "{{BOOK_PAGES}}"
-	EscrituraMadeDate     ReplaceKey = "{{BOOK_DATE}}"
-	EscrituraValor        ReplaceKey = "{{ESCRITURA_VALOR}}"
-	EscrituraValorExtenso ReplaceKey = "{{ESCRITURA_VALOR_EXTENSO}}"
-	ItbiValor             ReplaceKey = "{{ITBI_VALOR}}"
-	ItbiIncidenciaValor   ReplaceKey = "{{ITBI_INCIDENCIA_VALOR}}"
+	Transmitente ReplaceKey = "{{TRANSMITENTE}}" //TODO: REMOVE THIS KEYS
+	Adquirente   ReplaceKey = "{{ADQUIRENTE}}"   //TODO: REMOVE THIS KEYS
+
+	// TRANSMITENTE = Outorgante
+	TransmitenteNome             ReplaceKey = "{{TRANSMITENTE_NOME}}"
+	TransmitenteJob              ReplaceKey = "{{TRANSMITENTE_JOB}}"
+	TransmitenteNacionalidade    ReplaceKey = "{{TRANSMITENTE_NACIONALIDADE}}"
+	TransmitenteEstadoCivil      ReplaceKey = "{{TRANSMITENTE_ESTADO_CIVIL}}"
+	TransmitenteCPF_CNPJ         ReplaceKey = "{{TRANSMITENTE_CPF_CNPJ}}"
+	TransmitenteEnderecoRua      ReplaceKey = "{{TRANSMITENTE_ENDERECO_RUA}}"
+	TransmitenteEnderecoN        ReplaceKey = "{{TRANSMITENTE_ENDERECO_NUMERO}}"
+	TransmitenteEnderecoBairro   ReplaceKey = "{{TRANSMITENTE_ENDERECO_BAIRRO}}"
+	TransmitenteEnderecoCidadeUF ReplaceKey = "{{TRANSMITENTE_ENDERECO_CIDADE_UF}}"
+
+	// Aduirente = Outorgado
+	AdquirenteNome             ReplaceKey = "{{ADQUIRENTE_NOME}}"
+	AdquirenteJob              ReplaceKey = "{{ADQUIRENTE_JOB}}"
+	AdquirenteNacionalidade    ReplaceKey = "{{ADQUIRENTE_NACIONALIDADE}}"
+	AdquirenteEstadoCivil      ReplaceKey = "{{ADQUIRENTE_ESTADO_CIVIL}}"
+	AdquirenteCPF_CNPJ         ReplaceKey = "{{ADQUIRENTE_CPF_CNPJ}}"
+	AdquirenteEnderecoRua      ReplaceKey = "{{ADQUIRENTE_ENDERECO_RUA}}"
+	AdquirenteEnderecoN        ReplaceKey = "{{ADQUIRENTE_ENDERECO_NUMERO}}"
+	AdquirenteEnderecoBairro   ReplaceKey = "{{ADQUIRENTE_ENDERECO_BAIRRO}}"
+	AdquirenteEnderecoCidadeUF ReplaceKey = "{{ADQUIRENTE_ENDERECO_CIDADE_UF}}"
+
+	TabelionatoName      ReplaceKey = "{{TABELIONATO_NAME}}"
+	TabelionatoCityState ReplaceKey = "{{TABELIONATO_CITY_STATE}}"
+	BookNum              ReplaceKey = "{{BOOK_NUM}}"
+	InitialBookPage      ReplaceKey = "{{INITIAL_BOOK_PAGE}}"
+	FinalBookPage        ReplaceKey = "{{FINAL_BOOK_PAGE}}"
+	EscrituraMadeDate    ReplaceKey = "{{BOOK_DATE}}"
+	EscrituraValor       ReplaceKey = "{{ESCRITURA_VALOR}}"
+	ItbiValor            ReplaceKey = "{{ITBI_VALOR}}"
+	ItbiIncidenciaValor  ReplaceKey = "{{ITBI_INCIDENCIA_VALOR}}"
 )
