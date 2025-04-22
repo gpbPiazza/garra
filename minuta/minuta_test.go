@@ -9,18 +9,32 @@ import (
 func TestMinuta(t *testing.T) {
 	t.Run("Compra e venda minuta good params", func(t *testing.T) {
 		params := MinutaParams{
-			Transmitente:          "RUZZU CONSTRUTORA E INCORPORADORA LTDA., supraqualificada.",
-			Adquirente:            "SIDNEI ANTÔNIO GATTIS, brasileiro, solteiro, CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC.",
-			TitleAto:              "Compra e Venda",
-			TabelionatoName:       "1º Tabelionato de Notas e Protesto",
-			TabelionatoCityState:  "Brusque/SC",
-			BookNum:               "965",
-			BookPages:             "121/123V",
-			EscrituraMadeDate:     "26/03/2025",
-			EscrituraValor:        "120.000,00",
-			EscrituraValorExtenso: "(cento e vinte mil reais)",
-			ItbiValor:             "2.900,00",
-			ItbiIncidenciaValor:   "145.000,00",
+			Transmitente: PersonParams{
+				Name:            "RUZZU CONSTRUTORA E INCORPORADORA LTDA.",
+				IsOverqualified: true,
+			},
+			Adquirente: PersonParams{
+				Name:          "SIDNEI ANTÔNIO GATTIS",
+				Nationality:   "brasileiro",
+				MaritalStatus: "solteiro",
+				CPF_CNPJ:      "037.561.669-10",
+				Address: AddressParams{
+					Rua:          "Rua Azambuja",
+					Num:          "541",
+					Neighborhood: "Bairro Azambuja",
+					CityUF:       "Brusque/SC",
+				},
+			},
+			TitleAto:             "Compra e Venda",
+			TabelionatoName:      "1º Tabelionato de Notas e Protesto",
+			TabelionatoCityState: "Brusque/SC",
+			BookNum:              "965",
+			InitialBookPages:     "121",
+			FinalBookPages:       "123",
+			EscrituraMadeDate:    "26/03/2025",
+			EscrituraValor:       "120.000,00 (cento e vinte mil reais)",
+			ItbiValor:            "2.900,00",
+			ItbiIncidenciaValor:  "145.000,00",
 		}
 
 		expected := `
@@ -35,8 +49,7 @@ func TestMinuta(t *testing.T) {
 <br/><u>CONDIÇÕES</u>: Não constam.
 <br/><u>OBSERVAÇÕES</u>:
 <strong>ITBI</strong>: Recolhido no valor de R$ 2.900,00, com incidência sobre R$ 145.000,00, devidamente quitado. Nos termos do artigo 320 do CNCGFE/SC, o imóvel da presente matrícula, teve como valor atribuído de mercado, no
-''quantum'' de R$ XXXXX. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com
-as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
+''quantum'' de R$ XXXXX. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
 <fragmento indice="FINALIZACAO_ATO" />.
 `
 

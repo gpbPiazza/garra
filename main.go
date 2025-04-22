@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"log"
 
+	"github.com/gpbPiazza/alemao-bigodes/extractor"
 	"github.com/gpbPiazza/alemao-bigodes/minuta"
 	"github.com/ledongthuc/pdf"
 )
@@ -28,7 +29,7 @@ func main() {
 
 	logFileInfo(fileInfo)
 
-	extractor := minuta.NewExtractor()
+	ex := extractor.New()
 
 	var allDoc string
 	for pIndex := 1; pIndex <= r.NumPage(); pIndex++ {
@@ -41,38 +42,55 @@ func main() {
 		if err != nil {
 			log.Fatalf("err at page %d - on GetPlainText err: %s", pIndex, err)
 		}
-		allDoc += "newPage\n" + pText
-		extractor.Extract(pText)
-	}
-	// fmt.Println(allDoc)
-
-	extractor.Extract(allDoc)
-	valuesByReplaceKeys := extractor.Result()
-
-	for key, val := range valuesByReplaceKeys {
-		fmt.Printf("key: '%s' -- value: '%s'\n", key, val)
+		allDoc += "\n" + pText
 	}
 
-	// params := minuta.MinutaParams{
-	// 	Transmitente:          valuesByReplaceKeys[minuta.Transmitente],
-	// 	Adquirente:            valuesByReplaceKeys[minuta.Adquirente],
-	// 	TitleAto:              valuesByReplaceKeys[minuta.TitleAto],
-	// 	TabelionatoNum:        valuesByReplaceKeys[minuta.TabelionatoNum],
-	// 	TabelionatoName:       valuesByReplaceKeys[minuta.TabelionatoName],
-	// 	TabelionatoCityState:  valuesByReplaceKeys[minuta.TabelionatoCityState],
-	// 	BookNum:               valuesByReplaceKeys[minuta.BookNum],
-	// 	BookPages:             valuesByReplaceKeys[minuta.BookPages],
-	// 	EscrituraMadeDate:     valuesByReplaceKeys[minuta.EscrituraMadeDate],
-	// 	EscrituraValor:        valuesByReplaceKeys[minuta.EscrituraValor],
-	// 	EscrituraValorExtenso: valuesByReplaceKeys[minuta.EscrituraValorExtenso],
-	// 	ItbiValor:             valuesByReplaceKeys[minuta.ItbiValor],
-	// 	ItbiIncidenciaValor:   valuesByReplaceKeys[minuta.ItbiIncidenciaValor],
-	// }
+	ex.Extract(allDoc)
+	dataExtracted := ex.Result()
 
-	// generatedMin := minuta.Minuta(params)
+	params := minuta.MinutaParams{
+		TitleAto:             dataExtracted[extractor.TitleAto],
+		TabelionatoName:      dataExtracted[extractor.TabelionatoName],
+		TabelionatoCityState: dataExtracted[extractor.TabelionatoCityState],
+		BookNum:              dataExtracted[extractor.BookNum],
+		EscrituraMadeDate:    dataExtracted[extractor.EscrituraMadeDate],
+		EscrituraValor:       dataExtracted[extractor.EscrituraValor],
+		ItbiValor:            dataExtracted[extractor.ItbiValor],
+		ItbiIncidenciaValor:  dataExtracted[extractor.ItbiIncidenciaValor],
+		Transmitente: minuta.PersonParams{
+			Name:          dataExtracted[extractor.OutorganteName],
+			Job:           dataExtracted[extractor.OutorganteJob],
+			Nationality:   dataExtracted[extractor.OutorganteNationality],
+			MaritalStatus: dataExtracted[extractor.OutorganteEstadoCivil],
+			CPF_CNPJ:      dataExtracted[extractor.OutorganteCPF_CNPJ],
+			Address: minuta.AddressParams{
+				Rua:          dataExtracted[extractor.OutorganteEnderecoRua],
+				Num:          dataExtracted[extractor.OutorganteEnderecoN],
+				CityUF:       dataExtracted[extractor.OutorganteEnderecoCidadeUF],
+				Neighborhood: dataExtracted[extractor.OutorganteEnderecoBairro],
+			},
+		},
+		Adquirente: minuta.PersonParams{
+			Name:          dataExtracted[extractor.OutorgadoName],
+			Job:           dataExtracted[extractor.OutorgadoJob],
+			Nationality:   dataExtracted[extractor.OutorgadoNationality],
+			MaritalStatus: dataExtracted[extractor.OutorgadoEstadoCivil],
+			CPF_CNPJ:      dataExtracted[extractor.OutorgadoCPF_CNPJ],
+			Address: minuta.AddressParams{
+				Rua:          dataExtracted[extractor.OutorgadoEnderecoRua],
+				Num:          dataExtracted[extractor.OutorgadoEnderecoN],
+				CityUF:       dataExtracted[extractor.OutorgadoEnderecoCidadeUF],
+				Neighborhood: dataExtracted[extractor.OutorgadoEnderecoBairro],
+			},
+		},
+		InitialBookPages: dataExtracted[extractor.InitialBookPages],
+		FinalBookPages:   dataExtracted[extractor.FinalBookPages],
+	}
+
+	generatedMin := minuta.Minuta(params)
 
 	fmt.Println("Minuta gerada")
-	// fmt.Println(generatedMin)
+	fmt.Println(generatedMin)
 	fmt.Println("Finish Minuta generator file")
 }
 

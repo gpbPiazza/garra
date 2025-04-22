@@ -1,8 +1,9 @@
-package minuta
+package extractor
 
 import (
 	"errors"
 	"fmt"
+	"log"
 	"strings"
 )
 
@@ -14,252 +15,249 @@ import (
 type token struct {
 	Start            string
 	End              string
-	NextEndOccurence bool
 	Offset           string
-	Replacer         ReplaceKey
+	ResultKey        ResultKey
 	Value            string
 	AlreadyExtracted bool
 }
 
 type Extractor struct {
-	result map[ReplaceKey]string
+	result map[ResultKey]string
 	tokens []token
 }
 
-func NewExtractor() *Extractor {
+func New() *Extractor {
 	return &Extractor{
-		result: make(map[ReplaceKey]string),
+		result: make(map[ResultKey]string),
 		tokens: []token{
 			{
-				Start:            "Registro Geral: MATRÍCULA Nº",
-				End:              ",",
-				Replacer:         Matricula,
-				AlreadyExtracted: false,
-				Value:            "",
-			},
-			{
-				Start:            "", // TODO: VER COM O ALEMÃO
-				End:              "", // TODO: VER COM O ALEMÃO
-				Replacer:         TypeAto,
+				Start:            "MATRÍCULA Nº",
+				End:              ", CNM:",
+				ResultKey:        Matricula,
 				AlreadyExtracted: false,
 			},
-			{
-				Start:            "", // TODO: VER COM O ALEMÃO
-				End:              "", // TODO: VER COM O ALEMÃO
-				Replacer:         NumAto,
-				AlreadyExtracted: false,
-			},
+			// {
+			// 	Start:            "", // TODO: VER COM O ALEMÃO
+			// 	End:              "", // TODO: VER COM O ALEMÃO
+			// 	ResultKey:        TypeAto,
+			// 	AlreadyExtracted: false,
+			// },
+			// {
+			// 	Start:            "", // TODO: VER COM O ALEMÃO
+			// 	End:              "", // TODO: VER COM O ALEMÃO
+			// 	ResultKey:        NumAto,
+			// 	AlreadyExtracted: false,
+			// },
 			{
 				Start:            "Cláusula Geral: ESCRITURA PÚBLICA DE",
 				End:              " que",
-				Replacer:         TitleAto,
+				ResultKey:        TitleAto,
 				AlreadyExtracted: false,
 			},
-			{
-				Start:            "",
-				End:              "",
-				Replacer:         DataRegistro, // TODO: VER COM O ALEMÃO
-				AlreadyExtracted: false,
-			},
-			{
-				Start:            "",
-				End:              "",
-				Replacer:         Protocolo, // TODO: VER COM O ALEMÃO
-				AlreadyExtracted: false,
-			},
+			// {
+			// 	Start:            "",
+			// 	End:              "",
+			// 	ResultKey:        DataRegistro, // TODO: VER COM O ALEMÃO
+			// 	AlreadyExtracted: false,
+			// },
+			// {
+			// 	Start:            "",
+			// 	End:              "",
+			// 	ResultKey:        Protocolo, // TODO: VER COM O ALEMÃO
+			// 	AlreadyExtracted: false,
+			// },
 			{
 				Start:            "Data e hora do recebimento do ato pelo TJSC: ",
 				End:              " -",
-				Replacer:         DataProtocolo,
+				ResultKey:        DataProtocolo,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Parte :",
 				End:              "Pessoa:",
 				Offset:           "Outorgante",
-				Replacer:         TransmitenteNome,
+				ResultKey:        OutorganteName,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Profissão: ",
 				End:              " -",
 				Offset:           "Outorgante",
-				Replacer:         TransmitenteJob,
+				ResultKey:        OutorganteJob,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Nacionalidade: ",
 				End:              " -",
 				Offset:           "Outorgante",
-				Replacer:         TransmitenteNacionalidade,
+				ResultKey:        OutorganteNationality,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Estado Civil: ",
-				End:              ",",
+				End:              "- Profissão:",
 				Offset:           "Outorgante",
-				Replacer:         TransmitenteEstadoCivil,
+				ResultKey:        OutorganteEstadoCivil,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Doc. Nº:",
 				End:              "/",
-				Offset:           "Outorgante",
-				Replacer:         TransmitenteCPF_CNPJ,
+				Offset:           "Outorgante", // Esse cara ta errado ta pegando 2 caracteres não necssários
+				ResultKey:        OutorganteCPF_CNPJ,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "EndereçosLogradouro:",
 				End:              "Número:",
 				Offset:           "Outorgante",
-				Replacer:         TransmitenteEnderecoRua,
+				ResultKey:        OutorganteEnderecoRua,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Número: ",
 				End:              "Bairro:",
 				Offset:           "Outorgante",
-				Replacer:         TransmitenteEnderecoN,
+				ResultKey:        OutorganteEnderecoN,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Bairro:",
 				End:              "Complemento",
 				Offset:           "Outorgante",
-				Replacer:         TransmitenteEnderecoBairro,
+				ResultKey:        OutorganteEnderecoBairro,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Cidade/UF",
 				End:              "CEP",
 				Offset:           "Outorgante",
-				Replacer:         TransmitenteEnderecoCidadeUF,
+				ResultKey:        OutorganteEnderecoCidadeUF,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "OutorgadoParte :",
 				End:              "Data",
 				Offset:           "OutorgadoParte",
-				Replacer:         AdquirenteNome,
+				ResultKey:        OutorgadoName,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Profissão:",
 				End:              "- Nacionalidade:",
 				Offset:           "OutorgadoParte",
-				Replacer:         AdquirenteJob,
+				ResultKey:        OutorgadoJob,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Nacionalidade:",
 				End:              "- Sexo:",
 				Offset:           "OutorgadoParte",
-				Replacer:         AdquirenteNacionalidade,
+				ResultKey:        OutorgadoNationality,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Estado Civil:",
 				End:              "- Profissão:",
 				Offset:           "OutorgadoParte",
-				Replacer:         AdquirenteEstadoCivil,
+				ResultKey:        OutorgadoEstadoCivil,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Doc. Nº:",
 				End:              "Doc. Tipo:",
-				NextEndOccurence: true,
 				Offset:           "OutorgadoParte",
-				Replacer:         AdquirenteCPF_CNPJ,
+				ResultKey:        OutorgadoCPF_CNPJ,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "EndereçosLogradouro:",
 				End:              "Número:",
 				Offset:           "OutorgadoParte",
-				Replacer:         AdquirenteEnderecoRua,
+				ResultKey:        OutorgadoEnderecoRua,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Número:",
 				End:              "Bairro:",
 				Offset:           "OutorgadoParte",
-				Replacer:         AdquirenteEnderecoN,
+				ResultKey:        OutorgadoEnderecoN,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Bairro: ",
 				End:              "Cidade/UF:",
 				Offset:           "OutorgadoParte",
-				Replacer:         AdquirenteEnderecoBairro,
+				ResultKey:        OutorgadoEnderecoBairro,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Cidade/UF:",
 				End:              "CEP:",
 				Offset:           "OutorgadoParte",
-				Replacer:         AdquirenteEnderecoCidadeUF,
+				ResultKey:        OutorgadoEnderecoCidadeUF,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Serventia: ",
 				End:              "Endereço:",
 				Offset:           "Serventia:",
-				Replacer:         TabelionatoName,
+				ResultKey:        TabelionatoName,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Município/UF:",
 				End:              "Telefone(s):",
 				Offset:           "Serventia:",
-				Replacer:         TabelionatoCityState,
+				ResultKey:        TabelionatoCityState,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Código do Livro: ",
 				End:              "Nome do Livro:",
 				Offset:           "RegistroCódigo do Livro:",
-				Replacer:         BookNum,
+				ResultKey:        BookNum,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Página Inicial:",
 				End:              "Página Final:",
 				Offset:           "RegistroCódigo do Livro:",
-				Replacer:         InitialBookPage,
+				ResultKey:        InitialBookPages,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Página Final:",
 				End:              "Data do Registro:",
 				Offset:           "RegistroCódigo do Livro:",
-				Replacer:         FinalBookPage,
+				ResultKey:        FinalBookPages,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Data do Registro:",
 				End:              "Nome do Imposto",
 				Offset:           "RegistroCódigo do Livro:",
-				Replacer:         EscrituraMadeDate,
+				ResultKey:        EscrituraMadeDate,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "preço total, certo e ajustado de R$",
 				End:              ", ",
 				Offset:           "Cláusula Geral:",
-				Replacer:         EscrituraValor,
+				ResultKey:        EscrituraValor,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "importância de R$",
 				End:              " correspondente",
 				Offset:           "Cláusula Geral:",
-				Replacer:         ItbiValor,
+				ResultKey:        ItbiValor,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Valor do Negócio: R$",
 				End:              "Cláusula Geral:",
-				Replacer:         ItbiIncidenciaValor,
+				ResultKey:        ItbiIncidenciaValor,
 				AlreadyExtracted: false,
 			},
 		},
@@ -274,15 +272,23 @@ func (e *Extractor) Extract(text string) {
 
 		val, err := extractTokenValue(text, token)
 		if err != nil {
+			log.Printf("extract token val err - token: '%s' - err: '%s'", resultKeyNames[token.ResultKey], err)
 			continue
 		}
+
 		token.Value = val
 		token.AlreadyExtracted = true
-		e.result[token.Replacer] = token.Value
+		e.result[token.ResultKey] = token.Value
 	}
 }
 
-func (e *Extractor) Result() map[ReplaceKey]string {
+func (e *Extractor) Result() map[ResultKey]string {
+	for _, t := range e.tokens {
+		if !t.AlreadyExtracted {
+			log.Printf("token not found - token: '%s'", resultKeyNames[t.ResultKey])
+		}
+	}
+
 	return e.result
 }
 
@@ -308,8 +314,6 @@ func extractTokenValue(text string, token token) (string, error) {
 	}
 
 	startIndex += len(token.Start)
-
-	// TODO: IMAPLEMENT SECOND OCCURENCE OF EndToken
 
 	endIndex := strings.Index(text[startIndex:], token.End)
 	if endIndex == -1 {

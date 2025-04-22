@@ -25,10 +25,9 @@ var (
 	DataProtocolo ReplaceKey = "{{DATA_PROTOCOLO}}"
 
 	// MINUTA KEYS
-	Transmitente ReplaceKey = "{{TRANSMITENTE}}" //TODO: REMOVE THIS KEYS
-	Adquirente   ReplaceKey = "{{ADQUIRENTE}}"   //TODO: REMOVE THIS KEYS
-
 	// TRANSMITENTE = Outorgante
+	Transmitente                 ReplaceKey = "{{TRANSMITENTE}}"
+	Adquirente                   ReplaceKey = "{{ADQUIRENTE}}"
 	TransmitenteNome             ReplaceKey = "{{TRANSMITENTE_NOME}}"
 	TransmitenteJob              ReplaceKey = "{{TRANSMITENTE_JOB}}"
 	TransmitenteNacionalidade    ReplaceKey = "{{TRANSMITENTE_NACIONALIDADE}}"
@@ -52,9 +51,9 @@ var (
 
 	TabelionatoName      ReplaceKey = "{{TABELIONATO_NAME}}"
 	TabelionatoCityState ReplaceKey = "{{TABELIONATO_CITY_STATE}}"
+	InitialBookPages     ReplaceKey = "{{INITIAL_BOOK_PAGES}}"
+	FinalBookPages       ReplaceKey = "{{FINAL_BOOK_PAGES}}"
 	BookNum              ReplaceKey = "{{BOOK_NUM}}"
-	InitialBookPage      ReplaceKey = "{{INITIAL_BOOK_PAGE}}"
-	FinalBookPage        ReplaceKey = "{{FINAL_BOOK_PAGE}}"
 	EscrituraMadeDate    ReplaceKey = "{{BOOK_DATE}}"
 	EscrituraValor       ReplaceKey = "{{ESCRITURA_VALOR}}"
 	ItbiValor            ReplaceKey = "{{ITBI_VALOR}}"
