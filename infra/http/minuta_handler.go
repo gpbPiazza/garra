@@ -28,7 +28,7 @@ func PostMinutaHandler(c *fiber.Ctx) error {
 
 	var allDoc string
 	for !errors.Is(err, io.EOF) {
-		buff := make([]byte, 1024)
+		buff := make([]byte, 1024) // 1 KB
 
 		_, err := f.Read(buff)
 		if err != nil {
