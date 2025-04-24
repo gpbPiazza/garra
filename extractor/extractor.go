@@ -23,13 +23,13 @@ type token struct {
 
 type Extractor struct {
 	result map[ResultKey]string
-	tokens []token
+	tokens []*token
 }
 
 func New() *Extractor {
 	return &Extractor{
 		result: make(map[ResultKey]string),
-		tokens: []token{
+		tokens: []*token{
 			{
 				Start:            "MATRÍCULA Nº",
 				End:              ", CNM:",
@@ -129,16 +129,16 @@ func New() *Extractor {
 				AlreadyExtracted: false,
 			},
 			{
-				Start:            "Cidade/UF",
-				End:              "CEP",
+				Start:            "Cidade/UF: ",
+				End:              "CEP:",
 				Offset:           "Outorgante",
 				ResultKey:        OutorganteEnderecoCidadeUF,
 				AlreadyExtracted: false,
 			},
 			{
-				Start:            "OutorgadoParte :",
+				Start:            "Parte :",
 				End:              "Data",
-				Offset:           "OutorgadoParte",
+				Offset:           "Outorgado",
 				ResultKey:        OutorgadoName,
 				AlreadyExtracted: false,
 			},
@@ -199,7 +199,7 @@ func New() *Extractor {
 				AlreadyExtracted: false,
 			},
 			{
-				Start:            "Serventia: ",
+				Start:            " ",
 				End:              "Endereço:",
 				Offset:           "Serventia:",
 				ResultKey:        TabelionatoName,
@@ -213,30 +213,30 @@ func New() *Extractor {
 				AlreadyExtracted: false,
 			},
 			{
-				Start:            "Código do Livro: ",
+				Start:            "Livro: ",
 				End:              "Nome do Livro:",
-				Offset:           "RegistroCódigo do Livro:",
+				Offset:           "RegistroCódigo do",
 				ResultKey:        BookNum,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Página Inicial:",
 				End:              "Página Final:",
-				Offset:           "RegistroCódigo do Livro:",
+				Offset:           "RegistroCódigo do",
 				ResultKey:        InitialBookPages,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Página Final:",
 				End:              "Data do Registro:",
-				Offset:           "RegistroCódigo do Livro:",
+				Offset:           "RegistroCódigo do",
 				ResultKey:        FinalBookPages,
 				AlreadyExtracted: false,
 			},
 			{
 				Start:            "Data do Registro:",
 				End:              "Nome do Imposto",
-				Offset:           "RegistroCódigo do Livro:",
+				Offset:           "RegistroCódigo do",
 				ResultKey:        EscrituraMadeDate,
 				AlreadyExtracted: false,
 			},
@@ -270,7 +270,7 @@ func (e *Extractor) Extract(text string) {
 			continue
 		}
 
-		val, err := extractTokenValue(text, token)
+		val, err := extractTokenValue(text, *token)
 		if err != nil {
 			log.Printf("extract token val err - token: '%s' - err: '%s'", resultKeyNames[token.ResultKey], err)
 			continue
