@@ -64,6 +64,10 @@ func minutaPerson(person PersonParams) string {
 
 	// TODO implement: coditions when person is CPNJ.
 	// TODO check if residente a domiciliado is just a case ou default.
+	// TODO: implement mapping Brasil to brasileiro
+	// TODO: implement mapping solteiro (a) to solteiro or solteira
+	// TODO: implement cpf mask
+	// TODO: implement city and UF formatting
 	return fmt.Sprintf(
 		"%s, %s, %s, CPF nº %s, residente e domiciliado na %s, nº %s, %s, %s.",
 		person.Name,
@@ -81,13 +85,13 @@ func Minuta(params MinutaParams) string {
 	replacer := strings.NewReplacer(
 		Transmitente.String(), minutaPerson(params.Transmitente),
 		Adquirente.String(), minutaPerson(params.Adquirente),
-		TitleAto.String(), params.TitleAto,
-		TabelionatoName.String(), params.TabelionatoName,
+		TitleAto.String(), params.TitleAto, // TODO: create minutaTitleAto to format Compra e Venda as expected, first letter upper case.
+		TabelionatoName.String(), params.TabelionatoName, // TODO: create TabelionatoName to format as expected, first letter upper case.
 		TabelionatoCityState.String(), params.TabelionatoCityState,
 		BookNum.String(), params.BookNum,
 		InitialBookPages.String(), params.InitialBookPages,
 		FinalBookPages.String(), params.FinalBookPages,
-		EscrituraMadeDate.String(), params.EscrituraMadeDate,
+		EscrituraMadeDate.String(), params.EscrituraMadeDate, // TODO: create date formatter
 		EscrituraValor.String(), params.EscrituraValor,
 		ItbiValor.String(), params.ItbiValor,
 		ItbiIncidenciaValor.String(), params.ItbiIncidenciaValor,

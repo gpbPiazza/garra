@@ -1,9 +1,10 @@
 # Architecture decision records
 
 
-## We will couple extract data from the files using Keys markers.
+## 2.
 
 ---
+## 1. We will couple extract data from the files using Keys markers.
 
 ### **1. Extracting Data Using X and Y Coordinates**
 - **How It Works**: 
@@ -23,7 +24,6 @@
 - **When to Use**:
   - Use this approach if the PDF documents are guaranteed to have a fixed layout and you need precise control over the extraction process.
 
----
 
 ### **2. Extracting Data Using StartKey and EndKey**
 - **How It Works**:
@@ -42,35 +42,7 @@
 - **When to Use**:
   - Use this approach if the PDFs have consistent textual markers and you need a more robust solution that can handle minor layout changes.
 
----
-
-### **3. Alternative Approaches**
-Here are some additional approaches you can consider:
-
-#### **a. Using Regular Expressions**
-- Extract text from the PDF and use regular expressions to identify and extract the desired data.
-- **Advantages**: Works well for extracting patterns like dates, numbers, or specific formats (e.g., "Invoice #12345").
-- **Disadvantages**: Requires well-defined patterns and may fail if the text format changes.
-
-#### **b. Using Machine Learning (OCR or NLP)**
-- Use Optical Character Recognition (OCR) tools (e.g., Tesseract) to extract text from scanned PDFs.
-- Apply Natural Language Processing (NLP) techniques to identify and extract key information.
-- **Advantages**: Works for unstructured or scanned PDFs without consistent formatting.
-- **Disadvantages**: Complex to implement and may require training data for accurate results.
-
-#### **c. Using PDF Libraries with Table Extraction**
-- If the data is in tabular format, use libraries like `tabula` (Python) or `camelot` to extract tables directly.
-- **Advantages**: Simplifies table extraction.
-- **Disadvantages**: Limited to tabular data.
-
----
-
-### **Recommendation**
-- **If the PDFs are highly structured and consistent**: Use **Approach 1 (X and Y Coordinates)** for precise extraction.
-- **If the PDFs have consistent textual markers**: Use **Approach 2 (StartKey and EndKey)** for a more flexible and robust solution.
-- **If the PDFs are unstructured or scanned**: Consider **OCR/NLP** or **regular expressions** for extracting data.
-
----
-
 ### **Final Decision**
-Start with **Approach 2 (StartKey and EndKey)** as it is easier to implement, more flexible, and resilient to minor layout changes. If you encounter PDFs with highly structured layouts, you can combine it with **Approach 1 (X and Y Coordinates)** for specific cases where precision is required.
+We will go by **Approach 2 (StartKey and EndKey)** as it is easier to implement, more flexible, and resilient to minor layout changes. If you encounter PDFs with highly structured layouts, you can combine it with **Approach 1 (X and Y Coordinates)** for specific cases where precision is required.
+
+---

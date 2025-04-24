@@ -1,7 +1,6 @@
-package main
+package minuta
 
 import (
-	"fmt"
 	"io/fs"
 	"log"
 
@@ -10,42 +9,18 @@ import (
 	"github.com/ledongthuc/pdf"
 )
 
-func main() {
-	file, r, err := pdf.Open("./assets/ato_consultar_ato.pdf")
-	if err != nil {
-		log.Fatalf("err to open PDF err: %s", err)
-	}
+type GeneratorApp struct {
+}
 
-	defer func() {
-		if err := file.Close(); err != nil {
-			log.Fatalf("err to close file err: %s", err)
-		}
-	}()
+func NewGeneratorApp() *GeneratorApp {
+	return &GeneratorApp{}
+}
 
-	fileInfo, err := file.Stat()
-	if err != nil {
-		log.Fatalf("err to se file info err: %s", err)
-	}
-
-	logFileInfo(fileInfo)
-
+func (app *GeneratorApp) Generate(docStr string) (string, error) {
 	ex := extractor.New()
 
-	var allDoc string
-	for pIndex := 1; pIndex <= r.NumPage(); pIndex++ {
-		page := r.Page(pIndex)
-		if page.V.IsNull() {
-			log.Printf("page %d - isNull", pIndex)
-		}
+	ex.Extract(docStr)
 
-		pText, err := page.GetPlainText(nil)
-		if err != nil {
-			log.Fatalf("err at page %d - on GetPlainText err: %s", pIndex, err)
-		}
-		allDoc += "\n" + pText
-	}
-
-	ex.Extract(allDoc)
 	dataExtracted := ex.Result()
 
 	params := minuta.MinutaParams{
@@ -87,11 +62,43 @@ func main() {
 		FinalBookPages:   dataExtracted[extractor.FinalBookPages],
 	}
 
-	generatedMin := minuta.Minuta(params)
+	return minuta.Minuta(params), nil
+}
 
-	fmt.Println("Minuta gerada")
-	fmt.Println(generatedMin)
-	fmt.Println("Finish Minuta generator file")
+func parseDocToStr() string {
+	file, r, err := pdf.Open("./assets/ato_consultar_ato.pdf")
+	if err != nil {
+		log.Fatalf("err to open PDF err: %s", err)
+	}
+
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Fatalf("err to close file err: %s", err)
+		}
+	}()
+
+	fileInfo, err := file.Stat()
+	if err != nil {
+		log.Fatalf("err to se file info err: %s", err)
+	}
+
+	logFileInfo(fileInfo)
+
+	var allDoc string
+	for pIndex := 1; pIndex <= r.NumPage(); pIndex++ {
+		page := r.Page(pIndex)
+		if page.V.IsNull() {
+			log.Printf("page %d - isNull", pIndex)
+		}
+
+		pText, err := page.GetPlainText(nil)
+		if err != nil {
+			log.Fatalf("err at page %d - on GetPlainText err: %s", pIndex, err)
+		}
+		allDoc += "\n" + pText
+	}
+
+	return allDoc
 }
 
 func logFileInfo(info fs.FileInfo) {
