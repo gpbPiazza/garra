@@ -1,42 +1,27 @@
 package http
 
 import (
-	"errors"
-	"io"
 	"log"
+	"mime/multipart"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gpbPiazza/alemao-bigodes/application/minuta"
+	"github.com/ledongthuc/pdf"
 )
 
 func PostMinutaHandler(c *fiber.Ctx) error {
-	file, err := c.FormFile("pdf")
+	formFile, err := c.FormFile("pdf")
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString("Failed to upload file")
 	}
 
-	if file.Header.Get("Content-Type") != "application/pdf" {
+	if formFile.Header.Get("Content-Type") != "application/pdf" {
 		return c.Status(fiber.StatusBadRequest).SendString("Only PDF files are allowed")
 	}
 
 	app := minuta.NewGeneratorApp()
 
-	f, err := file.Open()
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).SendString("server error")
-	}
-
-	var allDoc string
-	for !errors.Is(err, io.EOF) {
-		buff := make([]byte, 1024) // 1 KB
-
-		_, err := f.Read(buff)
-		if err != nil {
-			log.Printf("err while reading file err: %s", err)
-		}
-
-		allDoc += string(buff)
-	}
+	allDoc := parseDocToStr(formFile)
 
 	result, err := app.Generate(allDoc)
 	if err != nil {
@@ -47,4 +32,41 @@ func PostMinutaHandler(c *fiber.Ctx) error {
 	c.Response().Header.Add("Content-Type", "text/html")
 
 	return c.Status(fiber.StatusOK).SendString(result)
+}
+
+func parseDocToStr(formFile *multipart.FileHeader) string {
+	file, err := formFile.Open()
+	if err != nil {
+		log.Fatalf("err to open PDF err: %s", err)
+	}
+
+	fileReader, err := pdf.NewReader(file, formFile.Size)
+	if err != nil {
+		log.Fatalf("err to create new Redaer PDF err: %s", err)
+	}
+
+	log.Printf("file name: %s", formFile.Filename)
+	log.Printf("file size: %d bytes", formFile.Size)
+
+	defer func() {
+		if err := file.Close(); err != nil {
+			log.Fatalf("err to close file err: %s", err)
+		}
+	}()
+
+	var allDoc string
+	for pIndex := 1; pIndex <= fileReader.NumPage(); pIndex++ {
+		page := fileReader.Page(pIndex)
+		if page.V.IsNull() {
+			log.Printf("page %d - isNull", pIndex)
+		}
+
+		pText, err := page.GetPlainText(nil)
+		if err != nil {
+			log.Fatalf("err at page %d - on GetPlainText err: %s", pIndex, err)
+		}
+		allDoc += "\n" + pText
+	}
+
+	return allDoc
 }
