@@ -32,7 +32,7 @@ func New() *Extractor {
 		tokens: []*token{
 			{
 				Start:            "MATRÍCULA Nº",
-				End:              ", CNM:",
+				End:              ", CNM",
 				ResultKey:        Matricula,
 				AlreadyExtracted: false,
 			},
@@ -286,7 +286,7 @@ func (e *Extractor) Extract(text string) {
 
 		val, err := extractTokenValue(text, *token)
 		if err != nil {
-			log.Printf("extract token val err - token: '%s' - err: '%s'", resultKeyNames[token.ResultKey], err)
+			log.Printf("extract token val err - token: %s - err: %s", resultKeyNames[token.ResultKey], err)
 			continue
 		}
 
