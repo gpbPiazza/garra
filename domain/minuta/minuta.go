@@ -2,6 +2,7 @@ package minuta
 
 import (
 	"fmt"
+	"log"
 	"strings"
 )
 
@@ -71,7 +72,7 @@ func minutaPerson(person PersonParams) string {
 	return fmt.Sprintf(
 		"%s, %s, %s, CPF nº %s, residente e domiciliado na %s, nº %s, %s, %s.",
 		person.Name,
-		person.Nationality,
+		formatNationality(person.Nationality),
 		person.MaritalStatus,
 		person.CPF_CNPJ,
 		person.Address.Rua,
@@ -79,6 +80,16 @@ func minutaPerson(person PersonParams) string {
 		person.Address.Neighborhood,
 		person.Address.CityUF,
 	)
+}
+
+func formatNationality(nationality string) string {
+	switch nationality {
+	case "Brasil":
+		return "brasileiro"
+	default:
+		log.Fatalf("nationality not mapped - got %s", nationality)
+		return ""
+	}
 }
 
 func Minuta(params MinutaParams) string {

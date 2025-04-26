@@ -9,6 +9,9 @@ import (
 	"github.com/ledongthuc/pdf"
 )
 
+// Example usage
+//
+// go run ./cmd/generate_test_file/main.go ./assets/nome_do_arquivo.pdf ato_consultar_tjsc_1_to_1_buy_and_sell_2
 func main() {
 	args := os.Args
 

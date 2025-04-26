@@ -15,7 +15,7 @@ func TestGenerate(t *testing.T) {
 		expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span>CONSTRUARTE CONSTRUTORA E INCORPORADORA LTDA, Brasil, Casado (a), CPF nº 2923597700017014, residente e domiciliado na Rua Luiz Eccel, nº 1, Paquetá, Brusque / SC.</span>.
+<u>TRANSMITENTE(S)</u>:> <span>CONSTRUARTE CONSTRUTORA E INCORPORADORA LTDA, brasileiro, Casado (a), CPF nº 2923597700017014, residente e domiciliado na Rua Luiz Eccel, nº 1, Paquetá, Brusque / SC.</span>.
 <br/>
 <u>ADQUIRENTE(S)</u>:><span>SIDNEI ANTÔNIO GATTIS, brasileiro, solteiro, CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC.</span>.
 <br>
