@@ -5,14 +5,24 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch main.go",
+      "name": "Launch api",
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${workspaceFolder}/main.go",
+      "program": "${workspaceFolder}/cmd/api/main.go",
       "cwd": "${workspaceFolder}",
       "env": {},
       "args": []
+    },
+    {
+      "name": "Launch generate test file",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/cmd/generate_test_file/main.go",
+      "cwd": "${workspaceFolder}",
+      "env": {},
+      "args": ["./assets/escritura_Maria_Eduarda_dos_Santos_x_Absolut_Construtora.pdf", "ato_consultar_tjsc_1_to_1_buy_and_sell_2"]
     }
   ]
 }

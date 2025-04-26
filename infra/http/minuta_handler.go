@@ -21,7 +21,7 @@ func PostMinutaHandler(c *fiber.Ctx) error {
 
 	app := minuta.NewGeneratorApp()
 
-	allDoc := parseDocToStr(formFile)
+	allDoc := ParseDocToStr(formFile)
 
 	result, err := app.Generate(allDoc)
 	if err != nil {
@@ -34,7 +34,7 @@ func PostMinutaHandler(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).SendString(result)
 }
 
-func parseDocToStr(formFile *multipart.FileHeader) string {
+func ParseDocToStr(formFile *multipart.FileHeader) string {
 	file, err := formFile.Open()
 	if err != nil {
 		log.Fatalf("err to open PDF err: %s", err)
