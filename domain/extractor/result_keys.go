@@ -18,7 +18,8 @@ const (
 	OutorganteJob
 	OutorganteNationality
 	OutorganteEstadoCivil
-	OutorganteCPF_CNPJ
+	OutorganteDocNumCPF_CNPJ
+	OutorganteDocType
 	OutorganteEnderecoRua
 	OutorganteEnderecoN
 	OutorganteEnderecoBairro
@@ -28,14 +29,15 @@ const (
 	OutorgadoJob
 	OutorgadoNationality
 	OutorgadoEstadoCivil
-	OutorgadoCPF_CNPJ
+	OutorgadoDocNumCPF_CNPJ
+	OutorgadoDocType
 	OutorgadoEnderecoRua
 	OutorgadoEnderecoN
 	OutorgadoEnderecoBairro
 	OutorgadoEnderecoCidadeUF
 
 	TabelionatoName
-	TabelionatoCityState
+	TabelionatoCityUF
 	InitialBookPages
 	FinalBookPages
 	BookNum
@@ -59,7 +61,7 @@ var resultKeyNames = map[ResultKey]string{
 	OutorganteJob:              "OutorganteJob",
 	OutorganteNationality:      "OutorganteNationality",
 	OutorganteEstadoCivil:      "OutorganteEstadoCivil",
-	OutorganteCPF_CNPJ:         "OutorganteCPF_CNPJ",
+	OutorganteDocNumCPF_CNPJ:   "OutorganteCPF_CNPJ",
 	OutorganteEnderecoRua:      "OutorganteEnderecoRua",
 	OutorganteEnderecoN:        "OutorganteEnderecoN",
 	OutorganteEnderecoBairro:   "OutorganteEnderecoBairro",
@@ -68,13 +70,13 @@ var resultKeyNames = map[ResultKey]string{
 	OutorgadoJob:               "OutorgadoJob",
 	OutorgadoNationality:       "OutorgadoNationality",
 	OutorgadoEstadoCivil:       "OutorgadoEstadoCivil",
-	OutorgadoCPF_CNPJ:          "OutorgadoCPF_CNPJ",
+	OutorgadoDocNumCPF_CNPJ:    "OutorgadoCPF_CNPJ",
 	OutorgadoEnderecoRua:       "OutorgadoEnderecoRua",
 	OutorgadoEnderecoN:         "OutorgadoEnderecoN",
 	OutorgadoEnderecoBairro:    "OutorgadoEnderecoBairro",
 	OutorgadoEnderecoCidadeUF:  "OutorgadoEnderecoCidadeUF",
 	TabelionatoName:            "TabelionatoName",
-	TabelionatoCityState:       "TabelionatoCityState",
+	TabelionatoCityUF:          "TabelionatoCityState",
 	InitialBookPages:           "InitialBookPages",
 	FinalBookPages:             "FinalBookPages",
 	BookNum:                    "BookNum",

@@ -104,7 +104,14 @@ func New() *Extractor {
 				Start:            "Doc. Nº:",
 				End:              "/",
 				Offset:           "Outorgante", // Esse cara ta errado ta pegando 2 caracteres não necssários
-				ResultKey:        OutorganteCPF_CNPJ,
+				ResultKey:        OutorganteDocNumCPF_CNPJ,
+				AlreadyExtracted: false,
+			},
+			{
+				Start:            "Doc. Tipo:",
+				End:              "Doc.",
+				Offset:           "Outorgante",
+				ResultKey:        OutorganteDocType,
 				AlreadyExtracted: false,
 			},
 			{
@@ -167,7 +174,14 @@ func New() *Extractor {
 				Start:            "Doc. Nº:",
 				End:              "Doc. Tipo:",
 				Offset:           "OutorgadoParte",
-				ResultKey:        OutorgadoCPF_CNPJ,
+				ResultKey:        OutorgadoDocNumCPF_CNPJ,
+				AlreadyExtracted: false,
+			},
+			{
+				Start:            "DocumentosDoc. Tipo: ",
+				End:              "Doc.",
+				Offset:           "OutorgadoParte",
+				ResultKey:        OutorgadoDocType,
 				AlreadyExtracted: false,
 			},
 			{
@@ -209,7 +223,7 @@ func New() *Extractor {
 				Start:            "Município/UF:",
 				End:              "Telefone(s):",
 				Offset:           "Serventia:",
-				ResultKey:        TabelionatoCityState,
+				ResultKey:        TabelionatoCityUF,
 				AlreadyExtracted: false,
 			},
 			{

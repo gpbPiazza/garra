@@ -26,87 +26,94 @@ const minutaTemplate = `
 <fragmento indice="FINALIZACAO_ATO" />.
 `
 
-type AddressParams struct {
-	Rua          string
-	Num          string
-	CityUF       string
-	Neighborhood string
-}
-
-type PersonParams struct {
-	Name            string
-	Job             string
-	Nationality     string
-	MaritalStatus   string
-	CPF_CNPJ        string
-	Address         AddressParams
-	IsOverqualified bool
-}
-
 type MinutaParams struct {
-	Transmitente         PersonParams
-	Adquirente           PersonParams
-	TitleAto             string
-	TabelionatoName      string
-	TabelionatoCityState string
-	BookNum              string
-	InitialBookPages     string
-	FinalBookPages       string
-	EscrituraMadeDate    string
-	EscrituraValor       string
-	ItbiValor            string
-	ItbiIncidenciaValor  string
-}
-
-func minutaPerson(person PersonParams) string {
-	if person.IsOverqualified {
-		return fmt.Sprintf("%s, supraqualificada.", person.Name)
-	}
-
-	// TODO implement: coditions when person is CPNJ.
-	// TODO check if residente a domiciliado is just a case ou default.
-	// TODO: implement mapping Brasil to brasileiro
-	// TODO: implement mapping solteiro (a) to solteiro or solteira
-	// TODO: implement cpf mask
-	// TODO: implement city and UF formatting
-	return fmt.Sprintf(
-		"%s, %s, %s, CPF nº %s, residente e domiciliado na %s, nº %s, %s, %s.",
-		person.Name,
-		formatNationality(person.Nationality),
-		person.MaritalStatus,
-		person.CPF_CNPJ,
-		person.Address.Rua,
-		person.Address.Num,
-		person.Address.Neighborhood,
-		person.Address.CityUF,
-	)
-}
-
-func formatNationality(nationality string) string {
-	switch nationality {
-	case "Brasil":
-		return "brasileiro"
-	default:
-		log.Fatalf("nationality not mapped - got %s", nationality)
-		return ""
-	}
+	Transmitente        PersonParams
+	Adquirente          PersonParams
+	TitleAto            string
+	TabelionatoName     string
+	TabelionatoCityUF   string
+	BookNum             string
+	InitialBookPages    string
+	FinalBookPages      string
+	EscrituraMadeDate   string
+	EscrituraValor      string
+	ItbiValor           string
+	ItbiIncidenciaValor string
 }
 
 func Minuta(params MinutaParams) string {
+	transmitante, err := minutaPerson(params.Transmitente)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	adquidirente, err := minutaPerson(params.Adquirente)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	tabelionatoCityUF, err := formatCityUF(params.TabelionatoCityUF)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	escrituraMadeDate, err := formatDate(params.EscrituraMadeDate)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	replacer := strings.NewReplacer(
-		Transmitente.String(), minutaPerson(params.Transmitente),
-		Adquirente.String(), minutaPerson(params.Adquirente),
-		TitleAto.String(), params.TitleAto, // TODO: create minutaTitleAto to format Compra e Venda as expected, first letter upper case.
-		TabelionatoName.String(), params.TabelionatoName, // TODO: create TabelionatoName to format as expected, first letter upper case.
-		TabelionatoCityState.String(), params.TabelionatoCityState,
+		Transmitente.String(), transmitante,
+		Adquirente.String(), adquidirente,
+		TitleAto.String(), capitalizeEachWord(params.TitleAto),
+		TabelionatoName.String(), capitalizeEachWord(params.TabelionatoName),
+		TabelionatoCityUF.String(), tabelionatoCityUF,
 		BookNum.String(), params.BookNum,
 		InitialBookPages.String(), params.InitialBookPages,
 		FinalBookPages.String(), params.FinalBookPages,
-		EscrituraMadeDate.String(), params.EscrituraMadeDate, // TODO: create date formatter
+		EscrituraMadeDate.String(), escrituraMadeDate,
 		EscrituraValor.String(), params.EscrituraValor,
 		ItbiValor.String(), params.ItbiValor,
 		ItbiIncidenciaValor.String(), params.ItbiIncidenciaValor,
 	)
 
 	return replacer.Replace(minutaTemplate)
+}
+
+func capitalizeEachWord(sentence string) string {
+	words := strings.Split(sentence, " ")
+
+	for i, word := range words {
+		if len(word) == 0 {
+			continue
+		}
+		word = strings.ToLower(word)
+
+		isLetter := len(word) == 1
+		isPreposition := len(word) == 2
+		if isLetter || isPreposition {
+			words[i] = word
+			continue
+		}
+
+		firstLetter := strings.ToUpper(string(word[0]))
+		words[i] = firstLetter + word[1:]
+	}
+
+	return strings.Join(words, " ")
+}
+
+func formatDate(dateStr string) (string, error) {
+	dateSplit := strings.Split(dateStr, "/")
+	var date []string
+
+	if len(dateSplit) != 3 {
+		return "", fmt.Errorf("can not split by / to formatDate dateStr: %s", dateStr)
+	}
+
+	for _, d := range dateSplit {
+		date = append(date, strings.TrimSpace(d))
+	}
+
+	return strings.Join(date, "/"), nil
 }

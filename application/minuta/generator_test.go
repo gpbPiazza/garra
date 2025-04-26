@@ -15,11 +15,11 @@ func TestGenerate(t *testing.T) {
 		expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span>CONSTRUARTE CONSTRUTORA E INCORPORADORA LTDA, brasileiro, Casado (a), CPF nº 2923597700017014, residente e domiciliado na Rua Luiz Eccel, nº 1, Paquetá, Brusque / SC.</span>.
+<u>TRANSMITENTE(S)</u>:> <span>CONSTRUARTE CONSTRUTORA E INCORPORADORA LTDA, brasileiro, Casado (a), CPF nº 29.235.977/0001-70, residente e domiciliado na Rua Luiz Eccel, nº 1, Bairro Paquetá, Brusque/SC.</span>.
 <br/>
-<u>ADQUIRENTE(S)</u>:><span>SIDNEI ANTÔNIO GATTIS, brasileiro, solteiro, CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC.</span>.
+<u>ADQUIRENTE(S)</u>:><span>SIDNEI ANTONIO GATTIS, brasileiro, Solteiro (a), CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC.</span>.
 <br>
-<u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e Protesto de Brusque/SC, Livro 965, Folhas 121/123V, em 26/03/2025. 
+<u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 965, Folhas 121/123V, em 26/03/2025. 
 <br/><u>VALOR</u>: R$ 120.000,00 (cento e vinte mil reais).
 <br/><u>CONDIÇÕES</u>: Não constam.
 <br/><u>OBSERVAÇÕES</u>:
