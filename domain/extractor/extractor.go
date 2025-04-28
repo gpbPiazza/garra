@@ -13,12 +13,13 @@ import (
 // Uses start and end keys to find Value
 // Uses Replace to change Key into template by token.Value
 type token struct {
-	Start            string
-	End              string
-	Offset           string
-	ResultKey        ResultKey
-	Value            string
-	AlreadyExtracted bool
+	Start       string
+	End         string
+	SecondEnd   string // TODO: End should be []string and not create a second key...
+	Offset      string
+	ResultKey   ResultKey
+	Value       string
+	IsExtracted bool
 }
 
 type Extractor struct {
@@ -31,10 +32,10 @@ func New() *Extractor {
 		result: make(map[ResultKey]string),
 		tokens: []*token{
 			{
-				Start:            "MATRÍCULA Nº",
-				End:              ", CNM",
-				ResultKey:        Matricula,
-				AlreadyExtracted: false,
+				Start:       "MATRÍCULA Nº",
+				End:         ", CNM",
+				ResultKey:   Matricula,
+				IsExtracted: false,
 			},
 			// {
 			// 	Start:            "", // TODO: VER COM O ALEMÃO
@@ -49,10 +50,10 @@ func New() *Extractor {
 			// 	AlreadyExtracted: false,
 			// },
 			{
-				Start:            "Cláusula Geral: ESCRITURA PÚBLICA DE",
-				End:              " que",
-				ResultKey:        TitleAto,
-				AlreadyExtracted: false,
+				Start:       "Cláusula Geral: ESCRITURA PÚBLICA DE",
+				End:         " que",
+				ResultKey:   TitleAto,
+				IsExtracted: false,
 			},
 			// {
 			// 	Start:            "",
@@ -67,212 +68,218 @@ func New() *Extractor {
 			// 	AlreadyExtracted: false,
 			// },
 			{
-				Start:            "Data e hora do recebimento do ato pelo TJSC: ",
-				End:              " -",
-				ResultKey:        DataProtocolo,
-				AlreadyExtracted: false,
+				Start:       "Data e hora do recebimento do ato pelo TJSC: ",
+				End:         " -",
+				ResultKey:   DataProtocolo,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Parte :",
-				End:              "Pessoa:",
-				Offset:           "Outorgante",
-				ResultKey:        OutorganteName,
-				AlreadyExtracted: false,
+				Start:       "Parte :",
+				End:         "Pessoa:",
+				SecondEnd:   "Data de Nascimento:",
+				Offset:      "Outorgante",
+				ResultKey:   OutorganteName,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Profissão: ",
-				End:              " -",
-				Offset:           "Outorgante",
-				ResultKey:        OutorganteJob,
-				AlreadyExtracted: false,
+				Start:       "Profissão: ",
+				End:         " -",
+				Offset:      "Outorgante",
+				ResultKey:   OutorganteJob,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Nacionalidade: ",
-				End:              " -",
-				Offset:           "Outorgante",
-				ResultKey:        OutorganteNationality,
-				AlreadyExtracted: false,
+				Start:       "Nacionalidade: ",
+				End:         " -",
+				Offset:      "Outorgante",
+				ResultKey:   OutorganteNationality,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Estado Civil: ",
-				End:              "- Profissão:",
-				Offset:           "Outorgante",
-				ResultKey:        OutorganteEstadoCivil,
-				AlreadyExtracted: false,
+				Start:       "Estado Civil: ",
+				End:         " -",
+				Offset:      "Outorgante",
+				ResultKey:   OutorganteEstadoCivil,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Doc. Nº:",
-				End:              "/",
-				Offset:           "Outorgante", // Esse cara ta errado ta pegando 2 caracteres não necssários
-				ResultKey:        OutorganteDocNumCPF_CNPJ,
-				AlreadyExtracted: false,
+				Start:       "Doc. Nº:",
+				End:         "/",
+				SecondEnd:   "Doc. Tipo:",
+				Offset:      "Outorgante", // Esse cara ta errado ta pegando 2 caracteres não necssários
+				ResultKey:   OutorganteDocNumCPF_CNPJ,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Doc. Tipo:",
-				End:              "Doc.",
-				Offset:           "Outorgante",
-				ResultKey:        OutorganteDocType,
-				AlreadyExtracted: false,
+				Start:       "Doc. Tipo:",
+				End:         "Doc.",
+				Offset:      "Outorgante",
+				ResultKey:   OutorganteDocType,
+				IsExtracted: false,
 			},
 			{
-				Start:            "EndereçosLogradouro:",
-				End:              "Número:",
-				Offset:           "Outorgante",
-				ResultKey:        OutorganteEnderecoRua,
-				AlreadyExtracted: false,
+				Start:       "EndereçosLogradouro:",
+				End:         "Número:",
+				Offset:      "Outorgante",
+				ResultKey:   OutorganteEnderecoRua,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Número: ",
-				End:              "Bairro:",
-				Offset:           "Outorgante",
-				ResultKey:        OutorganteEnderecoN,
-				AlreadyExtracted: false,
+				Start:       "Número: ",
+				End:         "Bairro:",
+				Offset:      "Outorgante",
+				ResultKey:   OutorganteEnderecoN,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Bairro:",
-				End:              "Complemento",
-				Offset:           "Outorgante",
-				ResultKey:        OutorganteEnderecoBairro,
-				AlreadyExtracted: false,
+				Start:       "Bairro:",
+				End:         "Complemento",
+				SecondEnd:   "Cidade/UF:",
+				Offset:      "Outorgante",
+				ResultKey:   OutorganteEnderecoBairro,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Cidade/UF: ",
-				End:              "CEP:",
-				Offset:           "Outorgante",
-				ResultKey:        OutorganteEnderecoCidadeUF,
-				AlreadyExtracted: false,
+				Start:       "Cidade/UF: ",
+				End:         "CEP:",
+				Offset:      "Outorgante",
+				ResultKey:   OutorganteEnderecoCidadeUF,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Parte :",
-				End:              "Data",
-				Offset:           "Outorgado",
-				ResultKey:        OutorgadoName,
-				AlreadyExtracted: false,
+				Start:       "Parte :",
+				End:         "Data de Nascimento:",
+				SecondEnd:   "Pessoa:",
+				Offset:      "Outorgado",
+				ResultKey:   OutorgadoName,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Profissão:",
-				End:              "- Nacionalidade:",
-				Offset:           "OutorgadoParte",
-				ResultKey:        OutorgadoJob,
-				AlreadyExtracted: false,
+				Start:       "Profissão:",
+				End:         "- Nacionalidade:",
+				Offset:      "OutorgadoParte",
+				ResultKey:   OutorgadoJob,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Nacionalidade:",
-				End:              "- Sexo:",
-				Offset:           "OutorgadoParte",
-				ResultKey:        OutorgadoNationality,
-				AlreadyExtracted: false,
+				Start:       "Nacionalidade:",
+				End:         "- Sexo:",
+				Offset:      "OutorgadoParte",
+				ResultKey:   OutorgadoNationality,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Estado Civil:",
-				End:              "- Profissão:",
-				Offset:           "OutorgadoParte",
-				ResultKey:        OutorgadoEstadoCivil,
-				AlreadyExtracted: false,
+				Start:       "Estado Civil:",
+				End:         "- Profissão:",
+				Offset:      "OutorgadoParte",
+				ResultKey:   OutorgadoEstadoCivil,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Doc. Nº:",
-				End:              "Doc. Tipo:",
-				Offset:           "OutorgadoParte",
-				ResultKey:        OutorgadoDocNumCPF_CNPJ,
-				AlreadyExtracted: false,
+				Start:       "Doc. Nº:",
+				End:         "Doc. Tipo:",
+				SecondEnd:   "EndereçosLogradouro:",
+				Offset:      "OutorgadoParte",
+				ResultKey:   OutorgadoDocNumCPF_CNPJ,
+				IsExtracted: false,
 			},
 			{
-				Start:            "DocumentosDoc. Tipo: ",
-				End:              "Doc.",
-				Offset:           "OutorgadoParte",
-				ResultKey:        OutorgadoDocType,
-				AlreadyExtracted: false,
+				Start:       "DocumentosDoc. Tipo: ",
+				End:         "Doc.",
+				Offset:      "OutorgadoParte",
+				ResultKey:   OutorgadoDocType,
+				IsExtracted: false,
 			},
 			{
-				Start:            "EndereçosLogradouro:",
-				End:              "Número:",
-				Offset:           "OutorgadoParte",
-				ResultKey:        OutorgadoEnderecoRua,
-				AlreadyExtracted: false,
+				Start:       "EndereçosLogradouro:",
+				End:         "Número:",
+				Offset:      "OutorgadoParte", // Para casos de pessoa jurídica é endereço da empresa ou do representante físico?
+				ResultKey:   OutorgadoEnderecoRua,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Número:",
-				End:              "Bairro:",
-				Offset:           "OutorgadoParte",
-				ResultKey:        OutorgadoEnderecoN,
-				AlreadyExtracted: false,
+				Start:       "Número:",
+				End:         "Bairro:",
+				Offset:      "OutorgadoParte",
+				ResultKey:   OutorgadoEnderecoN,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Bairro: ",
-				End:              "Cidade/UF:",
-				Offset:           "OutorgadoParte",
-				ResultKey:        OutorgadoEnderecoBairro,
-				AlreadyExtracted: false,
+				Start:       "Bairro: ",
+				End:         "Cidade/UF:",
+				SecondEnd:   "CEP:",
+				Offset:      "OutorgadoParte",
+				ResultKey:   OutorgadoEnderecoBairro,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Cidade/UF:",
-				End:              "CEP:",
-				Offset:           "OutorgadoParte",
-				ResultKey:        OutorgadoEnderecoCidadeUF,
-				AlreadyExtracted: false,
+				Start:       "Cidade/UF:",
+				End:         "CEP:",
+				Offset:      "OutorgadoParte",
+				ResultKey:   OutorgadoEnderecoCidadeUF,
+				IsExtracted: false,
 			},
 			{
-				Start:            " ",
-				End:              "Endereço:",
-				Offset:           "Serventia:",
-				ResultKey:        TabelionatoName,
-				AlreadyExtracted: false,
+				Start:       " ",
+				End:         "Endereço:",
+				Offset:      "Serventia:",
+				ResultKey:   TabelionatoName,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Município/UF:",
-				End:              "Telefone(s):",
-				Offset:           "Serventia:",
-				ResultKey:        TabelionatoCityUF,
-				AlreadyExtracted: false,
+				Start:       "Município/UF:",
+				End:         "Telefone(s):",
+				Offset:      "Serventia:",
+				ResultKey:   TabelionatoCityUF,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Livro: ",
-				End:              "Nome do Livro:",
-				Offset:           "RegistroCódigo do",
-				ResultKey:        BookNum,
-				AlreadyExtracted: false,
+				Start:       "Livro: ",
+				End:         "Nome do Livro:",
+				Offset:      "RegistroCódigo do",
+				ResultKey:   BookNum,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Página Inicial:",
-				End:              "Página Final:",
-				Offset:           "RegistroCódigo do",
-				ResultKey:        InitialBookPages,
-				AlreadyExtracted: false,
+				Start:       "Página Inicial:",
+				End:         "Página Final:",
+				Offset:      "RegistroCódigo do",
+				ResultKey:   InitialBookPages,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Página Final:",
-				End:              "Data do Registro:",
-				Offset:           "RegistroCódigo do",
-				ResultKey:        FinalBookPages,
-				AlreadyExtracted: false,
+				Start:       "Página Final:",
+				End:         "Data do Registro:",
+				Offset:      "RegistroCódigo do",
+				ResultKey:   FinalBookPages,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Data do Registro:",
-				End:              "Nome do Imposto",
-				Offset:           "RegistroCódigo do",
-				ResultKey:        EscrituraMadeDate,
-				AlreadyExtracted: false,
+				Start:       "Data do Registro:",
+				End:         "Nome do Imposto",
+				Offset:      "RegistroCódigo do",
+				ResultKey:   EscrituraMadeDate,
+				IsExtracted: false,
 			},
 			{
-				Start:            "preço total, certo e ajustado de R$",
-				End:              ", ",
-				Offset:           "Cláusula Geral:",
-				ResultKey:        EscrituraValor,
-				AlreadyExtracted: false,
+				Start:       "preço total, certo e ajustado de R$",
+				End:         ", ",
+				Offset:      "Cláusula Geral:",
+				ResultKey:   EscrituraValor,
+				IsExtracted: false,
 			},
 			{
-				Start:            "importância de R$",
-				End:              " correspondente",
-				Offset:           "Cláusula Geral:",
-				ResultKey:        ItbiValor,
-				AlreadyExtracted: false,
+				Start:       "importância de R$",
+				End:         " correspondente",
+				Offset:      "Cláusula Geral:",
+				ResultKey:   ItbiValor,
+				IsExtracted: false,
 			},
 			{
-				Start:            "Valor do Negócio: R$",
-				End:              "Cláusula Geral:",
-				ResultKey:        ItbiIncidenciaValor,
-				AlreadyExtracted: false,
+				Start:       "Valor do Negócio: R$",
+				End:         "Cláusula Geral:",
+				ResultKey:   ItbiIncidenciaValor,
+				IsExtracted: false,
 			},
 		},
 	}
@@ -280,7 +287,7 @@ func New() *Extractor {
 
 func (e *Extractor) Extract(text string) {
 	for _, token := range e.tokens {
-		if token.AlreadyExtracted {
+		if token.IsExtracted {
 			continue
 		}
 
@@ -291,16 +298,27 @@ func (e *Extractor) Extract(text string) {
 		}
 
 		token.Value = val
-		token.AlreadyExtracted = true
+		token.IsExtracted = true
 		e.result[token.ResultKey] = token.Value
 	}
 }
 
 func (e *Extractor) Result() map[ResultKey]string {
 	for _, t := range e.tokens {
-		if !t.AlreadyExtracted {
+		if !t.IsExtracted {
 			log.Printf("token not found - token: '%s'", resultKeyNames[t.ResultKey])
 		}
+
+		if len(t.Value) >= 30 {
+			log.Printf("maybe token value is incorrect - token: '%s'", resultKeyNames[t.ResultKey])
+			log.Printf("token value: '%s'", t.Value)
+			// log.Printf("token: '%+v'", t)
+		}
+
+		// if t.ResultKey == OutorgadoEnderecoBairro {
+		// 	log.Printf("debug - token: '%s'", resultKeyNames[t.ResultKey])
+		// 	log.Printf("token value: '%s'", t.Value)
+		// }
 	}
 
 	return e.result
@@ -332,6 +350,17 @@ func extractTokenValue(text string, token token) (string, error) {
 	endIndex := strings.Index(text[startIndex:], token.End)
 	if endIndex == -1 {
 		return "", fmt.Errorf("end key '%s' not found in text", token.End)
+	}
+
+	if token.SecondEnd != "" {
+		secondEndIndex := strings.Index(text[startIndex:], token.SecondEnd)
+		if secondEndIndex == -1 {
+			return "", fmt.Errorf("second end key '%s' not found in text", token.SecondEnd)
+		}
+
+		if secondEndIndex < endIndex {
+			endIndex = secondEndIndex
+		}
 	}
 
 	endIndex += startIndex
