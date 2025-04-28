@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGenerate_one_to_one_buy_CNPJ_and_sell_CPF(t *testing.T) {
+func TestGenerate_one_to_one_buyer_CNPJ_and_seller_CPF(t *testing.T) {
 	generatorApp := NewGeneratorApp()
 
 	expected := `
@@ -27,7 +27,7 @@ func TestGenerate_one_to_one_buy_CNPJ_and_sell_CPF(t *testing.T) {
 <fragmento indice="FINALIZACAO_ATO" />.
 `
 
-	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_buy_and_sell.txt")
+	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_buyer_CPF_and_sellerr_CNPJ.txt")
 	require.NoError(t, err)
 
 	got, err := generatorApp.Generate(string(doc))
@@ -35,7 +35,7 @@ func TestGenerate_one_to_one_buy_CNPJ_and_sell_CPF(t *testing.T) {
 	assert.Equal(t, expected, got)
 }
 
-func TestGenerate_one_to_one_buy_CNPJ_and_sell_CPF_2(t *testing.T) {
+func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF(t *testing.T) {
 	generatorApp := NewGeneratorApp()
 
 	expected := `
@@ -54,7 +54,7 @@ func TestGenerate_one_to_one_buy_CNPJ_and_sell_CPF_2(t *testing.T) {
 <fragmento indice="FINALIZACAO_ATO" />.
 `
 
-	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_buy_and_sell_2.txt")
+	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_buyer_CNPJ_and_sellerr_CPF.txt")
 	require.NoError(t, err)
 
 	got, err := generatorApp.Generate(string(doc))
