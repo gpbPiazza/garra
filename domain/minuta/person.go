@@ -17,7 +17,6 @@ type AddressParams struct {
 
 type PersonParams struct {
 	Name            string
-	Job             string
 	Nationality     string
 	MaritalStatus   string
 	DocNum_CPF_CNPJ string

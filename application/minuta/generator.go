@@ -30,7 +30,6 @@ func (app *GeneratorApp) Generate(docStr string) (string, error) {
 		ItbiIncidenciaValor: dataExtracted[extractor.ItbiIncidenciaValor],
 		Transmitente: minuta.PersonParams{
 			Name:            dataExtracted[extractor.OutorganteName],
-			Job:             dataExtracted[extractor.OutorganteJob],
 			Nationality:     dataExtracted[extractor.OutorganteNationality],
 			MaritalStatus:   dataExtracted[extractor.OutorganteEstadoCivil],
 			DocNum_CPF_CNPJ: dataExtracted[extractor.OutorganteDocNumCPF_CNPJ],
@@ -44,7 +43,6 @@ func (app *GeneratorApp) Generate(docStr string) (string, error) {
 		},
 		Adquirente: minuta.PersonParams{
 			Name:            dataExtracted[extractor.OutorgadoName],
-			Job:             dataExtracted[extractor.OutorgadoJob],
 			Nationality:     dataExtracted[extractor.OutorgadoNationality],
 			MaritalStatus:   dataExtracted[extractor.OutorgadoEstadoCivil],
 			DocNum_CPF_CNPJ: dataExtracted[extractor.OutorgadoDocNumCPF_CNPJ],

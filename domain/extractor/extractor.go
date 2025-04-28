@@ -81,13 +81,13 @@ func New() *Extractor {
 				ResultKey:   OutorganteName,
 				IsExtracted: false,
 			},
-			{
-				Start:       "Profissão: ",
-				End:         " -",
-				Offset:      "Outorgante",
-				ResultKey:   OutorganteJob,
-				IsExtracted: false,
-			},
+			// {
+			// 	Start:       "Profissão: ",
+			// 	End:         " -",
+			// 	Offset:      "Outorgante",
+			// 	ResultKey:   OutorganteJob,
+			// 	IsExtracted: false,
+			// },
 			{
 				Start:       "Nacionalidade: ",
 				End:         " -",
@@ -154,13 +154,13 @@ func New() *Extractor {
 				ResultKey:   OutorgadoName,
 				IsExtracted: false,
 			},
-			{
-				Start:       "Profissão:",
-				End:         "- Nacionalidade:",
-				Offset:      "OutorgadoParte",
-				ResultKey:   OutorgadoJob,
-				IsExtracted: false,
-			},
+			// {
+			// 	Start:       "Profissão:",
+			// 	End:         "- Nacionalidade:",
+			// 	Offset:      "OutorgadoParte",
+			// 	ResultKey:   OutorgadoJob,
+			// 	IsExtracted: false,
+			// },
 			{
 				Start:       "Nacionalidade:",
 				End:         "- Sexo:",
@@ -309,7 +309,7 @@ func (e *Extractor) Result() map[ResultKey]string {
 			log.Printf("token not found - token: '%s'", resultKeyNames[t.ResultKey])
 		}
 
-		if len(t.Value) >= 30 {
+		if len(t.Value) >= 55 {
 			log.Printf("maybe token value is incorrect - token: '%s'", resultKeyNames[t.ResultKey])
 			log.Printf("token value: '%s'", t.Value)
 			// log.Printf("token: '%+v'", t)
