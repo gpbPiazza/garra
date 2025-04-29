@@ -90,3 +90,31 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF_2(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, expected, got)
 }
+
+func TestGenerate_one_to_one_buyer_CPF_and_sellerr_CNPJ_2(t *testing.T) {
+	generatorApp := NewGeneratorApp()
+
+	expected := `
+<fragmento indice="CABECALHO" />
+<br>
+<u>TRANSMITENTE(S)</u>:> <span>Rmp;amp;R INCORPORAÇÃO LTDA, brasileiro, Separado Judicialmente (a), CPF nº 00.334.504/0001-48, residente e domiciliado na Avenida Primeiro de Maio, nº 346, Bairro Primeiro de Maio, São João do Itaperiú/SC.</span>.
+<br/>
+<u>ADQUIRENTE(S)</u>:><span>VILMAR PALOSCHI, brasileiro, Separado Judicialmente (a), CPF nº 548.480.839-15, residente e domiciliado na Rua Vice Prefeito Pedro Merizio, nº 399, Bairro Centro, São João do Itaperiú/SC.</span>.
+<br>
+<u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 965, Folhas 018/020V, em 20/03/2025. 
+<br/><u>VALOR</u>: R$ 505.000,00 (quinhentos e cinco mil reais).
+<br/><u>CONDIÇÕES</u>: Não constam.
+<br/><u>OBSERVAÇÕES</u>:
+<strong>ITBI</strong>: Recolhido no valor de R$ 11.800,00, com incidência sobre R$ 590.000,00, devidamente quitado. Nos termos do artigo 320 do CNCGFE/SC, o imóvel da presente matrícula, teve como valor atribuído de mercado, no
+''quantum'' de R$ XXXXX. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
+<fragmento indice="FINALIZACAO_ATO" />.
+`
+
+	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_buyer_CPF_and_sellerr_CNPJ_2.txt")
+	require.NoError(t, err)
+
+	got, err := generatorApp.Generate(string(doc))
+
+	require.NoError(t, err)
+	assert.Equal(t, expected, got)
+}

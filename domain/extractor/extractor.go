@@ -32,7 +32,7 @@ func New() *Extractor {
 		tokens: []*token{
 			{
 				Start:       "MATRÍCULA Nº",
-				End:         []string{", CNM"},
+				End:         []string{", CNM", ",CNM:"},
 				ResultKey:   Matricula,
 				IsExtracted: false,
 			},
@@ -102,8 +102,8 @@ func New() *Extractor {
 			},
 			{
 				Start:       "Doc. Nº:",
-				End:         []string{"/", "Doc. Tipo:"},
-				Offset:      "Outorgante", // Esse cara ta errado ta pegando 2 caracteres não necssários
+				End:         []string{"/", "Doc. Tipo:", "EndereçosLogradouro:"},
+				Offset:      "Outorgante",
 				ResultKey:   OutorganteDocNumCPF_CNPJ,
 				IsExtracted: false,
 			},
@@ -130,7 +130,7 @@ func New() *Extractor {
 			},
 			{
 				Start:       "Bairro:",
-				End:         []string{"Complemento", "Cidade/UF:", ","},
+				End:         []string{"Complemento", "Cidade/UF:", ",", "Cidade:"},
 				Offset:      "Outorgante",
 				ResultKey:   OutorganteEnderecoBairro,
 				IsExtracted: false,
