@@ -48,6 +48,12 @@ func minutaPerson(person PersonParams) (string, error) {
 		return "", err
 	}
 
+	neighborhood, err := formatNeighborhood(person.Address.Neighborhood)
+	if err != nil {
+		log.Printf("err on formatNeighborhood err: %s", err)
+		return "", err
+	}
+
 	// TODO implement: coditions when person is CPNJ.
 	// TODO check if residente a domiciliado is just a case ou default.
 	// TODO: implement mapping solteiro (a) to solteiro or solteira
@@ -59,7 +65,7 @@ func minutaPerson(person PersonParams) (string, error) {
 		doc,
 		person.Address.Rua,
 		person.Address.Num,
-		person.Address.Neighborhood,
+		neighborhood,
 		cityUF,
 	), nil
 }
@@ -118,4 +124,20 @@ func formatDoc(docValue string, docType string) (string, error) {
 	}
 
 	return formattedDoc, nil
+}
+
+func formatNeighborhood(neighborhood string) (string, error) {
+	if strings.Contains(neighborhood, "/") {
+		return removeDateFromStr(neighborhood), nil
+	}
+
+	return neighborhood, nil
+}
+
+// Ex: "POÇO FUNDO24/04/2025" OUTPUT: "POÇO FUNDO"
+func removeDateFromStr(str string) string {
+	nSplited := strings.Split(str, "/")
+	str = nSplited[0]
+	str = str[:len(str)-2]
+	return str
 }

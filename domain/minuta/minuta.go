@@ -104,6 +104,12 @@ func capitalizeEachWord(sentence string) string {
 }
 
 func formatDate(dateStr string) (string, error) {
+	if len(dateStr) == 24 { // This case formats the EscrituraMadeDate whenever the end key ends with the page
+		dateStr = dateStr[:len(dateStr)-10]
+	}
+
+	// 26 / 03 / 202524/04/2025
+
 	dateSplit := strings.Split(dateStr, "/")
 	var date []string
 
