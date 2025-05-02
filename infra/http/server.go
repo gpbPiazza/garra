@@ -1,7 +1,6 @@
 package http
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -47,36 +46,7 @@ func useCorsMiddleware(app *fiber.App) {
 }
 
 func setRoutes(app *fiber.App) {
-	d := newDispatcher(app)
+	router := newRouter(app)
 
-	setMinutaRoutes(d)
-}
-
-const (
-	internalPrefix = "internal"
-	clientPrefix   = "api"
-)
-
-type Dispatcher struct {
-	// IternalRoute is dedicated to internal APIs  calls inside of our infra network.
-	InternalV1Router fiber.Router
-
-	// ClientV1Router is the router dedicated to any HTTP request from public-internet.
-	// And must be autenticated.
-	ClientV1Router fiber.Router
-
-	// ClientV1Router is the router dedicated to any HTTP request from public-internet.
-	// Not autentication is needed
-	// Not implemented yeat
-	PublicV1Router fiber.Router
-}
-
-func newDispatcher(app *fiber.App) Dispatcher {
-	internalAPI := app.Group(fmt.Sprintf("/%s/v1", internalPrefix))
-	clientAPI := app.Group(fmt.Sprintf("/%s/v1", clientPrefix))
-
-	return Dispatcher{
-		InternalV1Router: internalAPI,
-		ClientV1Router:   clientAPI,
-	}
+	router.SetMinutaRoutes()
 }
