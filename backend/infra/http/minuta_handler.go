@@ -29,6 +29,5 @@ func PostGeneratorMinutaHandler(c *fiber.Ctx) error {
 	}
 
 	c.Response().Header.Add("Content-Type", "text/html")
-
 	return c.Status(fiber.StatusOK).SendString(result)
 }

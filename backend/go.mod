@@ -3,9 +3,9 @@ module github.com/gpbPiazza/alemao-bigodes
 go 1.24.1
 
 require (
-  github.com/stretchr/testify v1.10.0
-	github.com/gofiber/fiber/v2 v2.52.6 
-	github.com/ledongthuc/pdf v0.0.0-20240201131950-da5b75280b06 
+	github.com/gofiber/fiber/v2 v2.52.6
+	github.com/ledongthuc/pdf v0.0.0-20240201131950-da5b75280b06
+	github.com/stretchr/testify v1.10.0
 )
 
 require (
@@ -20,7 +20,6 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.61.0 // indirect
-	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/sys v0.32.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
