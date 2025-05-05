@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { HeaderComponent } from './header/header.component';
 import { MinutaGeneratorComponent } from './minuta-generator/minuta-generator.component';
-import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @Component({
   selector: 'app-root',
@@ -14,20 +15,23 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     MatToolbarModule, 
     MatIconModule,
     FormsModule,
+    MatButtonModule,
     MinutaGeneratorComponent,
-    ToolbarComponent,
+    HeaderComponent,
   ],
   template: `
-    <div>
-      <app-toolbar></app-toolbar>
-      <div class="content">
-        <app-minuta-generator></app-minuta-generator>
-      </div>
+    <app-header></app-header>
+    <div class="content">
+      <app-minuta-generator></app-minuta-generator>
     </div>
   `,
   styles: [`
     .content {
       padding-top: 60px; 
+      background-color: var(--mat-sys-background);
+      color: var(--mat-sys-on-background);
+      min-height: 100vh;
+      width:100vw;
     }
   `],
 })

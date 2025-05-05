@@ -1,10 +1,40 @@
-html, body { 
-  height: 100%; 
+@use "@angular/material" as mat;
+
+html {
+  @include mat.theme(
+    (
+      color: mat.$azure-palette,
+    )
+  );
 }
 
+.darkMode {
+  @include mat.theme(
+    (
+      color: mat.$azure-palette,
+      theme: dark,
+    ),
+  );
+}
+
+// .accent {
+//   @include mat.theme(
+//     (
+//       color: mat.$magenta-palette,
+//     )
+//   );
+// }
+
+// .warn {
+//   @include mat.theme(
+//     (
+//       color: mat.$red-palette,
+//     )
+//   );
+// }
+
+html, body { height: 100%; }
 body { 
   margin: 0; 
   font-family: Roboto, "Helvetica Neue", sans-serif; 
 }
-
-

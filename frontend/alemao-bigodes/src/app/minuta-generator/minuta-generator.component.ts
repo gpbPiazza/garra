@@ -32,16 +32,10 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
         </mat-card-header>
         
         <mat-card-content>
-          <div class="file-upload-container">
-            <label for="pdf-upload" class="file-upload-label" [class.has-file]="selectedFile">
-              <div class="upload-icon">
-                <mat-icon>cloud_upload</mat-icon>
-              </div>
-              <div class="upload-text">
-                {{ selectedFile ? selectedFile.name : 'Selecione um arquivo PDF' }}
-              </div>
+          <button type="button" mat-raised-button *ngIf="!selectedFile" class="file-upload-container">
+            <label for="pdf-upload" class="file-selector">
+              Selecione arquivo PDF
               <input 
-                matInput
                 type="file" 
                 id="pdf-upload" 
                 accept="application/pdf"
@@ -49,18 +43,30 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
                 class="file-input"
               >
             </label>
+          </button>
+          
+          <div *ngIf="selectedFile" class="selected-file-container">
+            <div class="selected-file-info">
+              <mat-icon>description</mat-icon>
+              <span class="file-name">{{ selectedFile.name }}</span>
+              <button 
+                mat-icon-button 
+                color="warn" 
+                class="remove-file-button"
+                (click)="clearSelectedFile()"
+                matTooltip="Remover arquivo">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+            <button 
+              mat-raised-button 
+              color="primary" 
+              class="generate-button"
+              (click)="generateMinuta()">
+              GERAR MINUTA
+            </button>
           </div>
         </mat-card-content>
-        
-        <mat-card-actions>
-          <button 
-            mat-raised-button 
-            color="primary" 
-            [disabled]="!selectedFile"
-            (click)="generateMinuta()">
-            GERAR
-          </button>
-        </mat-card-actions>
       </mat-card>
       
       <div class="result-container" *ngIf="minutaResult">
@@ -89,7 +95,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
       </div>
     </div>
   `,
-  styles: [`
+  styles: [` 
     .minuta-container {
       display: flex;
       flex-direction: column;
@@ -107,54 +113,84 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     
     mat-card-title {
       text-align: center;
+      font-weight: 600;
+      font-size: 42px;
+      line-height: 52px;
+    }
+
+    mat-card-subtitle {
+      max-width: 800px;
+      margin: 8px auto 0;
+      line-height: 32px;
+      font-size: 22px;
+      font-weight: 400;
     }
     
+    .file-selector{
+      display: flex;
+      justify-content: center;
+      align-items: center;    
+
+      min-width: 330px;
+      
+      padding: 24px 48px;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 28px;
+      cursor: pointer;
+    }
+    
+
     .file-upload-container {
       display: flex;
-      justify-content: space-between;
-      margin: 1rem 0;
-    }
-    
-    .file-upload-label {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      border: 2px dashed #ccc;
-      border-radius: 8px;
-      padding: 2rem;
-      width: 100%;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-  
-    
-    .upload-icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-    
-    .upload-icon mat-icon {
-      font-size: 48px;
-      height: 48px;
-      width: 48px;
-    }
-    
-    .upload-text {
-      text-align: center;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
+      margin: 1rem 0;
     }
     
     .file-input {
       display: none;
     }
     
-    mat-card-actions {
+    .selected-file-container {
       display: flex;
-      justify-content: center;
-      padding-bottom: 1.5rem;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      margin: 1.5rem 0;
+      gap: 1.5rem;
+    }
+    
+    .selected-file-info {
+      display: flex;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.04);
+      padding: 12px 16px;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 400px;
+    }
+    
+    .selected-file-info mat-icon {
+      margin-right: 12px;
+      color: #e5322d;
+    }
+    
+    .file-name {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 18px;
+    }
+    
+    .remove-file-button {
+      margin-left: 8px;
+    }
+    
+    .generate-button {
+      font-size: 18px;
+      min-width: 200px;
+      padding: 8px 24px;
     }
     
     .result-container {
@@ -165,8 +201,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     
     .result-card {
       width: 100%;
+      box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 
+                  0px 4px 5px 0px rgba(0, 0, 0, 0.14), 
+                  0px 1px 10px 0px rgba(0, 0, 0, 0.12);
     }
-    
+
     .card-header-actions {
       display: flex;
       justify-content: space-between;
@@ -206,6 +245,16 @@ export class MinutaGeneratorComponent {
     }
   }
   
+  clearSelectedFile() {
+    this.selectedFile = null;
+    this.clearMinutaResult();
+  }
+
+  clearMinutaResult() {
+    this.minutaResult = null;
+    this.rawHtmlContent = '';
+  }
+  
   generateMinuta() {
     if (!this.selectedFile) return;
     
@@ -228,6 +277,10 @@ export class MinutaGeneratorComponent {
         error: (error) => {
           console.error('Error generating minuta:', error);
           this.isLoading = false;
+          this.snackBar.open('Erro ao gerar minuta. Tente novamente.', 'Fechar', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
         }
       });
   }
