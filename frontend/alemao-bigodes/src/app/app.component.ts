@@ -11,14 +11,14 @@ import { MinutaGeneratorComponent } from './minuta-generator/minuta-generator.co
   selector: 'app-root',
   standalone: true,
   imports: [
-    CommonModule, 
-    MatToolbarModule, 
+    CommonModule,
+    MatToolbarModule,
     MatIconModule,
     FormsModule,
     MatButtonModule,
     MinutaGeneratorComponent,
     HeaderComponent,
-  ],
+],
   template: `
     <app-header></app-header>
     <div class="content">
@@ -31,7 +31,7 @@ import { MinutaGeneratorComponent } from './minuta-generator/minuta-generator.co
       background-color: var(--mat-sys-background);
       color: var(--mat-sys-on-background);
       min-height: 100vh;
-      width:100vw;
+      width:100%;
     }
   `],
 })

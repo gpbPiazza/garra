@@ -21,7 +21,7 @@ import { ThemeService } from '../services/theme.service';
     TitleCasePipe,
   ],
   template: `
-    <mat-toolbar role="heading">
+    <mat-toolbar>
       <span>Notas</span>
       <div class="flex-stretch"></div>
       <button mat-icon-button [mat-menu-trigger-for]="themeMenu">

@@ -17,24 +17,11 @@ html {
   );
 }
 
-// .accent {
-//   @include mat.theme(
-//     (
-//       color: mat.$magenta-palette,
-//     )
-//   );
-// }
 
-// .warn {
-//   @include mat.theme(
-//     (
-//       color: mat.$red-palette,
-//     )
-//   );
-// }
-
-html, body { height: 100%; }
+html, body { 
+  height: 100%; 
+}
 body { 
-  margin: 0; 
+  margin: 0; ;
   font-family: Roboto, "Helvetica Neue", sans-serif; 
 }

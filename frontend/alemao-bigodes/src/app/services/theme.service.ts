@@ -1,7 +1,7 @@
 import { Injectable, computed, effect, signal } from '@angular/core';
 
 export interface AppTheme {
-  name: 'light' | 'dark' | 'system';
+  name: 'light' | 'dark';
   icon: string;
 }
 
@@ -9,12 +9,11 @@ export interface AppTheme {
   providedIn: 'root',
 })
 export class ThemeService {
-  private appTheme = signal<'light' | 'dark' | 'system'>('system');
+  private appTheme = signal<'light' | 'dark' >('light');
 
   private themes: AppTheme[] = [
     { name: 'light', icon: 'light_mode' },
     { name: 'dark', icon: 'dark_mode' },
-    { name: 'system', icon: 'desktop_windows' },
   ];
 
   selectedTheme = computed(() =>
@@ -32,7 +31,7 @@ export class ThemeService {
   constructor() {
     effect(() => {
       const appTheme = this.appTheme();
-      const colorScheme = appTheme === 'system' ? 'light dark' : appTheme;
+      const colorScheme = appTheme === 'dark' ? 'light dark' : appTheme;
       document.body.style.setProperty('color-scheme', colorScheme);
     });
   }

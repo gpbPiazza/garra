@@ -1,6 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -15,7 +15,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   standalone: true,
   imports: [
     CommonModule, 
-    HttpClientModule, 
     MatButtonModule, 
     MatCardModule, 
     MatIconModule, 
@@ -25,10 +24,12 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   ],
   template: `
     <div class="minuta-container">
-      <mat-card class="minuta-card">
+      <mat-card class="generate-minuta-card" *ngIf="!minutaResult">
         <mat-card-header>
           <mat-card-title>Gerar minuta!</mat-card-title>
+          <mat-card-subtitle>É tudo muito fácil e rápido!</mat-card-subtitle>
           <mat-card-subtitle>Selecione um arquivo ato consultar e gere sua minuta!</mat-card-subtitle>
+          
         </mat-card-header>
         
         <mat-card-content>
@@ -53,7 +54,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
                 mat-icon-button 
                 color="warn" 
                 class="remove-file-button"
-                (click)="clearSelectedFile()"
+                (click)="clearMinutaResultAndFile()"
                 matTooltip="Remover arquivo">
                 <mat-icon>close</mat-icon>
               </button>
@@ -69,44 +70,57 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
         </mat-card-content>
       </mat-card>
       
-      <div class="result-container" *ngIf="minutaResult">
-        <mat-card class="result-card">
-          <div class="card-header-actions">
-            <mat-card-header>
-              <mat-card-title>Minuta Gerada</mat-card-title>
-            </mat-card-header>
+      <mat-card *ngIf="minutaResult">
+        <mat-card-header>
+          <mat-card-actions></mat-card-actions>
+          <mat-card-title-group>
+            <mat-card-title>Resultado da minuta!</mat-card-title>
+            <mat-card-subtitle>Copie o resultado e valide se está como esperado!</mat-card-subtitle>
+          </mat-card-title-group>
+          <mat-card-actions>
             <button 
               mat-icon-button 
-              color="primary" 
-              class="copy-button" 
               (click)="copyMinutaContent()"
               matTooltip="Copiar Conteúdo">
               <mat-icon>content_copy</mat-icon>
             </button>
-          </div>
-          <mat-card-content>
-            <div [innerHTML]="minutaResult"></div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      
+            <button 
+              mat-icon-button 
+              (click)="clearMinutaResultAndFile()"
+              matTooltip="Mais uma minuta!">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </mat-card-actions>
+        </mat-card-header>
+        <mat-card-content>
+          <div [innerHTML]="minutaResult"></div>
+        </mat-card-content>
+      </mat-card>
       <div class="loading-spinner" *ngIf="isLoading">
         <mat-spinner></mat-spinner>
       </div>
     </div>
   `,
   styles: [` 
+    @use '@angular/material' as mat;
+
     .minuta-container {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
     
-    .minuta-card {
-      width: 100%;
-      max-width: 600px;
+    .generate-minuta-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    
+
+    mat-card {
+      width: 100%;
+      max-width: 800px;
+    }
+
     mat-card-header {
       justify-content: center;
     }
@@ -124,6 +138,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
       line-height: 32px;
       font-size: 22px;
       font-weight: 400;
+      text-align: center;
+    }
+
+    mat-card-title-group{ 
+      justify-content: center;
     }
     
     .file-selector{
@@ -172,7 +191,14 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     
     .selected-file-info mat-icon {
       margin-right: 12px;
-      color: #e5322d;
+    }
+
+    mat-icon {
+      @include mat.icon-overrides(
+        (
+          color: var(--mat-sys-tertiary),
+        )
+      );
     }
     
     .file-name {
@@ -191,31 +217,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
       font-size: 18px;
       min-width: 200px;
       padding: 8px 24px;
-    }
-    
-    .result-container {
-      margin-top: 2rem;
-      width: 100%;
-      max-width: 800px;
-    }
-    
-    .result-card {
-      width: 100%;
-      box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 
-                  0px 4px 5px 0px rgba(0, 0, 0, 0.14), 
-                  0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-    }
-
-    .card-header-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      padding-right: 16px;
-    }
-    
-    .copy-button {
-      margin-top: 8px;
     }
     
     .loading-spinner {
@@ -245,14 +246,10 @@ export class MinutaGeneratorComponent {
     }
   }
   
-  clearSelectedFile() {
-    this.selectedFile = null;
-    this.clearMinutaResult();
-  }
-
-  clearMinutaResult() {
+  clearMinutaResultAndFile() {
     this.minutaResult = null;
     this.rawHtmlContent = '';
+    this.selectedFile = null;
   }
   
   generateMinuta() {
@@ -269,7 +266,6 @@ export class MinutaGeneratorComponent {
     })
       .subscribe({
         next: (htmlContent) => {
-          console.log('Minuta generated successfully');
           this.rawHtmlContent = htmlContent;
           this.minutaResult = this.sanitizer.bypassSecurityTrustHtml(htmlContent);
           this.isLoading = false;
@@ -278,7 +274,7 @@ export class MinutaGeneratorComponent {
           console.error('Error generating minuta:', error);
           this.isLoading = false;
           this.snackBar.open('Erro ao gerar minuta. Tente novamente.', 'Fechar', {
-            duration: 5000,
+            duration: 3000,
             panelClass: ['error-snackbar']
           });
         }
@@ -288,8 +284,8 @@ export class MinutaGeneratorComponent {
   copyMinutaContent() {
     if (this.rawHtmlContent) {
       this.clipboard.copy(this.rawHtmlContent);
-      this.snackBar.open('Conteúdo copiado para a área de transferência', 'Fechar', {
-        duration: 3000,
+      this.snackBar.open('Conteúdo copiado!', 'Fechar', {
+        duration: 2000,
         horizontalPosition: 'center',
         verticalPosition: 'bottom'
       });
