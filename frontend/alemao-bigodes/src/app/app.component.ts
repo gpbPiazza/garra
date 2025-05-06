@@ -12,12 +12,12 @@ import { MinutaGeneratorComponent } from './minuta-generator/minuta-generator.co
   standalone: true,
   imports: [
     CommonModule,
-    MatToolbarModule,
-    MatIconModule,
     FormsModule,
-    MatButtonModule,
-    MinutaGeneratorComponent,
     HeaderComponent,
+    MatButtonModule,
+    MatIconModule,
+    MatToolbarModule,
+    MinutaGeneratorComponent,
 ],
   template: `
     <app-header></app-header>

@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatToolbar, MatToolbarModule } from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { ThemeService } from '../services/theme.service';
 
 
@@ -14,9 +14,6 @@ import { ThemeService } from '../services/theme.service';
     MatToolbarModule, 
     MatButtonModule, 
     MatIconModule,
-    MatToolbar,
-    MatIconModule,
-    MatButtonModule,
     MatMenuModule,
     TitleCasePipe,
   ],

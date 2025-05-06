@@ -5,10 +5,11 @@ import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-minuta-generator',
@@ -18,11 +19,12 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     MatButtonModule, 
     MatCardModule, 
     MatIconModule, 
-    MatProgressSpinnerModule,
+    MatProgressBarModule,
     MatSnackBarModule,
     MatTooltipModule
   ],
   template: `
+    <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
     <div class="minuta-container">
       <mat-card class="generate-minuta-card" *ngIf="!minutaResult">
         <mat-card-header>
@@ -52,16 +54,13 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
               <span class="file-name">{{ selectedFile.name }}</span>
               <button 
                 mat-icon-button 
-                color="warn" 
-                class="remove-file-button"
                 (click)="clearMinutaResultAndFile()"
                 matTooltip="Remover arquivo">
                 <mat-icon>close</mat-icon>
               </button>
             </div>
             <button 
-              mat-raised-button 
-              color="primary" 
+              mat-flat-button
               class="generate-button"
               (click)="generateMinuta()">
               GERAR MINUTA
@@ -96,14 +95,19 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
           <div [innerHTML]="minutaResult"></div>
         </mat-card-content>
       </mat-card>
-      <div class="loading-spinner" *ngIf="isLoading">
-        <mat-spinner></mat-spinner>
-      </div>
     </div>
   `,
   styles: [` 
     @use '@angular/material' as mat;
 
+    mat-progress-bar {
+      position: fixed;
+      top: 64px; 
+      left: 0;
+      right: 0;
+      z-index: 999;
+    }
+    
     .minuta-container {
       display: flex;
       flex-direction: column;
@@ -206,30 +210,13 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      font-size: 18px;
-    }
-    
-    .remove-file-button {
-      margin-left: 8px;
-    }
-    
-    .generate-button {
-      font-size: 18px;
-      min-width: 200px;
-      padding: 8px 24px;
-    }
-    
-    .loading-spinner {
-      display: flex;
-      justify-content: center;
-      margin-top: 2rem;
     }
   `]
 })
 export class MinutaGeneratorComponent {
   selectedFile: File | null = null;
   minutaResult: SafeHtml | null = null;
-  rawHtmlContent: string = '';
+  rawHtmlContent = '';
   isLoading = false;
   
   constructor(
@@ -251,7 +238,7 @@ export class MinutaGeneratorComponent {
     this.rawHtmlContent = '';
     this.selectedFile = null;
   }
-  
+
   generateMinuta() {
     if (!this.selectedFile) return;
     
@@ -261,9 +248,7 @@ export class MinutaGeneratorComponent {
     const formData = new FormData();
     formData.append('ato_consultar_pdf', this.selectedFile);
     
-    this.http.post('http://localhost:8080/api/v1/generator/minuta', formData, {
-      responseType: 'text'
-    })
+    this.http.post('http://localhost:8080/api/v1/generator/minuta', formData, { responseType: 'text' })
       .subscribe({
         next: (htmlContent) => {
           this.rawHtmlContent = htmlContent;
