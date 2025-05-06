@@ -26,12 +26,19 @@ import { MinutaGeneratorComponent } from './minuta-generator/minuta-generator.co
     </div>
   `,
   styles: [`
+    :host {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    
     .content {
       padding-top: 60px; 
       background-color: var(--mat-sys-background);
       color: var(--mat-sys-on-background);
-      min-height: 100vh;
-      width:100%;
+      height: 100vh;
+      width: 100%;
     }
   `],
 })
