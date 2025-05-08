@@ -200,7 +200,7 @@ func New() *Extractor {
 			},
 			{
 				Start:       "Bairro: ",
-				End:         []string{"Cidade/UF:", "CEP:"},
+				End:         []string{"Cidade/UF:", "CEP:", "Complemento"},
 				Offset:      "OutorgadoParte",
 				ResultKey:   OutorgadoEnderecoBairro,
 				IsExtracted: false,
@@ -256,7 +256,7 @@ func New() *Extractor {
 			},
 			{
 				Start:       "preço total, certo e ajustado de R$",
-				End:         []string{", "},
+				End:         []string{", ", "/"},
 				Offset:      "Cláusula Geral:",
 				ResultKey:   EscrituraValor,
 				IsExtracted: false,

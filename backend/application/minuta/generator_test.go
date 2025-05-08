@@ -80,16 +80,20 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF_2(t *testing.T) {
 <fragmento indice="CABECALHO" />
 <br>
 <u>TRANSMITENTE(S)</u>:> <span>MARIA JOSE PEREIRA, supraqualificada.</span>.
-<br/> 
-<u>ADQUIRENTE(S)</u>:><span>BBK EMPREENDIMENTOS IMOBILIARIOS LTDA., CNPJ nº 20.025.828/0001-01, com sede na Rua Sete de Setembro, nº 416, Sala 01, Bairro Santa Rita, Brusque/SC.</span>.
+<br/>
+<u>ADQUIRENTE(S)</u>:><span>BBK EMPREENDIMENTOS IMOBILIÁRIOS LTDA., CNPJ nº 20.025.828/0001-01, com sede na rua RUA ALBERTO KLABUNDE, Nº 294 0, nº 294, Bairro ÁGUAS CLARAS, Brusque/SC.</span>.
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 965, Folhas 110/112V, em 26/03/2025. 
-<br/><u>VALOR</u>: R$ 200.000,00 (duzentos mil reas).
+<br/><u>VALOR</u>: R$ 200.000,00 (duzentos mil reais).
 <br/><u>CONDIÇÕES</u>: Não constam.
 <br/><u>OBSERVAÇÕES</u>:
 <strong>ITBI</strong>: Recolhido no valor de R$ 4.000,00, com incidência sobre R$ 200.000,00, devidamente quitado. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
 <fragmento indice="FINALIZACAO_ATO" />.
 `
+
+	// For this case we have a diffrente address for this company write down into escritura and the boxes from
+	// tablionato register.
+	// <u>ADQUIRENTE(S)</u>:><span>BBK EMPREENDIMENTOS IMOBILIARIOS LTDA., CNPJ nº 20.025.828/0001-01, com sede na Rua Sete de Setembro, nº 416, Sala 01, Bairro Santa Rita, Brusque/SC.</span>.
 
 	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_buyer_CNPJ_and_sellerr_CPF_2.txt")
 	require.NoError(t, err)

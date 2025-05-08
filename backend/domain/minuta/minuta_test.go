@@ -208,3 +208,66 @@ func TestMinutaPerson(t *testing.T) {
 		assert.Equal(t, expected, got)
 	})
 }
+
+func TestFormatValue(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    string
+		expected string
+		wantErr  bool
+	}{
+		{
+			name:     "Missing closing parenthesis with date",
+			input:    "R$ 200.000,00 (duzentos mil24/04/2025.",
+			expected: "R$ 200.000,00 (duzentos mil reais)",
+			wantErr:  false,
+		},
+		{
+			name:     "Typo in 'e dez'",
+			input:    "R$210.000,00 (duzentos edez mil reais)",
+			expected: "R$ 210.000,00 (duzentos e dez mil reais)",
+			wantErr:  false,
+		},
+		{
+			name:     "Correct format already",
+			input:    "R$210.000,00 (duzentos e dez mil reais)",
+			expected: "R$ 210.000,00 (duzentos e dez mil reais)",
+			wantErr:  false,
+		},
+		{
+			name:     "Different amount but correct format",
+			input:    "R$120.000,00 (cento e vinte mil reais)",
+			expected: "R$ 120.000,00 (cento e vinte mil reais)",
+			wantErr:  false,
+		},
+		{
+			name:     "Empty input",
+			input:    "",
+			expected: "",
+			wantErr:  true,
+		},
+		{
+			name:     "Missing parenthesis",
+			input:    "R$ 200.000,00 duzentos mil reais",
+			expected: "",
+			wantErr:  true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := formatValue(tt.input)
+
+			// Check error cases
+			if (err != nil) != tt.wantErr {
+				t.Errorf("formatValue() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+
+			// Check results when no error expected
+			if !tt.wantErr && got != tt.expected {
+				t.Errorf("formatValue() got = %q, want %q", got, tt.expected)
+			}
+		})
+	}
+}

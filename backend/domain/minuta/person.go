@@ -75,7 +75,7 @@ func fisicalPerson(person PersonParams) (string, error) {
 		return fmt.Sprintf("%s, supraqualificada.", person.Name), nil
 	}
 
-	doc, err := formatCPFDoc(person.DocNum_CPF_CNPJ, person.DocType)
+	doc, err := formatCPFDoc(person.DocNum_CPF_CNPJ)
 	if err != nil {
 		log.Printf("err to format person doc err: %s", err)
 		return "", err
@@ -157,7 +157,7 @@ func formatCNPJDoc(docValue string) (string, error) {
 	return formattedDoc, nil
 }
 
-func formatCPFDoc(docValue string, docType string) (string, error) {
+func formatCPFDoc(docValue string) (string, error) {
 	var formattedDoc string
 	docValue = strings.TrimSpace(docValue)
 
