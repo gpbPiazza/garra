@@ -14,7 +14,7 @@ func TestGenerate_one_to_one_buyer_CPF_and_seller_CNPJ(t *testing.T) {
 	expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span>CONSTRUARTE CONSTRUTORA E INCORPORADORA LTDA, brasileiro, Casado (a), CPF nº 29.235.977/0001-70, residente e domiciliado na Rua Luiz Eccel, nº 1, Bairro Paquetá, Brusque/SC.</span>.
+<u>TRANSMITENTE(S)</u>:> <span>CONSTRUARTE CONSTRUTORA E INCORPORADORA LTDA., CNPJ nº 29.235.977/0001-70, com sede na rua Rua Luiz Eccel, nº 1, Bairro Paquetá, Brusque/SC.</span>.
 <br/>
 <u>ADQUIRENTE(S)</u>:><span>SIDNEI ANTONIO GATTIS, brasileiro, Solteiro (a), CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC.</span>.
 <br>
@@ -48,10 +48,10 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF(t *testing.T) {
 <br>
 <u>TRANSMITENTE(S)</u>:> <span>MARIA EDUARDA DOS SANTOS, brasileiro, Solteiro (a), CPF nº 051.737.249-51, residente e domiciliado na Rua Nelson Carneiro Borges, nº 284, Bairro São Luiz, Brusque/SC.</span>.
 <br/>
-<u>ADQUIRENTE(S)</u>:><span>ABSOLUT CONSTRUTORA E INCORPORADORA LTDA, brasileiro, Solteiro (a), CPF nº 05.768.477/0001-35, residente e domiciliado na R CENTENARIO, nº 13, Bairro Santa Terezinha, Brusque/SC.</span>.
+<u>ADQUIRENTE(S)</u>:><span>ABSOLUT CONSTRUTORA E INCORPORADORA LTDA., CNPJ nº 05.768.477/0001-35, com sede na rua R CENTENARIO, nº 13, Bairro Santa Terezinha, Brusque/SC.</span>.
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 965, Folhas 124/126V, em 26/03/2025. 
-<br/><u>VALOR</u>: R$ 210.000,00 (duzentos edez mil reais).
+<br/><u>VALOR</u>: R$ 210.000,00 (duzentos e dez mil reais).
 <br/><u>CONDIÇÕES</u>: Não constam.
 <br/><u>OBSERVAÇÕES</u>:
 <strong>ITBI</strong>: Recolhido no valor de R$ 4.600,00, com incidência sobre R$ 230.000,00, devidamente quitado. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
@@ -116,7 +116,7 @@ func TestGenerate_one_to_one_buyer_CPF_and_sellerr_CNPJ_2(t *testing.T) {
 	expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span>Rmp;amp;R INCORPORAÇÃO LTDA, brasileiro, Separado Judicialmente (a), CPF nº 00.334.504/0001-48, residente e domiciliado na Avenida Primeiro de Maio, nº 346, Bairro Primeiro de Maio, São João do Itaperiú/SC.</span>.
+<u>TRANSMITENTE(S)</u>:> <span>Rmp;amp;R INCORPORAÇÃO LTDA., CNPJ nº 00.334.504/0001-48, com sede na rua Avenida Primeiro de Maio, nº 346, Bairro Primeiro de Maio, São João do Itaperiú/SC.</span>.
 <br/>
 <u>ADQUIRENTE(S)</u>:><span>VILMAR PALOSCHI, brasileiro, Separado Judicialmente (a), CPF nº 548.480.839-15, residente e domiciliado na Rua Vice Prefeito Pedro Merizio, nº 399, Bairro Centro, São João do Itaperiú/SC.</span>.
 <br>
