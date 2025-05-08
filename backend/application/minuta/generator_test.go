@@ -22,15 +22,20 @@ func TestGenerate_one_to_one_buyer_CPF_and_seller_CNPJ(t *testing.T) {
 <br/><u>VALOR</u>: R$ 120.000,00 (cento e vinte mil reais).
 <br/><u>CONDIÇÕES</u>: Não constam.
 <br/><u>OBSERVAÇÕES</u>:
-<strong>ITBI</strong>: Recolhido no valor de R$ 2.900,00, com incidência sobre R$ 145.000,00, devidamente quitado. Nos termos do artigo 320 do CNCGFE/SC, o imóvel da presente matrícula, teve como valor atribuído de mercado, no
-''quantum'' de R$ XXXXX. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
+<strong>ITBI</strong>: Recolhido no valor de R$ 2.900,00, com incidência sobre R$ 145.000,00, devidamente quitado. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
 <fragmento indice="FINALIZACAO_ATO" />.
 `
 
 	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_buyer_CPF_and_sellerr_CNPJ.txt")
 	require.NoError(t, err)
 
-	got, err := generatorApp.Generate(string(doc))
+	params := GenerateParams{
+		DocStr:                      string(doc),
+		IsTransmitenteOverqualified: false,
+		IsAdquirenteOverqualified:   false,
+	}
+
+	got, err := generatorApp.Generate(params)
 	require.NoError(t, err)
 	assert.Equal(t, expected, got)
 }
@@ -49,15 +54,20 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF(t *testing.T) {
 <br/><u>VALOR</u>: R$ 210.000,00 (duzentos edez mil reais).
 <br/><u>CONDIÇÕES</u>: Não constam.
 <br/><u>OBSERVAÇÕES</u>:
-<strong>ITBI</strong>: Recolhido no valor de R$ 4.600,00, com incidência sobre R$ 230.000,00, devidamente quitado. Nos termos do artigo 320 do CNCGFE/SC, o imóvel da presente matrícula, teve como valor atribuído de mercado, no
-''quantum'' de R$ XXXXX. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
+<strong>ITBI</strong>: Recolhido no valor de R$ 4.600,00, com incidência sobre R$ 230.000,00, devidamente quitado. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
 <fragmento indice="FINALIZACAO_ATO" />.
 `
 
 	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_buyer_CNPJ_and_sellerr_CPF.txt")
 	require.NoError(t, err)
 
-	got, err := generatorApp.Generate(string(doc))
+	params := GenerateParams{
+		DocStr:                      string(doc),
+		IsTransmitenteOverqualified: false,
+		IsAdquirenteOverqualified:   false,
+	}
+
+	got, err := generatorApp.Generate(params)
 
 	require.NoError(t, err)
 	assert.Equal(t, expected, got)
@@ -69,23 +79,28 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF_2(t *testing.T) {
 	expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span>MARIA JOSE PEREIRA, brasileiro, Solteiro (a), CPF nº 678.240.649-72, residente e domiciliado na RUA JOÃO TORMENA, nº 422, Bairro POÇO FUNDO, Brusque/SC.</span>.
-<br/>
-<u>ADQUIRENTE(S)</u>:><span>BBK EMPREENDIMENTOS IMOBILIÁRIOS LTDA, brasileiro, Solteiro (a), CPF nº 20.025.828/0001-01, residente e domiciliado na RUA ALBERTO KLABUNDE, Nº 294 0, nº 294, Bairro ÁGUAS CLARASComplemento: COMERCIAL, Brusque/SC.</span>.
+<u>TRANSMITENTE(S)</u>:> <span>MARIA JOSE PEREIRA, supraqualificada.</span>.
+<br/> 
+<u>ADQUIRENTE(S)</u>:><span>BBK EMPREENDIMENTOS IMOBILIARIOS LTDA., CNPJ nº 20.025.828/0001-01, com sede na Rua Sete de Setembro, nº 416, Sala 01, Bairro Santa Rita, Brusque/SC.</span>.
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 965, Folhas 110/112V, em 26/03/2025. 
-<br/><u>VALOR</u>: R$ 200.000,00 (duzentos mil24/04/2025.
+<br/><u>VALOR</u>: R$ 200.000,00 (duzentos mil reas).
 <br/><u>CONDIÇÕES</u>: Não constam.
 <br/><u>OBSERVAÇÕES</u>:
-<strong>ITBI</strong>: Recolhido no valor de R$ 4.000,00, com incidência sobre R$ 200.000,00, devidamente quitado. Nos termos do artigo 320 do CNCGFE/SC, o imóvel da presente matrícula, teve como valor atribuído de mercado, no
-''quantum'' de R$ XXXXX. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
+<strong>ITBI</strong>: Recolhido no valor de R$ 4.000,00, com incidência sobre R$ 200.000,00, devidamente quitado. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
 <fragmento indice="FINALIZACAO_ATO" />.
 `
 
 	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_buyer_CNPJ_and_sellerr_CPF_2.txt")
 	require.NoError(t, err)
 
-	got, err := generatorApp.Generate(string(doc))
+	params := GenerateParams{
+		DocStr:                      string(doc),
+		IsTransmitenteOverqualified: true,
+		IsAdquirenteOverqualified:   false,
+	}
+
+	got, err := generatorApp.Generate(params)
 
 	require.NoError(t, err)
 	assert.Equal(t, expected, got)
@@ -105,15 +120,20 @@ func TestGenerate_one_to_one_buyer_CPF_and_sellerr_CNPJ_2(t *testing.T) {
 <br/><u>VALOR</u>: R$ 505.000,00 (quinhentos e cinco mil reais).
 <br/><u>CONDIÇÕES</u>: Não constam.
 <br/><u>OBSERVAÇÕES</u>:
-<strong>ITBI</strong>: Recolhido no valor de R$ 11.800,00, com incidência sobre R$ 590.000,00, devidamente quitado. Nos termos do artigo 320 do CNCGFE/SC, o imóvel da presente matrícula, teve como valor atribuído de mercado, no
-''quantum'' de R$ XXXXX. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
+<strong>ITBI</strong>: Recolhido no valor de R$ 11.800,00, com incidência sobre R$ 590.000,00, devidamente quitado. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
 <fragmento indice="FINALIZACAO_ATO" />.
 `
 
 	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_buyer_CPF_and_sellerr_CNPJ_2.txt")
 	require.NoError(t, err)
 
-	got, err := generatorApp.Generate(string(doc))
+	params := GenerateParams{
+		DocStr:                      string(doc),
+		IsTransmitenteOverqualified: false,
+		IsAdquirenteOverqualified:   false,
+	}
+
+	got, err := generatorApp.Generate(params)
 
 	require.NoError(t, err)
 	assert.Equal(t, expected, got)

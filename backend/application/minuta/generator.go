@@ -12,10 +12,16 @@ func NewGeneratorApp() *GeneratorApp {
 	return &GeneratorApp{}
 }
 
-func (app *GeneratorApp) Generate(docStr string) (string, error) {
+type GenerateParams struct {
+	DocStr                      string
+	IsTransmitenteOverqualified bool
+	IsAdquirenteOverqualified   bool
+}
+
+func (app *GeneratorApp) Generate(generateParams GenerateParams) (string, error) {
 	ex := extractor.New()
 
-	ex.Extract(docStr)
+	ex.Extract(generateParams.DocStr)
 
 	dataExtracted := ex.Result()
 
@@ -29,6 +35,7 @@ func (app *GeneratorApp) Generate(docStr string) (string, error) {
 		ItbiValor:           dataExtracted[extractor.ItbiValor],
 		ItbiIncidenciaValor: dataExtracted[extractor.ItbiIncidenciaValor],
 		Transmitente: minuta.PersonParams{
+			IsOverqualified: generateParams.IsTransmitenteOverqualified,
 			Name:            dataExtracted[extractor.OutorganteName],
 			Nationality:     dataExtracted[extractor.OutorganteNationality],
 			MaritalStatus:   dataExtracted[extractor.OutorganteEstadoCivil],
@@ -42,6 +49,7 @@ func (app *GeneratorApp) Generate(docStr string) (string, error) {
 			},
 		},
 		Adquirente: minuta.PersonParams{
+			IsOverqualified: generateParams.IsAdquirenteOverqualified,
 			Name:            dataExtracted[extractor.OutorgadoName],
 			Nationality:     dataExtracted[extractor.OutorgadoNationality],
 			MaritalStatus:   dataExtracted[extractor.OutorgadoEstadoCivil],

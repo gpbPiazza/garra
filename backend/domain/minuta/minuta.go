@@ -19,12 +19,16 @@ const minutaTemplate = `
 <br/><u>CONDIÇÕES</u>: Não constam.
 <br/><u>OBSERVAÇÕES</u>:
 <strong>ITBI</strong>: Recolhido no valor de R$ {{ITBI_VALOR}}, com incidência ` +
-	`sobre R$ {{ITBI_INCIDENCIA_VALOR}}, devidamente quitado. Nos termos do artigo 320 do CNCGFE/SC, ` +
-	`o imóvel da presente matrícula, teve como valor atribuído de mercado, no
-''quantum'' de R$ XXXXX. No ato da lavratura da Escritura Pública, foram apresentadas as certidões ` +
+	`sobre R$ {{ITBI_INCIDENCIA_VALOR}}, devidamente quitado.` +
+	`No ato da lavratura da Escritura Pública, foram apresentadas as certidões ` +
 	`previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
 <fragmento indice="FINALIZACAO_ATO" />.
 `
+
+// Template com contestação
+// `sobre R$ {{ITBI_INCIDENCIA_VALOR}}, devidamente quitado. Nos termos do artigo 320 do CNCGFE/SC, ` +
+// `o imóvel da presente matrícula, teve como valor atribuído de mercado, no
+// ''quantum'' de R$ XXXXX. No ato da lavratura da Escritura Pública, foram apresentadas as certidões ` +
 
 type MinutaParams struct {
 	Transmitente        PersonParams
