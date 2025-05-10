@@ -40,8 +40,8 @@ func PostGeneratorMinutaHandler(c *fiber.Ctx) error {
 
 	params := minuta.GenerateParams{
 		DocStr:                      pdfContentStr,
-		IsTransmitenteOverqualified: false,
-		IsAdquirenteOverqualified:   false,
+		IsTransmitenteOverqualified: body.IsTransmitenteOverqualified,
+		IsAdquirenteOverqualified:   body.IsAdquirenteOverqualified,
 	}
 
 	result, err := minutaGenerator.Generate(params)

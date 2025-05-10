@@ -37,9 +37,7 @@ func useCorsMiddleware(app *fiber.App) {
 	corsMiddleware := cors.New(cors.Config{
 		AllowOrigins: "*", //TODO: ajust this when we have some infra
 		// AllowCredentials: true,
-		AllowMethods:  "GET,POST,HEAD,PUT,DELETE,PATCH",
-		AllowHeaders:  "Content-Type, Correlation-Id",
-		ExposeHeaders: "Content-Type, Correlation-Id",
+		AllowMethods: "GET,POST,HEAD,PUT,DELETE,PATCH",
 	})
 
 	app.Use(corsMiddleware)
