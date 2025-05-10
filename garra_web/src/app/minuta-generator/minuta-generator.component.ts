@@ -2,14 +2,15 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-
 
 @Component({
   selector: 'app-minuta-generator',
@@ -21,7 +22,9 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     MatIconModule, 
     MatProgressBarModule,
     MatSnackBarModule,
-    MatTooltipModule
+    MatCheckboxModule,
+    MatTooltipModule,
+    ReactiveFormsModule
   ],
   template: `
     <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
@@ -31,41 +34,53 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
           <mat-card-title>Gerar minuta!</mat-card-title>
           <mat-card-subtitle>É tudo muito fácil e rápido!</mat-card-subtitle>
           <mat-card-subtitle>Selecione um arquivo ato consultar e gere sua minuta!</mat-card-subtitle>
-          
         </mat-card-header>
         
         <mat-card-content>
-          <button type="button" mat-raised-button *ngIf="!selectedFile" class="file-upload-container">
-            <label for="pdf-upload" class="file-selector">
-              Selecione arquivo PDF
-              <input 
-                type="file" 
-                id="pdf-upload" 
-                accept="application/pdf"
-                (change)="onFileSelected($event)"
-                class="file-input"
-              >
-            </label>
-          </button>
-          
-          <div *ngIf="selectedFile" class="selected-file-container">
-            <div class="selected-file-info">
-              <mat-icon>description</mat-icon>
-              <span class="file-name">{{ selectedFile.name }}</span>
-              <button 
-                mat-icon-button 
-                (click)="clearMinutaResultAndFile()"
-                matTooltip="Remover arquivo">
-                <mat-icon>close</mat-icon>
+          <form [formGroup]="minutaForm">
+            <div class="form-container">
+              <button type="button" mat-raised-button *ngIf="!getFormFile()" class="file-upload-container">
+                <label for="pdf-upload" class="file-selector">
+                  Selecione arquivo PDF
+                  <input 
+                    id="pdf-upload"
+                    type="file" 
+                    accept="application/pdf"
+                    (change)="onFileSelected($event)"
+                    class="file-input"
+                  >
+                </label>
               </button>
+              
+              <div *ngIf="getFormFile()" class="selected-file-container">
+                <div class="selected-file-info">
+                  <mat-icon>description</mat-icon>
+                  <span class="file-name">{{ getFormFile()?.name }}</span>
+                  <button 
+                    mat-icon-button 
+                    (click)="removeFile()"
+                    matTooltip="Remover arquivo">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+                
+                <mat-checkbox formControlName="transmitenteSupraqualificada">
+                  Transmitente supraqualificada
+                </mat-checkbox>
+                <mat-checkbox formControlName="adquirenteSupraqualificada">
+                  Adquirente supraqualificada
+                </mat-checkbox>
+                
+                <button 
+                  mat-flat-button
+                  class="generate-button"
+                  [disabled]="minutaForm.invalid"
+                  (click)="generateMinuta()">
+                  GERAR MINUTA
+                </button>
+              </div>
             </div>
-            <button 
-              mat-flat-button
-              class="generate-button"
-              (click)="generateMinuta()">
-              GERAR MINUTA
-            </button>
-          </div>
+          </form>
         </mat-card-content>
       </mat-card>
       
@@ -214,56 +229,92 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   `]
 })
 export class MinutaGeneratorComponent {
-  selectedFile: File | null = null;
   minutaResult: SafeHtml | null = null;
   rawHtmlContent = '';
   isLoading = false;
+  
+  minutaForm: FormGroup;
   
   constructor(
     private http: HttpClient, 
     private sanitizer: DomSanitizer,
     private clipboard: Clipboard,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+    private fb: FormBuilder
+  ) {
+    this.minutaForm = this.fb.group({
+      pdfFile: [null, Validators.required],
+      transmitenteSupraqualificada: [false],
+      adquirenteSupraqualificada: [false]
+    });
+  }
   
+  getFormFile(): File | null {
+    return this.minutaForm.get('pdfFile')?.value;
+  }
+
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
+      this.minutaForm.patchValue({
+        pdfFile: input.files[0]
+      });
+      this.minutaForm.get('pdfFile')?.markAsDirty();
+      this.minutaForm.get('pdfFile')?.updateValueAndValidity();
     }
+  }
+  
+  removeFile() {
+    this.minutaForm.patchValue({
+      pdfFile: null
+    });
+    this.minutaForm.get('pdfFile')?.markAsDirty();
+    this.minutaForm.get('pdfFile')?.updateValueAndValidity();
   }
   
   clearMinutaResultAndFile() {
     this.minutaResult = null;
     this.rawHtmlContent = '';
-    this.selectedFile = null;
+    this.minutaForm.reset({
+      pdfFile: null,
+      transmitenteSupraqualificada: false,
+      adquirenteSupraqualificada: false
+    });
   }
 
   generateMinuta() {
-    if (!this.selectedFile) return;
+    if (this.minutaForm.invalid) return;
     
     this.isLoading = true;
     this.minutaResult = null;
     
     const formData = new FormData();
-    formData.append('ato_consultar_pdf', this.selectedFile);
+    const file = this.getFormFile();
     
-    this.http.post('http://localhost:8080/api/v1/generator/minuta', formData, { responseType: 'text' })
-      .subscribe({
-        next: (htmlContent) => {
-          this.rawHtmlContent = htmlContent;
-          this.minutaResult = this.sanitizer.bypassSecurityTrustHtml(htmlContent);
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error('Error generating minuta:', error);
-          this.isLoading = false;
-          this.snackBar.open('Erro ao gerar minuta. Tente novamente.', 'Fechar', {
-            duration: 3000,
-            panelClass: ['error-snackbar']
-          });
-        }
-      });
+    if (file) {
+      formData.append('ato_consultar_pdf', file);
+      
+      // Add checkbox values to the form data
+      formData.append('transmitente_supraqualificada', this.minutaForm.get('transmitenteSupraqualificada')?.value ? 'true' : 'false');
+      formData.append('adquirente_supraqualificada', this.minutaForm.get('adquirenteSupraqualificada')?.value ? 'true' : 'false');
+      
+      this.http.post('http://localhost:8080/api/v1/generator/minuta', formData, { responseType: 'text' })
+        .subscribe({
+          next: (htmlContent) => {
+            this.rawHtmlContent = htmlContent;
+            this.minutaResult = this.sanitizer.bypassSecurityTrustHtml(htmlContent);
+            this.isLoading = false;
+          },
+          error: (error) => {
+            console.error('Error generating minuta:', error);
+            this.isLoading = false;
+            this.snackBar.open('Erro ao gerar minuta. Tente novamente.', 'Fechar', {
+              duration: 3000,
+              panelClass: ['error-snackbar']
+            });
+          }
+        });
+    }
   }
 
   copyMinutaContent() {

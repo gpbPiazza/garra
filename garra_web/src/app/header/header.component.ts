@@ -1,4 +1,3 @@
-import { TitleCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,12 +14,14 @@ import { ThemeService } from '../services/theme.service';
     MatButtonModule, 
     MatIconModule,
     MatMenuModule,
-    TitleCasePipe,
   ],
   template: `
     <mat-toolbar>
-      <span>Notas</span>
-      <div class="flex-stretch"></div>
+      <div>
+        <span>Garra</span>
+      </div>
+      
+      <!-- <div class="flex-stretch"></div>
       <button mat-icon-button [mat-menu-trigger-for]="themeMenu">
         <mat-icon>{{ themeService.selectedTheme()?.icon }}</mat-icon>
       </button>
@@ -35,7 +36,7 @@ import { ThemeService } from '../services/theme.service';
           <span>{{ theme.name | titlecase }}</span>
         </button>
         }
-      </mat-menu>
+      </mat-menu> -->
     </mat-toolbar>
   `,
   styles: `
@@ -43,6 +44,11 @@ import { ThemeService } from '../services/theme.service';
     mat-toolbar {
       display: flex;
       align-items: center;
+      
+      div {
+        width: 100%;
+        max-width: 800px;
+      }
 
       @include mat.toolbar-overrides(
         (

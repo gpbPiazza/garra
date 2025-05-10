@@ -1,9 +1,4 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { HeaderComponent } from './header/header.component';
 import { MinutaGeneratorComponent } from './minuta-generator/minuta-generator.component';
 
@@ -11,12 +6,7 @@ import { MinutaGeneratorComponent } from './minuta-generator/minuta-generator.co
   selector: 'app-root',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
     HeaderComponent,
-    MatButtonModule,
-    MatIconModule,
-    MatToolbarModule,
     MinutaGeneratorComponent,
 ],
   template: `
