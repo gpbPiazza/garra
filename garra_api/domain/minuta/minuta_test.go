@@ -22,7 +22,7 @@ func TestMinutaPerson(t *testing.T) {
 			},
 		}
 
-		expected := "SIDNEI ANTÔNIO GATTIS, brasileiro, solteiro, CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC."
+		expected := "<strong>SIDNEI ANTÔNIO GATTIS</strong>, brasileiro, solteiro, CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC."
 
 		got, err := minutaPerson(person)
 
@@ -30,9 +30,9 @@ func TestMinutaPerson(t *testing.T) {
 		assert.Equal(t, expected, got)
 	})
 
-	t.Run("valid person with CNPJ", func(t *testing.T) {
+	t.Run("valid person with CNPJ and name always return in UPPER case", func(t *testing.T) {
 		person := PersonParams{
-			Name:            "Some name",
+			Name:            "some name",
 			Nationality:     "Brasil",
 			MaritalStatus:   "solteiro",
 			DocNum_CPF_CNPJ: "12345678000195",
@@ -45,7 +45,7 @@ func TestMinutaPerson(t *testing.T) {
 			},
 		}
 
-		expected := "Some name., CNPJ nº 12.345.678/0001-95, com sede na rua Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC."
+		expected := "<strong>SOME NAME.</strong>, CNPJ nº 12.345.678/0001-95, com sede na rua Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC."
 
 		got, err := minutaPerson(person)
 
@@ -61,7 +61,7 @@ func TestMinutaPerson(t *testing.T) {
 			IsOverqualified: true,
 		}
 
-		expected := "RUZZU CONSTRUTORA E INCORPORADORA LTDA., supraqualificada."
+		expected := "<strong>RUZZU CONSTRUTORA E INCORPORADORA LTDA.</strong>, supraqualificada."
 
 		got, err := minutaPerson(person)
 
@@ -200,7 +200,7 @@ func TestMinutaPerson(t *testing.T) {
 			},
 		}
 
-		expected := "JOÃO DA SILVA, brasileiro, solteiro, CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC."
+		expected := "<strong>JOÃO DA SILVA</strong>, brasileiro, solteiro, CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC."
 
 		got, err := minutaPerson(person)
 

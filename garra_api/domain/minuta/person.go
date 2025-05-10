@@ -37,8 +37,10 @@ func minutaPerson(person PersonParams) (string, error) {
 }
 
 func juridicPerson(person PersonParams) (string, error) {
+	name := formatName(person.Name)
+
 	if person.IsOverqualified {
-		return fmt.Sprintf("%s., supraqualificada.", person.Name), nil
+		return fmt.Sprintf("<strong>%s.</strong>, supraqualificada.", name), nil
 	}
 
 	doc, err := formatCNPJDoc(person.DocNum_CPF_CNPJ)
@@ -60,8 +62,8 @@ func juridicPerson(person PersonParams) (string, error) {
 	}
 
 	return fmt.Sprintf(
-		"%s., CNPJ nº %s, com sede na rua %s, nº %s, Bairro %s, %s.",
-		person.Name,
+		"<strong>%s.</strong>, CNPJ nº %s, com sede na rua %s, nº %s, Bairro %s, %s.",
+		name,
 		doc,
 		person.Address.Rua,
 		person.Address.Num,
@@ -71,8 +73,10 @@ func juridicPerson(person PersonParams) (string, error) {
 }
 
 func fisicalPerson(person PersonParams) (string, error) {
+	name := formatName(person.Name)
+
 	if person.IsOverqualified {
-		return fmt.Sprintf("%s, supraqualificada.", person.Name), nil
+		return fmt.Sprintf("<strong>%s</strong>, supraqualificada.", name), nil
 	}
 
 	doc, err := formatCPFDoc(person.DocNum_CPF_CNPJ)
@@ -100,8 +104,8 @@ func fisicalPerson(person PersonParams) (string, error) {
 	}
 
 	return fmt.Sprintf(
-		"%s, %s, %s, CPF nº %s, residente e domiciliado na %s, nº %s, Bairro %s, %s.",
-		person.Name,
+		"<strong>%s</strong>, %s, %s, CPF nº %s, residente e domiciliado na %s, nº %s, Bairro %s, %s.",
+		name,
 		nationality,
 		person.MaritalStatus,
 		doc,
@@ -110,6 +114,10 @@ func fisicalPerson(person PersonParams) (string, error) {
 		neighborhood,
 		cityUF,
 	), nil
+}
+
+func formatName(name string) string {
+	return strings.TrimSpace(strings.ToUpper(name))
 }
 
 func formatCityUF(cityUF string) (string, error) {
