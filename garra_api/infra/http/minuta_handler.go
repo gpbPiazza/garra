@@ -5,8 +5,8 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gpbPiazza/alemao-bigodes/application/minuta"
-	"github.com/gpbPiazza/alemao-bigodes/infra/pdf"
+	"github.com/gpbPiazza/garra/application/minuta"
+	"github.com/gpbPiazza/garra/infra/pdf"
 )
 
 type MinutaGeneratorBody struct {

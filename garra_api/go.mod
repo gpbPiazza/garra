@@ -1,4 +1,4 @@
-module github.com/gpbPiazza/alemao-bigodes
+module github.com/gpbPiazza/garra
 
 go 1.24.1
 

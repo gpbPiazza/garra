@@ -1,8 +1,8 @@
 package minuta
 
 import (
-	"github.com/gpbPiazza/alemao-bigodes/domain/extractor"
-	"github.com/gpbPiazza/alemao-bigodes/domain/minuta"
+	"github.com/gpbPiazza/garra/domain/extractor"
+	"github.com/gpbPiazza/garra/domain/minuta"
 )
 
 type GeneratorApp struct {

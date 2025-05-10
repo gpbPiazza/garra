@@ -1,6 +1,6 @@
 package main
 
-import "github.com/gpbPiazza/alemao-bigodes/infra/http"
+import "github.com/gpbPiazza/garra/infra/http"
 
 func main() {
 	server := http.NewServer()
