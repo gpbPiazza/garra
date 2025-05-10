@@ -41,6 +41,7 @@ func (app *GeneratorApp) Generate(generateParams GenerateParams) (string, error)
 			MaritalStatus:   dataExtracted[extractor.OutorganteEstadoCivil],
 			DocNum_CPF_CNPJ: dataExtracted[extractor.OutorganteDocNumCPF_CNPJ],
 			DocType:         dataExtracted[extractor.OutorganteDocType],
+			Sex:             dataExtracted[extractor.OutorganteSex],
 			Address: minuta.AddressParams{
 				Rua:          dataExtracted[extractor.OutorganteEnderecoRua],
 				Num:          dataExtracted[extractor.OutorganteEnderecoN],
@@ -55,6 +56,7 @@ func (app *GeneratorApp) Generate(generateParams GenerateParams) (string, error)
 			MaritalStatus:   dataExtracted[extractor.OutorgadoEstadoCivil],
 			DocNum_CPF_CNPJ: dataExtracted[extractor.OutorgadoDocNumCPF_CNPJ],
 			DocType:         dataExtracted[extractor.OutorgadoDocType],
+			Sex:             dataExtracted[extractor.OutorgadoSex],
 			Address: minuta.AddressParams{
 				Rua:          dataExtracted[extractor.OutorgadoEnderecoRua],
 				Num:          dataExtracted[extractor.OutorgadoEnderecoN],

@@ -23,6 +23,7 @@ type PersonParams struct {
 	DocType         string
 	Address         AddressParams
 	IsOverqualified bool
+	Sex             string
 }
 
 func minutaPerson(person PersonParams) (string, error) {
@@ -103,11 +104,17 @@ func fisicalPerson(person PersonParams) (string, error) {
 		return "", err
 	}
 
+	maritialStatus, err := formatMaritialStatus(person.MaritalStatus, person.Sex)
+	if err != nil {
+		log.Printf("err on formatMaritialStatus err: %s", err)
+		return "", err
+	}
+
 	return fmt.Sprintf(
 		"<strong>%s</strong>, %s, %s, CPF nº %s, residente e domiciliado na %s, nº %s, Bairro %s, %s.",
 		name,
 		nationality,
-		person.MaritalStatus,
+		maritialStatus,
 		doc,
 		person.Address.Rua,
 		person.Address.Num,
@@ -118,6 +125,45 @@ func fisicalPerson(person PersonParams) (string, error) {
 
 func formatName(name string) string {
 	return strings.TrimSpace(strings.ToUpper(name))
+}
+
+func formatMaritialStatus(maritialStatus string, personSex string) (string, error) {
+	if maritialStatus == "" {
+		return "", errors.New("error - maritialStatus is required")
+	}
+	if personSex == "" {
+		return "", errors.New("error - personSex is required")
+	}
+
+	maritialStatus = strings.ToLower(maritialStatus)
+	if strings.Contains(maritialStatus, "separado") {
+		switch strings.ToLower(personSex) {
+		case "masculino":
+			return "divorciado", nil
+		default:
+			return "divorciada", nil
+		}
+	}
+
+	if strings.Contains(maritialStatus, "solteiro") {
+		switch strings.ToLower(personSex) {
+		case "masculino":
+			return "solteiro", nil
+		default:
+			return "solteira", nil
+		}
+	}
+
+	if strings.Contains(maritialStatus, "casado") {
+		switch strings.ToLower(personSex) {
+		case "masculino":
+			return "casado", nil
+		default:
+			return "casada", nil
+		}
+	}
+
+	return "", errors.New("UNKNOW cases to formatMaritialStatus")
 }
 
 func formatCityUF(cityUF string) (string, error) {

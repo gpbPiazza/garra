@@ -16,6 +16,7 @@ const (
 
 	OutorganteName
 	OutorganteJob
+	OutorganteSex
 	OutorganteNationality
 	OutorganteEstadoCivil
 	OutorganteDocNumCPF_CNPJ
@@ -27,6 +28,7 @@ const (
 
 	OutorgadoName
 	OutorgadoJob
+	OutorgadoSex
 	OutorgadoNationality
 	OutorgadoEstadoCivil
 	OutorgadoDocNumCPF_CNPJ

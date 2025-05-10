@@ -101,6 +101,13 @@ func New() *Extractor {
 				IsExtracted: false,
 			},
 			{
+				Start:       "Sexo:",
+				End:         []string{"DocumentosDoc."},
+				Offset:      "Outorgante",
+				ResultKey:   OutorganteSex,
+				IsExtracted: false,
+			},
+			{
 				Start:       "Doc. Nº:",
 				End:         []string{"/", "Doc. Tipo:", "EndereçosLogradouro:"},
 				Offset:      "Outorgante",
@@ -161,6 +168,13 @@ func New() *Extractor {
 				End:         []string{"- Sexo:"},
 				Offset:      "OutorgadoParte",
 				ResultKey:   OutorgadoNationality,
+				IsExtracted: false,
+			},
+			{
+				Start:       "Sexo:",
+				End:         []string{"DocumentosDoc."},
+				Offset:      "OutorgadoParte",
+				ResultKey:   OutorgadoSex,
 				IsExtracted: false,
 			},
 			{
