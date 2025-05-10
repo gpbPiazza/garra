@@ -1,6 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,6 +10,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-minuta-generator',
@@ -64,20 +64,24 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
                   </button>
                 </div>
                 
-                <mat-checkbox formControlName="transmitenteSupraqualificada">
-                  Transmitente supraqualificada
-                </mat-checkbox>
-                <mat-checkbox formControlName="adquirenteSupraqualificada">
-                  Adquirente supraqualificada
-                </mat-checkbox>
+                <div class="checkbox-container">
+                  <mat-checkbox formControlName="transmitenteSupraqualificada">
+                    Transmitente supraqualificada
+                  </mat-checkbox>
+                  <mat-checkbox formControlName="adquirenteSupraqualificada">
+                    Adquirente supraqualificada
+                  </mat-checkbox>
+                </div>
                 
-                <button 
-                  mat-flat-button
-                  class="generate-button"
-                  [disabled]="minutaForm.invalid"
-                  (click)="generateMinuta()">
-                  GERAR MINUTA
-                </button>
+                <div class="button-container">
+                  <button 
+                    mat-flat-button
+                    class="generate-button"
+                    [disabled]="minutaForm.invalid"
+                    (click)="generateMinuta()">
+                    GERAR MINUTA
+                  </button>
+                </div>
               </div>
             </div>
           </form>
@@ -192,7 +196,6 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
     .selected-file-container {
       display: flex;
       flex-direction: column;
-      align-items: center;
       width: 100%;
       margin: 1.5rem 0;
       gap: 1.5rem;
@@ -206,10 +209,25 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
       border-radius: 8px;
       width: 80%;
       max-width: 400px;
+      margin: 0 auto; /* Center this div */
     }
     
-    .selected-file-info mat-icon {
-      margin-right: 12px;
+    .checkbox-container {
+      display: flex;
+      flex-direction: column;
+      align-self: flex-start; 
+      padding-left: 25px;
+      width: 100%;
+    }
+    
+    .button-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    
+    .generate-button {
+      min-width: 200px;
     }
 
     mat-icon {
@@ -236,7 +254,7 @@ export class MinutaGeneratorComponent {
   minutaForm: FormGroup;
   
   constructor(
-    private http: HttpClient, 
+    private apiService: ApiService,
     private sanitizer: DomSanitizer,
     private clipboard: Clipboard,
     private snackBar: MatSnackBar,
@@ -288,17 +306,13 @@ export class MinutaGeneratorComponent {
     this.isLoading = true;
     this.minutaResult = null;
     
-    const formData = new FormData();
     const file = this.getFormFile();
     
     if (file) {
-      formData.append('ato_consultar_pdf', file);
+      const isTransmitente = this.minutaForm.get('transmitenteSupraqualificada')?.value || false;
+      const isAdquirente = this.minutaForm.get('adquirenteSupraqualificada')?.value || false;
       
-      // Add checkbox values to the form data
-      formData.append('transmitente_supraqualificada', this.minutaForm.get('transmitenteSupraqualificada')?.value ? 'true' : 'false');
-      formData.append('adquirente_supraqualificada', this.minutaForm.get('adquirenteSupraqualificada')?.value ? 'true' : 'false');
-      
-      this.http.post('http://localhost:8080/api/v1/generator/minuta', formData, { responseType: 'text' })
+      this.apiService.generateMinuta(file, isTransmitente, isAdquirente)
         .subscribe({
           next: (htmlContent) => {
             this.rawHtmlContent = htmlContent;
