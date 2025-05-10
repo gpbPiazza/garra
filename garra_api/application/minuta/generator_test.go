@@ -14,9 +14,9 @@ func TestGenerate_one_to_one_buyer_CPF_and_seller_CNPJ(t *testing.T) {
 	expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span><strong>CONSTRUARTE CONSTRUTORA E INCORPORADORA LTDA.</strong>, CNPJ nº 29.235.977/0001-70, com sede na rua Rua Luiz Eccel, nº 1, Bairro Paquetá, Brusque/SC.</span>.
+<u>TRANSMITENTE(S)</u>:> <span><strong>CONSTRUARTE CONSTRUTORA E INCORPORADORA LTDA.</strong>, CNPJ nº 29.235.977/0001-70, com sede na rua Rua Luiz Eccel, nº 1, Bairro Paquetá, Brusque/SC.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>SIDNEI ANTONIO GATTIS</strong>, brasileiro, solteiro, CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC.</span>.
+<u>ADQUIRENTE(S)</u>:><span><strong>SIDNEI ANTONIO GATTIS</strong>, brasileiro, solteiro, CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 965, Folhas 121/123V, em 26/03/2025. 
 <br/><u>VALOR</u>: R$ 120.000,00 (cento e vinte mil reais).
@@ -46,9 +46,9 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF(t *testing.T) {
 	expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span><strong>MARIA EDUARDA DOS SANTOS</strong>, brasileiro, solteira, CPF nº 051.737.249-51, residente e domiciliado na Rua Nelson Carneiro Borges, nº 284, Bairro São Luiz, Brusque/SC.</span>.
+<u>TRANSMITENTE(S)</u>:> <span><strong>MARIA EDUARDA DOS SANTOS</strong>, brasileiro, solteira, CPF nº 051.737.249-51, residente e domiciliado na Rua Nelson Carneiro Borges, nº 284, Bairro São Luiz, Brusque/SC.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>ABSOLUT CONSTRUTORA E INCORPORADORA LTDA.</strong>, CNPJ nº 05.768.477/0001-35, com sede na rua R CENTENARIO, nº 13, Bairro Santa Terezinha, Brusque/SC.</span>.
+<u>ADQUIRENTE(S)</u>:><span><strong>ABSOLUT CONSTRUTORA E INCORPORADORA LTDA.</strong>, CNPJ nº 05.768.477/0001-35, com sede na rua R CENTENARIO, nº 13, Bairro Santa Terezinha, Brusque/SC.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 965, Folhas 124/126V, em 26/03/2025. 
 <br/><u>VALOR</u>: R$ 210.000,00 (duzentos e dez mil reais).
@@ -79,9 +79,9 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF_2(t *testing.T) {
 	expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span><strong>MARIA JOSE PEREIRA</strong>, supraqualificada.</span>.
+<u>TRANSMITENTE(S)</u>:> <span><strong>MARIA JOSE PEREIRA</strong>, supraqualificada.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>BBK EMPREENDIMENTOS IMOBILIÁRIOS LTDA.</strong>, CNPJ nº 20.025.828/0001-01, com sede na rua RUA ALBERTO KLABUNDE, Nº 294 0, nº 294, Bairro ÁGUAS CLARAS, Brusque/SC.</span>.
+<u>ADQUIRENTE(S)</u>:><span><strong>BBK EMPREENDIMENTOS IMOBILIÁRIOS LTDA.</strong>, CNPJ nº 20.025.828/0001-01, com sede na rua RUA ALBERTO KLABUNDE, Nº 294 0, nº 294, Bairro ÁGUAS CLARAS, Brusque/SC.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 965, Folhas 110/112V, em 26/03/2025. 
 <br/><u>VALOR</u>: R$ 200.000,00 (duzentos mil reais).
@@ -116,9 +116,9 @@ func TestGenerate_one_to_one_buyer_CPF_and_sellerr_CNPJ_2(t *testing.T) {
 	expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span><strong>RMP;AMP;R INCORPORAÇÃO LTDA.</strong>, CNPJ nº 00.334.504/0001-48, com sede na rua Avenida Primeiro de Maio, nº 346, Bairro Primeiro de Maio, São João do Itaperiú/SC.</span>.
+<u>TRANSMITENTE(S)</u>:> <span><strong>RMP;AMP;R INCORPORAÇÃO LTDA.</strong>, CNPJ nº 00.334.504/0001-48, com sede na rua Avenida Primeiro de Maio, nº 346, Bairro Primeiro de Maio, São João do Itaperiú/SC.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>VILMAR PALOSCHI</strong>, brasileiro, divorciado, CPF nº 548.480.839-15, residente e domiciliado na Rua Vice Prefeito Pedro Merizio, nº 399, Bairro Centro, São João do Itaperiú/SC.</span>.
+<u>ADQUIRENTE(S)</u>:><span><strong>VILMAR PALOSCHI</strong>, brasileiro, divorciado, CPF nº 548.480.839-15, residente e domiciliado na Rua Vice Prefeito Pedro Merizio, nº 399, Bairro Centro, São João do Itaperiú/SC.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 965, Folhas 018/020V, em 20/03/2025. 
 <br/><u>VALOR</u>: R$ 505.000,00 (quinhentos e cinco mil reais).

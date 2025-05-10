@@ -9,9 +9,9 @@ import (
 const minutaTemplate = `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span>{{TRANSMITENTE}}</span>.
+<u>TRANSMITENTE(S)</u>:> <span>{{TRANSMITENTE}}</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span>{{ADQUIRENTE}}</span>.
+<u>ADQUIRENTE(S)</u>:><span>{{ADQUIRENTE}}</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de {{TITLE_ATO}}, lavrada pelo {{TABELIONATO_NAME}}` +
 	` de {{TABELIONATO_CITY_STATE}}, Livro {{BOOK_NUM}}, Folhas {{INITIAL_BOOK_PAGES}}/{{FINAL_BOOK_PAGES}}V, em {{BOOK_DATE}}. 

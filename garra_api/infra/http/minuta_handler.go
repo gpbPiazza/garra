@@ -1,7 +1,6 @@
 package http
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -9,19 +8,8 @@ import (
 	"github.com/gpbPiazza/garra/infra/pdf"
 )
 
-type MinutaGeneratorBody struct {
-	IsTransmitenteOverqualified bool `json:"is_transmitente_overqualified"`
-	IsAdquirenteOverqualified   bool `json:"is_adquirente_overqualified"`
-}
-
-func (b MinutaGeneratorBody) PDFKey() string {
-	return "ato_consultar_pdf"
-}
-
 func PostGeneratorMinutaHandler(c *fiber.Ctx) error {
-	var body MinutaGeneratorBody
-
-	formFile, err := c.FormFile(body.PDFKey())
+	formFile, err := c.FormFile("ato_consultar_pdf")
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString("Failed to upload file")
 	}
@@ -30,9 +18,8 @@ func PostGeneratorMinutaHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).SendString("Only PDF files are allowed")
 	}
 
-	if err := c.BodyParser(&body); err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString(fmt.Sprintf("error to parse body - %s", err))
-	}
+	is_transmitente_overqualified := c.FormValue("is_transmitente_overqualified", "false")
+	is_adquirente_overqualified := c.FormValue("is_adquirente_overqualified", "false")
 
 	minutaGenerator := minuta.NewGeneratorApp()
 
@@ -40,8 +27,8 @@ func PostGeneratorMinutaHandler(c *fiber.Ctx) error {
 
 	params := minuta.GenerateParams{
 		DocStr:                      pdfContentStr,
-		IsTransmitenteOverqualified: body.IsTransmitenteOverqualified,
-		IsAdquirenteOverqualified:   body.IsAdquirenteOverqualified,
+		IsTransmitenteOverqualified: is_transmitente_overqualified == "true",
+		IsAdquirenteOverqualified:   is_adquirente_overqualified == "true",
 	}
 
 	result, err := minutaGenerator.Generate(params)
