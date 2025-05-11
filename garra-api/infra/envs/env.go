@@ -27,6 +27,6 @@ func GetEnvs() Env {
 }
 
 type Env struct {
-	AppName string `env:"NAME" envDefault:"garra_api"`
+	AppName string `env:"NAME" envDefault:"garra-api"`
 	ApiPort string `env:"PORT,required"`
 }

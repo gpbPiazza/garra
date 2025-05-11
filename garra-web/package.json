@@ -1,5 +1,5 @@
 {
-  "name": "garra_web",
+  "name": "garra-web",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

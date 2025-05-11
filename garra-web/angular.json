@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "garra_web": {
+    "garra-web": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -41,7 +41,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/garra_web",
+            "outputPath": "dist/garra-web",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -95,10 +95,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "garra_web:build:production"
+              "buildTarget": "garra-web:build:production"
             },
             "development": {
-              "buildTarget": "garra_web:build:development"
+              "buildTarget": "garra-web:build:development"
             }
           },
           "defaultConfiguration": "development"
