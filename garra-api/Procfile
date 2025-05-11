@@ -1,1 +1,1 @@
-web: bin/garra-api
+web: /bin/api
