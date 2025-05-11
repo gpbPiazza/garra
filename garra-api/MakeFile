@@ -2,5 +2,4 @@ setup:
 	
 
 deploy:
-  # DEPLOY TO HEROKU
-	# git push heroku main
+	git push heroku main
