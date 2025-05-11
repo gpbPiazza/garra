@@ -1,6 +1,6 @@
 module github.com/gpbPiazza/garra
 
-go 1.24.1
+go 1.24
 
 require (
 	github.com/caarlos0/env v3.5.0+incompatible
