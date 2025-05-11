@@ -1,0 +1,5 @@
+build:
+  languages:
+    - go
+run:
+  web: bundle exec puma -C config/puma.rb
