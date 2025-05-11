@@ -6,6 +6,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gpbPiazza/garra/infra/http/health"
+	"github.com/gpbPiazza/garra/infra/http/minuta"
 )
 
 func NewServer() *fiber.App {
@@ -46,5 +48,6 @@ func useCorsMiddleware(app *fiber.App) {
 func setRoutes(app *fiber.App) {
 	router := newRouter(app)
 
-	router.SetMinutaRoutes()
+	health.SetRoutes(router.apiV1)
+	minuta.SetRoutes(router.apiV1)
 }

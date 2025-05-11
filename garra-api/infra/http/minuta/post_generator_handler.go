@@ -1,4 +1,4 @@
-package http
+package minuta
 
 import (
 	"log"
@@ -8,7 +8,7 @@ import (
 	"github.com/gpbPiazza/garra/infra/pdf"
 )
 
-func PostGeneratorMinutaHandler(c *fiber.Ctx) error {
+func PostGeneratorHandler(c *fiber.Ctx) error {
 	formFile, err := c.FormFile("ato_consultar_pdf")
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString("Failed to upload file")
