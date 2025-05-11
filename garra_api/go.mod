@@ -3,6 +3,7 @@ module github.com/gpbPiazza/garra
 go 1.24.1
 
 require (
+	github.com/caarlos0/env v3.5.0+incompatible
 	github.com/gofiber/fiber/v2 v2.52.6
 	github.com/ledongthuc/pdf v0.0.0-20240201131950-da5b75280b06
 	github.com/stretchr/testify v1.10.0

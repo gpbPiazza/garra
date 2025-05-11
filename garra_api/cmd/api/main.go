@@ -1,11 +1,19 @@
 package main
 
-import "github.com/gpbPiazza/garra/infra/http"
+import (
+	"fmt"
+
+	"github.com/gpbPiazza/garra/infra/envs"
+	"github.com/gpbPiazza/garra/infra/http"
+)
 
 func main() {
+
+	env := envs.GetEnvs()
+
 	server := http.NewServer()
 
 	defer server.Shutdown()
 
-	server.Listen(":8080")
+	server.Listen(fmt.Sprintf(":%s", env.ApiPort))
 }
