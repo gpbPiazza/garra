@@ -48,6 +48,6 @@ func useCorsMiddleware(app *fiber.App) {
 func setRoutes(app *fiber.App) {
 	router := newRouter(app)
 
-	health.SetRoutes(router.apiV1)
+	health.SetRoutes(router.app)
 	minuta.SetRoutes(router.apiV1)
 }
