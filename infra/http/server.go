@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gpbPiazza/garra/infra/http/health"
 	"github.com/gpbPiazza/garra/infra/http/minuta"
 )
@@ -28,11 +29,8 @@ func NewServer() *fiber.App {
 
 func setMiddlewares(app *fiber.App) {
 	useCorsMiddleware(app)
-	useLogger(app)
-}
-
-func useLogger(app *fiber.App) {
 	app.Use(logger.New())
+	app.Use(recover.New(recover.Config{EnableStackTrace: true}))
 }
 
 func useCorsMiddleware(app *fiber.App) {
