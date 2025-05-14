@@ -12,6 +12,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func newApp(t *testing.T) *fiber.App {
+	t.Helper()
+
+	app := NewServer()
+
+	app.Get("/api/v1/", func(c *fiber.Ctx) error {
+		return c.SendStatus(fiber.StatusOK)
+	})
+
+	return app
+}
+
 func TestCorsMiddleware(t *testing.T) {
 	setDefaultEnvs := func() {
 		envsVar := envs.GetEnvs()
@@ -30,21 +42,11 @@ func TestCorsMiddleware(t *testing.T) {
 
 	setDefaultEnvs()
 
-	newApp := func() *fiber.App {
-		app := NewServer()
-
-		app.Get("/api/v1/", func(c *fiber.Ctx) error {
-			return c.SendStatus(fiber.StatusOK)
-		})
-
-		return app
-	}
-
 	t.Run("Development environment should allow all origins", func(t *testing.T) {
 		defer setDefaultEnvs()
 		patchEnvAndAllow("DEVELOPMENT", "nused-in-dev")
 
-		app := newApp()
+		app := newApp(t)
 
 		req := httptest.NewRequest(http.MethodGet, "/api/v1/", nil)
 		req.Header.Set(fiber.HeaderOrigin, "https://external-site.com")
@@ -58,7 +60,7 @@ func TestCorsMiddleware(t *testing.T) {
 	t.Run("Production environment should restrict origins", func(t *testing.T) {
 		setDefaultEnvs()
 
-		app := newApp()
+		app := newApp(t)
 
 		req := httptest.NewRequest(http.MethodGet, "/api/v1/", nil)
 		req.Header.Set(fiber.HeaderOrigin, "https://my-frontend.com")
@@ -83,7 +85,7 @@ func TestCorsMiddleware(t *testing.T) {
 	t.Run("Health endpoint should be accessible regardless of CORS", func(t *testing.T) {
 		setDefaultEnvs()
 
-		app := newApp()
+		app := newApp(t)
 
 		req := httptest.NewRequest(http.MethodGet, "/", nil)
 		req.Header.Set("Origin", "https://unauthorized-site.com")
@@ -98,4 +100,23 @@ func TestCorsMiddleware(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, string(body), "I'm Alive")
 	})
+}
+
+func TestPanicRecoverMiddleware(t *testing.T) {
+	app := newApp(t)
+
+	app.Get("panic", func(c *fiber.Ctx) error {
+		panic("ai papai!")
+	})
+
+	req := httptest.NewRequest(http.MethodGet, "/panic", nil)
+
+	resp, err := app.Test(req)
+	require.NoError(t, err)
+	require.Equal(t, fiber.StatusInternalServerError, resp.StatusCode)
+
+	req = httptest.NewRequest(http.MethodGet, "/api/v1", nil)
+	resp, err = app.Test(req)
+	require.NoError(t, err)
+	require.Equal(t, fiber.StatusOK, resp.StatusCode)
 }
