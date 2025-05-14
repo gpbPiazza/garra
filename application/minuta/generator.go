@@ -68,5 +68,5 @@ func (app *GeneratorApp) Generate(generateParams GenerateParams) (string, error)
 		FinalBookPages:   dataExtracted[extractor.FinalBookPages],
 	}
 
-	return minuta.Minuta(params), nil
+	return minuta.Minuta(params)
 }

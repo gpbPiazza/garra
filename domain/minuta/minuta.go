@@ -2,7 +2,6 @@ package minuta
 
 import (
 	"fmt"
-	"log"
 	"strings"
 )
 
@@ -45,30 +44,30 @@ type MinutaParams struct {
 	ItbiIncidenciaValor string
 }
 
-func Minuta(params MinutaParams) string {
+func Minuta(params MinutaParams) (string, error) {
 	transmitante, err := minutaPerson(params.Transmitente)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 
 	adquidirente, err := minutaPerson(params.Adquirente)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 
 	tabelionatoCityUF, err := formatCityUF(params.TabelionatoCityUF)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 
 	escrituraMadeDate, err := formatDate(params.EscrituraMadeDate)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 
 	value, err := formatValue(params.EscrituraValor)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 
 	replacer := strings.NewReplacer(
@@ -86,7 +85,7 @@ func Minuta(params MinutaParams) string {
 		ItbiIncidenciaValor.String(), params.ItbiIncidenciaValor,
 	)
 
-	return replacer.Replace(minutaTemplate)
+	return replacer.Replace(minutaTemplate), nil
 }
 
 func capitalizeEachWord(sentence string) string {
