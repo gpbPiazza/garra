@@ -1,21 +1,31 @@
 package http
 
 import (
+	"io"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gpbPiazza/garra/infra/envs"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestCorsMiddleware(t *testing.T) {
 	setDefaultEnvs := func() {
-		os.Setenv("PORT", "8080")
-		os.Setenv("ENVIROMENT", "PRODUCTION")
-		os.Setenv("ALLOW_ORIGINS_HOST", "https://my-frontend.com")
+		envsVar := envs.GetEnvs()
+		envsVar.AllowOriginsHost = "https://my-frontend.com"
+		envsVar.Enviroment = "PRODUCTION"
+		envsVar.ApiPort = "8080"
+		envs.TestPatchEnvs(envsVar)
+	}
+
+	patchEnvAndAllow := func(env, allow string) {
+		envsVar := envs.GetEnvs()
+		envsVar.AllowOriginsHost = allow
+		envsVar.Enviroment = env
+		envs.TestPatchEnvs(envsVar)
 	}
 
 	setDefaultEnvs()
@@ -31,8 +41,8 @@ func TestCorsMiddleware(t *testing.T) {
 	}
 
 	t.Run("Development environment should allow all origins", func(t *testing.T) {
-		os.Setenv("ENVIROMENT", "DEVELOPMENT")
-		os.Setenv("ALLOW_ORIGINS_HOST", "unused-in-dev")
+		defer setDefaultEnvs()
+		patchEnvAndAllow("DEVELOPMENT", "nused-in-dev")
 
 		app := newApp()
 
@@ -70,22 +80,22 @@ func TestCorsMiddleware(t *testing.T) {
 		assert.Equal(t, "", resp.Header.Get(fiber.HeaderAccessControlAllowOrigin))
 	})
 
-	// t.Run("Health endpoint should be accessible regardless of CORS", func(t *testing.T) {
-	// 	setDefaultEnvs()
+	t.Run("Health endpoint should be accessible regardless of CORS", func(t *testing.T) {
+		setDefaultEnvs()
 
-	// 	app := newApp()
+		app := newApp()
 
-	// 	req := httptest.NewRequest(http.MethodGet, "/", nil)
-	// 	req.Header.Set("Origin", "https://unauthorized-site.com")
+		req := httptest.NewRequest(http.MethodGet, "/", nil)
+		req.Header.Set("Origin", "https://unauthorized-site.com")
 
-	// 	resp, err := app.Test(req)
-	// 	assert.NoError(t, err)
+		resp, err := app.Test(req)
+		assert.NoError(t, err)
 
-	// 	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	// 	assert.NotEqual(t, "https://unauthorized-site.com", resp.Header.Get("Access-Control-Allow-Origin"))
+		assert.Equal(t, http.StatusOK, resp.StatusCode)
+		assert.NotEqual(t, "https://unauthorized-site.com", resp.Header.Get("Access-Control-Allow-Origin"))
 
-	// 	body, err := io.ReadAll(resp.Body)
-	// 	assert.NoError(t, err)
-	// 	assert.Equal(t, string(body), "I'm Alive")
-	// })
+		body, err := io.ReadAll(resp.Body)
+		assert.NoError(t, err)
+		assert.Equal(t, string(body), "I'm Alive")
+	})
 }

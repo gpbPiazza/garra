@@ -27,6 +27,11 @@ func GetEnvs() Env {
 	return globalEnv
 }
 
+func TestPatchEnvs(env Env) Env {
+	globalEnv = env
+	return globalEnv
+}
+
 func IsProduction() bool {
 	return GetEnvs().Enviroment == "PRODUCTION"
 }

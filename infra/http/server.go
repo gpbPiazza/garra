@@ -46,7 +46,8 @@ func useCorsMiddleware(app *fiber.App) {
 	}
 
 	if envs.IsProduction() {
-		configCors.AllowOrigins = envs.GetEnvs().AllowOriginsHost
+		envsVar := envs.GetEnvs()
+		configCors.AllowOrigins = envsVar.AllowOriginsHost
 		configCors.AllowCredentials = true
 	}
 
