@@ -11,16 +11,19 @@ func TestInit(t *testing.T) {
 	os.Setenv("PORT", "8080")
 	os.Setenv("ENVIROMENT", "DEVELOPMENT")
 	os.Setenv("NAME", "garra-dev")
+	os.Setenv("ALLOW_ORIGINS_HOST", "LOCALHOST")
 
 	originalPort := os.Getenv("PORT")
 	originalEnv := os.Getenv("ENVIROMENT")
 	originalName := os.Getenv("NAME")
+	originalAllowOriginsHost := os.Getenv("ALLOW_ORIGINS_HOST")
 
 	defer func() {
 		os.Setenv("PORT", originalPort)
 		os.Setenv("ENVIROMENT", originalEnv)
 		os.Setenv("NAME", originalName)
-		Init()
+		os.Setenv("ALLOW_ORIGINS_HOST", originalAllowOriginsHost)
+		initEnvs()
 	}()
 
 	t.Run("should initialize with PRODUCTION environment", func(t *testing.T) {
@@ -29,7 +32,7 @@ func TestInit(t *testing.T) {
 
 		globalEnv = Env{}
 
-		err := Init()
+		err := initEnvs()
 
 		assert.NoError(t, err)
 		assert.Equal(t, "PRODUCTION", globalEnv.Enviroment)
@@ -44,7 +47,7 @@ func TestInit(t *testing.T) {
 
 		globalEnv = Env{}
 
-		err := Init()
+		err := initEnvs()
 
 		assert.NoError(t, err)
 		assert.Equal(t, "DEVELOPMENT", globalEnv.Enviroment)
@@ -58,7 +61,7 @@ func TestInit(t *testing.T) {
 
 		globalEnv = Env{}
 
-		err := Init()
+		err := initEnvs()
 
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "not PRODUTCTION OR DEVELOPMENT")
@@ -70,7 +73,7 @@ func TestInit(t *testing.T) {
 
 		globalEnv = Env{}
 
-		err := Init()
+		err := initEnvs()
 
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "error on init envs variables")

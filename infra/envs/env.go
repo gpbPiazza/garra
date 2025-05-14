@@ -9,16 +9,17 @@ import (
 )
 
 type Env struct {
-	AppName    string `env:"NAME" envDefault:"garra-api"`
-	ApiPort    string `env:"PORT,required"`
-	Enviroment string `env:"ENVIROMENT,required"`
+	AppName          string `env:"NAME" envDefault:"garra-api"`
+	ApiPort          string `env:"PORT,required"`
+	Enviroment       string `env:"ENVIROMENT,required"`
+	AllowOriginsHost string `env:"ALLOW_ORIGINS_HOST,required"`
 }
 
 func GetEnvs() Env {
 	valRef := reflect.ValueOf(globalEnv)
 
 	if valRef.IsZero() {
-		if err := Init(); err != nil {
+		if err := initEnvs(); err != nil {
 			log.Fatal(err)
 		}
 	}
@@ -26,9 +27,13 @@ func GetEnvs() Env {
 	return globalEnv
 }
 
+func IsProduction() bool {
+	return GetEnvs().Enviroment == "PRODUCTION"
+}
+
 var globalEnv Env
 
-func Init() error {
+func initEnvs() error {
 	var config Env
 
 	if err := env.Parse(&config); err != nil {
