@@ -175,3 +175,36 @@ func TestGenerate_one_to_one_offset_of_some_key_in_between_pages_bug_1(t *testin
 	require.NoError(t, err)
 	assert.Equal(t, expected, got)
 }
+
+func TestGenerate_one_to_one_case_to_many_start_keys_bug_2(t *testing.T) {
+	generatorApp := NewGeneratorApp()
+
+	expected := `
+<fragmento indice="CABECALHO" />
+<br>
+<u>TRANSMITENTE(S)</u>:> <span><strong>FABRICIA RIBEIRO DOS SANTOS</strong>, brasileiro, casada, CPF nº 902.091.845-15, residente e domiciliado na Dom Joaquim, nº 155, Bairro Cedrinho, Brusque/SC.</span>
+<br/>
+<u>ADQUIRENTE(S)</u>:><span><strong>JOÃO PAULO MENDONÇA MELO</strong>, brasileiro, solteiro, CPF nº 075.979.619-01, residente e domiciliado na Rua Francisco Debatin, nº 22, Bairro Águas Claras, Brusque/SC.</span>
+<br>
+<u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 968, Folhas 095/097V, em 02/05/2025. 
+<br/><u>VALOR</u>: R$ 180.000,00 (cento e oitenta mil reais).
+<br/><u>CONDIÇÕES</u>: Não constam.
+<br/><u>OBSERVAÇÕES</u>:
+<strong>ITBI</strong>: Recolhido no valor de R$ 3.600,00, com incidência sobre R$ 180.000,00, devidamente quitado. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
+<fragmento indice="FINALIZACAO_ATO" />.
+`
+
+	doc, err := os.ReadFile("../../infra/test_files/test_bug_2.txt")
+	require.NoError(t, err)
+
+	params := GenerateParams{
+		DocStr:                      string(doc),
+		IsTransmitenteOverqualified: false,
+		IsAdquirenteOverqualified:   false,
+	}
+
+	got, err := generatorApp.Generate(params)
+
+	require.NoError(t, err)
+	assert.Equal(t, expected, got)
+}

@@ -13,8 +13,8 @@ import (
 // Uses start and end keys to find Value
 // Uses Replace to change Key into template by token.Value
 type token struct {
-	Start       string
-	End         []string
+	StartKeys   []string
+	EndKeys     []string
 	Offset      string
 	ResultKey   ResultKey
 	Value       string
@@ -31,260 +31,236 @@ func New() *Extractor {
 		result: make(map[ResultKey]string),
 		tokens: []*token{
 			{
-				Start:       "MATRÍCULA Nº",
-				End:         []string{", CNM", ",CNM:"},
+				StartKeys:   []string{"MATRÍCULA Nº"},
+				EndKeys:     []string{", CNM", ",CNM:"},
 				ResultKey:   Matricula,
 				IsExtracted: false,
 			},
-			// {
-			// 	Start:            "", // TODO: VER COM O ALEMÃO
-			// 	End:              "", // TODO: VER COM O ALEMÃO
-			// 	ResultKey:        TypeAto,
-			// 	AlreadyExtracted: false,
-			// },
-			// {
-			// 	Start:            "", // TODO: VER COM O ALEMÃO
-			// 	End:              "", // TODO: VER COM O ALEMÃO
-			// 	ResultKey:        NumAto,
-			// 	AlreadyExtracted: false,
-			// },
 			{
-				Start:       "Cláusula Geral: ESCRITURA PÚBLICA DE",
-				End:         []string{" que"},
+				StartKeys:   []string{"Cláusula Geral: ESCRITURA PÚBLICA DE"},
+				EndKeys:     []string{" que"},
 				ResultKey:   TitleAto,
 				IsExtracted: false,
 			},
-			// {
-			// 	Start:            "",
-			// 	End:              "",
-			// 	ResultKey:        DataRegistro, // TODO: VER COM O ALEMÃO
-			// 	AlreadyExtracted: false,
-			// },
-			// {
-			// 	Start:            "",
-			// 	End:              "",
-			// 	ResultKey:        Protocolo, // TODO: VER COM O ALEMÃO
-			// 	AlreadyExtracted: false,
-			// },
 			{
-				Start:       "Data e hora do recebimento do ato pelo TJSC: ",
-				End:         []string{" -"},
+				StartKeys:   []string{"Data e hora do recebimento do ato pelo TJSC: "},
+				EndKeys:     []string{" -"},
 				ResultKey:   DataProtocolo,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Parte :",
-				End:         []string{"Pessoa:", "Data de Nascimento:"},
+				StartKeys:   []string{"Parte :"},
+				EndKeys:     []string{"Pessoa:", "Data de Nascimento:"},
 				Offset:      "Outorgante",
 				ResultKey:   OutorganteName,
 				IsExtracted: false,
 			},
 			// {
-			// 	Start:       "Profissão: ",
+			// 	Start:       []string{"Profissão: ",},
 			// 	End:         []string{" -"},
 			// 	Offset:      "Outorgante",
 			// 	ResultKey:   OutorganteJob,
 			// 	IsExtracted: false,
 			// },
 			{
-				Start:       "Nacionalidade: ",
-				End:         []string{" -"},
+				StartKeys:   []string{"Nacionalidade: "},
+				EndKeys:     []string{" -"},
 				Offset:      "Outorgante",
 				ResultKey:   OutorganteNationality,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Estado Civil: ",
-				End:         []string{" -"},
+				StartKeys:   []string{"Estado Civil: "},
+				EndKeys:     []string{" -"},
 				Offset:      "Outorgante",
 				ResultKey:   OutorganteEstadoCivil,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Sexo:",
-				End:         []string{"DocumentosDoc."},
+				StartKeys:   []string{"Sexo:"},
+				EndKeys:     []string{"DocumentosDoc."},
 				Offset:      "Outorgante",
 				ResultKey:   OutorganteSex,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Doc. Nº:",
-				End:         []string{"/", "Doc. Tipo:", "EndereçosLogradouro:"},
+				StartKeys:   []string{"Doc. Nº:"},
+				EndKeys:     []string{"/", "Doc. Tipo:", "EndereçosLogradouro:"},
 				Offset:      "Outorgante",
 				ResultKey:   OutorganteDocNumCPF_CNPJ,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Doc. Tipo:",
-				End:         []string{"Doc."},
+				StartKeys:   []string{"Doc. Tipo:"},
+				EndKeys:     []string{"Doc."},
 				Offset:      "Outorgante",
 				ResultKey:   OutorganteDocType,
 				IsExtracted: false,
 			},
 			{
-				Start:       "EndereçosLogradouro:",
-				End:         []string{"Número:"},
+				StartKeys:   []string{"EndereçosLogradouro:"},
+				EndKeys:     []string{"Número:"},
 				Offset:      "Outorgante",
 				ResultKey:   OutorganteEnderecoRua,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Número: ",
-				End:         []string{"Bairro:"},
+				StartKeys:   []string{"Número: "},
+				EndKeys:     []string{"Bairro:"},
 				Offset:      "Outorgante",
 				ResultKey:   OutorganteEnderecoN,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Bairro:",
-				End:         []string{"Complemento", "Cidade/UF:", ",", "Cidade:"},
+				StartKeys:   []string{"Bairro:"},
+				EndKeys:     []string{"Complemento", "Cidade/UF:", ",", "Cidade:"},
 				Offset:      "Outorgante",
 				ResultKey:   OutorganteEnderecoBairro,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Cidade/UF: ",
-				End:         []string{"CEP:"},
+				StartKeys:   []string{"Cidade/UF: "},
+				EndKeys:     []string{"CEP:"},
 				Offset:      "Outorgante",
 				ResultKey:   OutorganteEnderecoCidadeUF,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Parte :",
-				End:         []string{"Data de Nascimento:", "Pessoa:"},
+				StartKeys:   []string{"Parte :"},
+				EndKeys:     []string{"Data de Nascimento:", "Pessoa:"},
 				Offset:      "Outorgado",
 				ResultKey:   OutorgadoName,
 				IsExtracted: false,
 			},
 			// {
-			// 	Start:       "Profissão:",
+			// 	Start:       []string{"Profissão:",},
 			// 	End:         []string{"- Nacionalidade:"},
 			// 	Offset:      "OutorgadoParte",
 			// 	ResultKey:   OutorgadoJob,
 			// 	IsExtracted: false,
 			// },
 			{
-				Start:       "Nacionalidade:",
-				End:         []string{"- Sexo:"},
+				StartKeys:   []string{"Nacionalidade:"},
+				EndKeys:     []string{"- Sexo:"},
 				Offset:      "OutorgadoParte",
 				ResultKey:   OutorgadoNationality,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Sexo:",
-				End:         []string{"DocumentosDoc."},
+				StartKeys:   []string{"Sexo:"},
+				EndKeys:     []string{"DocumentosDoc."},
 				Offset:      "OutorgadoParte",
 				ResultKey:   OutorgadoSex,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Estado Civil:",
-				End:         []string{" -"},
+				StartKeys:   []string{"Estado Civil:"},
+				EndKeys:     []string{" -"},
 				Offset:      "OutorgadoParte",
 				ResultKey:   OutorgadoEstadoCivil,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Doc. Nº:",
-				End:         []string{"Doc. Tipo:", "EndereçosLogradouro:"},
+				StartKeys:   []string{"Doc. Nº:"},
+				EndKeys:     []string{"Doc. Tipo:", "EndereçosLogradouro:"},
 				Offset:      "OutorgadoParte",
 				ResultKey:   OutorgadoDocNumCPF_CNPJ,
 				IsExtracted: false,
 			},
 			{
-				Start:       "DocumentosDoc. Tipo: ",
-				End:         []string{"Doc."},
+				StartKeys:   []string{"DocumentosDoc. Tipo: "},
+				EndKeys:     []string{"Doc."},
 				Offset:      "OutorgadoParte",
 				ResultKey:   OutorgadoDocType,
 				IsExtracted: false,
 			},
 			{
-				Start:       "EndereçosLogradouro:",
-				End:         []string{"Número:"},
-				Offset:      "OutorgadoParte", // Para casos de pessoa jurídica é endereço da empresa ou do representante físico?
+				StartKeys:   []string{"EndereçosLogradouro:"},
+				EndKeys:     []string{"Número:"},
+				Offset:      "OutorgadoParte",
 				ResultKey:   OutorgadoEnderecoRua,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Número:",
-				End:         []string{"Bairro:"},
+				StartKeys:   []string{"Número:"},
+				EndKeys:     []string{"Bairro:"},
 				Offset:      "OutorgadoParte",
 				ResultKey:   OutorgadoEnderecoN,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Bairro: ",
-				End:         []string{"Cidade/UF:", "CEP:", "Complemento"},
+				StartKeys:   []string{"Bairro: "},
+				EndKeys:     []string{"Cidade/UF:", "CEP:", "Complemento"},
 				Offset:      "OutorgadoParte",
 				ResultKey:   OutorgadoEnderecoBairro,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Cidade/UF:",
-				End:         []string{"CEP:"},
+				StartKeys:   []string{"Cidade/UF:"},
+				EndKeys:     []string{"CEP:"},
 				Offset:      "OutorgadoParte",
 				ResultKey:   OutorgadoEnderecoCidadeUF,
 				IsExtracted: false,
 			},
 			{
-				Start:       " ",
-				End:         []string{"Endereço:"},
+				StartKeys:   []string{" "},
+				EndKeys:     []string{"Endereço:"},
 				Offset:      "Serventia:",
 				ResultKey:   TabelionatoName,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Município/UF:",
-				End:         []string{"Telefone(s):"},
+				StartKeys:   []string{"Município/UF:"},
+				EndKeys:     []string{"Telefone(s):"},
 				Offset:      "Serventia:",
 				ResultKey:   TabelionatoCityUF,
 				IsExtracted: false,
 			},
 			{
-				Start:       ":",
-				End:         []string{"Nome do Livro:"},
+				StartKeys:   []string{":"},
+				EndKeys:     []string{"Nome do Livro:"},
 				Offset:      "Código do Livro",
 				ResultKey:   BookNum,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Página Inicial:",
-				End:         []string{"Página Final:"},
+				StartKeys:   []string{"Página Inicial:"},
+				EndKeys:     []string{"Página Final:"},
 				Offset:      "Código do Livro",
 				ResultKey:   InitialBookPages,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Página Final:",
-				End:         []string{"Data do Registro:"},
+				StartKeys:   []string{"Página Final:"},
+				EndKeys:     []string{"Data do Registro:"},
 				Offset:      "Código do Livro",
 				ResultKey:   FinalBookPages,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Data do Registro: ",
-				End:         []string{"Nome do Imposto", ","},
+				StartKeys:   []string{"Data do Registro: "},
+				EndKeys:     []string{"Nome do Imposto", ","},
 				Offset:      "Código do Livro",
 				ResultKey:   EscrituraMadeDate,
 				IsExtracted: false,
 			},
 			{
-				Start:       "preço total, certo e ajustado de R$",
-				End:         []string{", ", "/"},
+				StartKeys:   []string{"preço total, certo e ajustado de R$", "certo e ajustadode R$"},
+				EndKeys:     []string{", ", "/"},
 				Offset:      "Cláusula Geral:",
 				ResultKey:   EscrituraValor,
 				IsExtracted: false,
 			},
 			{
-				Start:       "importância de R$",
-				End:         []string{" correspondente"},
+				StartKeys:   []string{"importância de R$"},
+				EndKeys:     []string{" correspondente"},
 				Offset:      "Cláusula Geral:",
 				ResultKey:   ItbiValor,
 				IsExtracted: false,
 			},
 			{
-				Start:       "Valor do Negócio: R$",
-				End:         []string{"Cláusula Geral:"},
+				StartKeys:   []string{"Valor do Negócio: R$"},
+				EndKeys:     []string{"Cláusula Geral:"},
 				ResultKey:   ItbiIncidenciaValor,
 				IsExtracted: false,
 			},
@@ -332,10 +308,10 @@ func (e *Extractor) Result() map[ResultKey]string {
 }
 
 func extractTokenValue(text string, token token) (string, error) {
-	if token.Start == "" {
+	if len(token.StartKeys) == 0 {
 		return "", errors.New("token start key is empty")
 	}
-	if len(token.End) == 0 {
+	if len(token.EndKeys) == 0 {
 		return "", errors.New("token end key is empty")
 	}
 
@@ -347,19 +323,25 @@ func extractTokenValue(text string, token token) (string, error) {
 		text = text[offSetIndex+len(token.Offset):]
 	}
 
-	startIndex := strings.Index(text, token.Start)
-	if startIndex == -1 {
-		return "", fmt.Errorf("start key '%s' not found in text", token.Start)
+	startIndex := -1
+	for _, start := range token.StartKeys {
+		currentStartIndex := strings.Index(text, start)
+		if currentStartIndex == -1 {
+			continue
+		}
+
+		if currentStartIndex > startIndex {
+			startIndex = currentStartIndex
+			startIndex += len(start)
+		}
 	}
 
-	startIndex += len(token.Start)
-
-	// if token.SecondEnd == "" {
-	// 	return "", fmt.Errorf("end key '%s' not found in text", token.End)
-	// }
+	if startIndex == -1 {
+		return "", errors.New("any of start keys found in text")
+	}
 
 	endIndex := -1
-	for _, end := range token.End {
+	for _, end := range token.EndKeys {
 		currentEndIndex := strings.Index(text[startIndex:], end)
 		if currentEndIndex == -1 {
 			continue
@@ -372,7 +354,7 @@ func extractTokenValue(text string, token token) (string, error) {
 	}
 
 	if endIndex == -1 {
-		return "", fmt.Errorf("end key '%s' not found in text", token.End)
+		return "", errors.New("any of end keys found in text")
 	}
 
 	endIndex += startIndex
