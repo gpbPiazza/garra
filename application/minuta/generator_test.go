@@ -161,7 +161,7 @@ func TestGenerate_one_to_one_offset_of_some_key_in_between_pages_bug_1(t *testin
 <fragmento indice="FINALIZACAO_ATO" />.
 `
 
-	doc, err := os.ReadFile("../../infra/test_files/offset_of_some_key_in_between_pages_bug.txt")
+	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_offset_of_some_key_in_between_pages_bug.txt")
 	require.NoError(t, err)
 
 	params := GenerateParams{
@@ -194,7 +194,40 @@ func TestGenerate_one_to_one_case_to_many_start_keys_bug_2(t *testing.T) {
 <fragmento indice="FINALIZACAO_ATO" />.
 `
 
-	doc, err := os.ReadFile("../../infra/test_files/one_to_one_case_to_many_start_keys_bug.txt")
+	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_to_many_start_keys_bug.txt")
+	require.NoError(t, err)
+
+	params := GenerateParams{
+		DocStr:                      string(doc),
+		IsTransmitenteOverqualified: false,
+		IsAdquirenteOverqualified:   false,
+	}
+
+	got, err := generatorApp.Generate(params)
+
+	require.NoError(t, err)
+	assert.Equal(t, expected, got)
+}
+
+func TestGenerate_one_to_one_maritial_status_with_value_divorciado_bug_3(t *testing.T) {
+	generatorApp := NewGeneratorApp()
+
+	expected := `
+<fragmento indice="CABECALHO" />
+<br>
+<u>TRANSMITENTE(S)</u>:> <span><strong>MARVI EMPREENDIMENTOS LTDA.</strong>, CNPJ nº 12.941.307/0001-76, com sede na rua Rua Riachuelo, nº 205, Bairro Centro, Guabiruba/SC.</span>
+<br/>
+<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro CENTRO, Uruguaiana/RS.</span>
+<br>
+<u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 968, Folhas 108/110V, em 05/05/2025. 
+<br/><u>VALOR</u>: R$ 350.000,00 (trezentos e cinquenta mil reais).
+<br/><u>CONDIÇÕES</u>: Não constam.
+<br/><u>OBSERVAÇÕES</u>:
+<strong>ITBI</strong>: Recolhido no valor de R$ 9.674,16, com incidência sobre R$ 480.000,00, devidamente quitado. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
+<fragmento indice="FINALIZACAO_ATO" />.
+`
+
+	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_maritial_status_with_value_divorciado.txt")
 	require.NoError(t, err)
 
 	params := GenerateParams{

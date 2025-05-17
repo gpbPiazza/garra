@@ -136,7 +136,8 @@ func formatMaritialStatus(maritialStatus string, personSex string) (string, erro
 	}
 
 	maritialStatus = strings.ToLower(maritialStatus)
-	if strings.Contains(maritialStatus, "separado") {
+	if strings.Contains(maritialStatus, "separado") ||
+		strings.Contains(maritialStatus, "divorciado") {
 		switch strings.ToLower(personSex) {
 		case "masculino":
 			return "divorciado", nil
