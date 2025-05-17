@@ -18,7 +18,12 @@ type GenerateParams struct {
 	IsAdquirenteOverqualified   bool
 }
 
-func (app *GeneratorApp) Generate(generateParams GenerateParams) (string, error) {
+type GeneratorResponse struct {
+	MinutaHTML     string
+	TokensNotFound []string
+}
+
+func (app *GeneratorApp) Generate(generateParams GenerateParams) (GeneratorResponse, error) {
 	ex := extractor.New()
 
 	ex.Extract(generateParams.DocStr)
@@ -68,5 +73,13 @@ func (app *GeneratorApp) Generate(generateParams GenerateParams) (string, error)
 		FinalBookPages:   extracted.Result[extractor.FinalBookPages],
 	}
 
-	return minuta.Minuta(params)
+	minutaHTML, err := minuta.Minuta(params)
+	if err != nil {
+		return GeneratorResponse{}, err
+	}
+
+	return GeneratorResponse{
+		MinutaHTML:     minutaHTML,
+		TokensNotFound: extracted.TokensNotFound,
+	}, nil
 }

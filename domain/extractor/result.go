@@ -3,20 +3,20 @@ package extractor
 import "log"
 
 type Extracted struct {
-	Result        map[Identifier]string
-	DatasNotFound []Identifier
+	Result         map[Identifier]string
+	TokensNotFound []string
 }
 
 func (e *Extractor) Result() Extracted {
 	extracted := Extracted{
-		Result:        e.result,
-		DatasNotFound: nil,
+		Result:         e.result,
+		TokensNotFound: nil,
 	}
 
 	for _, t := range e.tokens {
 		if !t.IsExtracted {
 			log.Printf("token not found - token: '%s'", identifiersNames[t.Identifier])
-			extracted.DatasNotFound = append(extracted.DatasNotFound, t.Identifier)
+			extracted.TokensNotFound = append(extracted.TokensNotFound, identifiersNames[t.Identifier])
 		}
 
 		// This if and logs still for debuggin porpuses now

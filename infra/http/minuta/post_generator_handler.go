@@ -1,21 +1,30 @@
 package minuta
 
 import (
-	"log"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/gpbPiazza/garra/application/minuta"
+	"github.com/gpbPiazza/garra/infra/http/response"
 	"github.com/gpbPiazza/garra/infra/pdf"
+)
+
+const (
+	errCodeDOC = "#malformed_doc"
 )
 
 func PostGeneratorHandler(c *fiber.Ctx) error {
 	formFile, err := c.FormFile("ato_consultar_pdf")
 	if err != nil {
-		return c.Status(fiber.StatusBadRequest).SendString("Failed to upload file")
+		return response.BadRequest(c, response.ErrorInfo{
+			Code:    errCodeDOC,
+			Message: "Failed to find form file with key ato_consultar_pdf"},
+		)
 	}
 
 	if formFile.Header.Get("Content-Type") != "application/pdf" {
-		return c.Status(fiber.StatusBadRequest).SendString("Only PDF files are allowed")
+		return response.BadRequest(c, response.ErrorInfo{
+			Code:    errCodeDOC,
+			Message: "Missing expected Content-Type header"},
+		)
 	}
 
 	is_transmitente_overqualified := c.FormValue("is_transmitente_overqualified", "false")
@@ -31,12 +40,10 @@ func PostGeneratorHandler(c *fiber.Ctx) error {
 		IsAdquirenteOverqualified:   is_adquirente_overqualified == "true",
 	}
 
-	result, err := minutaGenerator.Generate(params)
+	resp, err := minutaGenerator.Generate(params)
 	if err != nil {
-		log.Printf("err to generate minuta err: %s", err)
-		return c.Status(fiber.StatusInternalServerError).SendString("server error")
+		return response.InternalError(c)
 	}
 
-	c.Response().Header.Add("Content-Type", "text/html")
-	return c.Status(fiber.StatusOK).SendString(result)
+	return response.OK(c, resp)
 }
