@@ -16,44 +16,48 @@ type token struct {
 	StartKeys   []string
 	EndKeys     []string
 	Offset      string
-	ResultKey   ResultKey
+	Identifier  Identifier
 	Value       string
 	IsExtracted bool
 }
 
 type Extractor struct {
-	result map[ResultKey]string
+	result map[Identifier]string
 	tokens []*token
 }
 
 func New() *Extractor {
 	return &Extractor{
-		result: make(map[ResultKey]string),
+		result: make(map[Identifier]string),
 		tokens: []*token{
 			{
 				StartKeys:   []string{"MATRÍCULA Nº"},
 				EndKeys:     []string{", CNM", ",CNM:"},
-				ResultKey:   Matricula,
+				Identifier:  Matricula,
 				IsExtracted: false,
+				Value:       defaultValue(Matricula),
 			},
 			{
 				StartKeys:   []string{"Cláusula Geral: ESCRITURA PÚBLICA DE"},
 				EndKeys:     []string{" que"},
-				ResultKey:   TitleAto,
+				Identifier:  TitleAto,
 				IsExtracted: false,
+				Value:       defaultValue(TitleAto),
 			},
 			{
 				StartKeys:   []string{"Data e hora do recebimento do ato pelo TJSC: "},
 				EndKeys:     []string{" -"},
-				ResultKey:   DataProtocolo,
+				Identifier:  DataProtocolo,
 				IsExtracted: false,
+				Value:       defaultValue(DataProtocolo),
 			},
 			{
 				StartKeys:   []string{"Parte :"},
 				EndKeys:     []string{"Pessoa:", "Data de Nascimento:"},
 				Offset:      "Outorgante",
-				ResultKey:   OutorganteName,
+				Identifier:  OutorganteName,
 				IsExtracted: false,
+				Value:       defaultValue(OutorganteName),
 			},
 			// {
 			// 	Start:       []string{"Profissão: ",},
@@ -66,71 +70,81 @@ func New() *Extractor {
 				StartKeys:   []string{"Nacionalidade: "},
 				EndKeys:     []string{" -"},
 				Offset:      "Outorgante",
-				ResultKey:   OutorganteNationality,
+				Identifier:  OutorganteNationality,
 				IsExtracted: false,
+				Value:       defaultValue(OutorganteNationality),
 			},
 			{
 				StartKeys:   []string{"Estado Civil: "},
 				EndKeys:     []string{" -"},
 				Offset:      "Outorgante",
-				ResultKey:   OutorganteEstadoCivil,
+				Identifier:  OutorganteEstadoCivil,
 				IsExtracted: false,
+				Value:       defaultValue(OutorganteEstadoCivil),
 			},
 			{
 				StartKeys:   []string{"Sexo:"},
 				EndKeys:     []string{"DocumentosDoc."},
 				Offset:      "Outorgante",
-				ResultKey:   OutorganteSex,
+				Identifier:  OutorganteSex,
 				IsExtracted: false,
+				Value:       defaultValue(OutorganteSex),
 			},
 			{
 				StartKeys:   []string{"Doc. Nº:"},
 				EndKeys:     []string{"/", "Doc. Tipo:", "EndereçosLogradouro:"},
 				Offset:      "Outorgante",
-				ResultKey:   OutorganteDocNumCPF_CNPJ,
+				Identifier:  OutorganteDocNumCPF_CNPJ,
 				IsExtracted: false,
+				Value:       defaultValue(OutorganteDocNumCPF_CNPJ),
 			},
 			{
 				StartKeys:   []string{"Doc. Tipo:"},
 				EndKeys:     []string{"Doc."},
 				Offset:      "Outorgante",
-				ResultKey:   OutorganteDocType,
+				Identifier:  OutorganteDocType,
 				IsExtracted: false,
+				Value:       defaultValue(OutorganteDocType),
 			},
 			{
 				StartKeys:   []string{"EndereçosLogradouro:"},
 				EndKeys:     []string{"Número:"},
 				Offset:      "Outorgante",
-				ResultKey:   OutorganteEnderecoRua,
+				Identifier:  OutorganteEnderecoRua,
 				IsExtracted: false,
+				Value:       defaultValue(OutorganteEnderecoRua),
 			},
 			{
 				StartKeys:   []string{"Número: "},
 				EndKeys:     []string{"Bairro:"},
 				Offset:      "Outorgante",
-				ResultKey:   OutorganteEnderecoN,
+				Identifier:  OutorganteEnderecoN,
 				IsExtracted: false,
+				Value:       defaultValue(OutorganteEnderecoN),
 			},
 			{
 				StartKeys:   []string{"Bairro:"},
 				EndKeys:     []string{"Complemento", "Cidade/UF:", ",", "Cidade:"},
 				Offset:      "Outorgante",
-				ResultKey:   OutorganteEnderecoBairro,
+				Identifier:  OutorganteEnderecoBairro,
 				IsExtracted: false,
+				Value:       defaultValue(OutorganteEnderecoBairro),
 			},
 			{
 				StartKeys:   []string{"Cidade/UF: "},
 				EndKeys:     []string{"CEP:"},
 				Offset:      "Outorgante",
-				ResultKey:   OutorganteEnderecoCidadeUF,
+				Identifier:  OutorganteEnderecoCidadeUF,
 				IsExtracted: false,
+				Value:       defaultValue(OutorganteEnderecoCidadeUF),
 			},
 			{
 				StartKeys:   []string{"Parte :"},
 				EndKeys:     []string{"Data de Nascimento:", "Pessoa:"},
 				Offset:      "Outorgado",
-				ResultKey:   OutorgadoName,
+				Identifier:  OutorgadoName,
 				IsExtracted: false,
+				Value:       defaultValue(OutorgadoName),
 			},
 			// {
 			// 	Start:       []string{"Profissão:",},
@@ -143,126 +157,144 @@ func New() *Extractor {
 				StartKeys:   []string{"Nacionalidade:"},
 				EndKeys:     []string{"- Sexo:"},
 				Offset:      "OutorgadoParte",
-				ResultKey:   OutorgadoNationality,
+				Identifier:  OutorgadoNationality,
 				IsExtracted: false,
+				Value:       defaultValue(OutorgadoNationality),
 			},
 			{
 				StartKeys:   []string{"Sexo:"},
 				EndKeys:     []string{"DocumentosDoc."},
 				Offset:      "OutorgadoParte",
-				ResultKey:   OutorgadoSex,
+				Identifier:  OutorgadoSex,
 				IsExtracted: false,
+				Value:       defaultValue(OutorgadoSex),
 			},
 			{
 				StartKeys:   []string{"Estado Civil:"},
 				EndKeys:     []string{" -"},
 				Offset:      "OutorgadoParte",
-				ResultKey:   OutorgadoEstadoCivil,
+				Identifier:  OutorgadoEstadoCivil,
 				IsExtracted: false,
+				Value:       defaultValue(OutorgadoEstadoCivil),
 			},
 			{
 				StartKeys:   []string{"Doc. Nº:"},
 				EndKeys:     []string{"Doc. Tipo:", "EndereçosLogradouro:"},
 				Offset:      "OutorgadoParte",
-				ResultKey:   OutorgadoDocNumCPF_CNPJ,
+				Identifier:  OutorgadoDocNumCPF_CNPJ,
 				IsExtracted: false,
+				Value:       defaultValue(OutorgadoDocNumCPF_CNPJ),
 			},
 			{
 				StartKeys:   []string{"DocumentosDoc. Tipo: "},
 				EndKeys:     []string{"Doc."},
 				Offset:      "OutorgadoParte",
-				ResultKey:   OutorgadoDocType,
+				Identifier:  OutorgadoDocType,
 				IsExtracted: false,
+				Value:       defaultValue(OutorgadoDocType),
 			},
 			{
 				StartKeys:   []string{"EndereçosLogradouro:"},
 				EndKeys:     []string{"Número:"},
 				Offset:      "OutorgadoParte",
-				ResultKey:   OutorgadoEnderecoRua,
+				Identifier:  OutorgadoEnderecoRua,
 				IsExtracted: false,
+				Value:       defaultValue(OutorgadoEnderecoRua),
 			},
 			{
 				StartKeys:   []string{"Número:"},
 				EndKeys:     []string{"Bairro:"},
 				Offset:      "OutorgadoParte",
-				ResultKey:   OutorgadoEnderecoN,
+				Identifier:  OutorgadoEnderecoN,
 				IsExtracted: false,
+				Value:       defaultValue(OutorgadoEnderecoN),
 			},
 			{
 				StartKeys:   []string{"Bairro: "},
 				EndKeys:     []string{"Cidade/UF:", "CEP:", "Complemento"},
 				Offset:      "OutorgadoParte",
-				ResultKey:   OutorgadoEnderecoBairro,
+				Identifier:  OutorgadoEnderecoBairro,
 				IsExtracted: false,
+				Value:       defaultValue(OutorgadoEnderecoBairro),
 			},
 			{
 				StartKeys:   []string{"Cidade/UF:"},
 				EndKeys:     []string{"CEP:"},
 				Offset:      "OutorgadoParte",
-				ResultKey:   OutorgadoEnderecoCidadeUF,
+				Identifier:  OutorgadoEnderecoCidadeUF,
 				IsExtracted: false,
+				Value:       defaultValue(OutorgadoEnderecoCidadeUF),
 			},
 			{
 				StartKeys:   []string{" "},
 				EndKeys:     []string{"Endereço:"},
 				Offset:      "Serventia:",
-				ResultKey:   TabelionatoName,
+				Identifier:  TabelionatoName,
 				IsExtracted: false,
+				Value:       defaultValue(TabelionatoName),
 			},
 			{
 				StartKeys:   []string{"Município/UF:"},
 				EndKeys:     []string{"Telefone(s):"},
 				Offset:      "Serventia:",
-				ResultKey:   TabelionatoCityUF,
+				Identifier:  TabelionatoCityUF,
 				IsExtracted: false,
+				Value:       defaultValue(TabelionatoCityUF),
 			},
 			{
 				StartKeys:   []string{":"},
 				EndKeys:     []string{"Nome do Livro:"},
 				Offset:      "Código do Livro",
-				ResultKey:   BookNum,
+				Identifier:  BookNum,
 				IsExtracted: false,
+				Value:       defaultValue(BookNum),
 			},
 			{
 				StartKeys:   []string{"Página Inicial:"},
 				EndKeys:     []string{"Página Final:"},
 				Offset:      "Código do Livro",
-				ResultKey:   InitialBookPages,
+				Identifier:  InitialBookPages,
 				IsExtracted: false,
+				Value:       defaultValue(InitialBookPages),
 			},
 			{
 				StartKeys:   []string{"Página Final:"},
 				EndKeys:     []string{"Data do Registro:"},
 				Offset:      "Código do Livro",
-				ResultKey:   FinalBookPages,
+				Identifier:  FinalBookPages,
 				IsExtracted: false,
+				Value:       defaultValue(FinalBookPages),
 			},
 			{
 				StartKeys:   []string{"Data do Registro: "},
 				EndKeys:     []string{"Nome do Imposto", ","},
 				Offset:      "Código do Livro",
-				ResultKey:   EscrituraMadeDate,
+				Identifier:  EscrituraMadeDate,
 				IsExtracted: false,
+				Value:       defaultValue(EscrituraMadeDate),
 			},
 			{
 				StartKeys:   []string{"preço total, certo e ajustado de R$", "certo e ajustadode R$"},
 				EndKeys:     []string{", ", "/"},
 				Offset:      "Cláusula Geral:",
-				ResultKey:   EscrituraValor,
+				Identifier:  EscrituraValor,
 				IsExtracted: false,
+				Value:       defaultValue(EscrituraValor),
 			},
 			{
 				StartKeys:   []string{"importância de R$"},
 				EndKeys:     []string{" correspondente"},
 				Offset:      "Cláusula Geral:",
-				ResultKey:   ItbiValor,
+				Identifier:  ItbiValor,
 				IsExtracted: false,
+				Value:       defaultValue(ItbiValor),
 			},
 			{
 				StartKeys:   []string{"Valor do Negócio: R$"},
 				EndKeys:     []string{"Cláusula Geral:"},
-				ResultKey:   ItbiIncidenciaValor,
+				Identifier:  ItbiIncidenciaValor,
 				IsExtracted: false,
+				Value:       defaultValue(ItbiIncidenciaValor),
 			},
 		},
 	}
@@ -274,37 +306,18 @@ func (e *Extractor) Extract(text string) {
 			continue
 		}
 
+		e.result[token.Identifier] = token.Value
+
 		val, err := extractTokenValue(text, *token)
 		if err != nil {
-			log.Printf("extract token val err - token: %s - err: %s", resultKeyNames[token.ResultKey], err)
+			log.Printf("extract token val err - token: %s - err: %s", identifiersNames[token.Identifier], err)
 			continue
 		}
 
 		token.Value = val
 		token.IsExtracted = true
-		e.result[token.ResultKey] = token.Value
+		e.result[token.Identifier] = val
 	}
-}
-
-func (e *Extractor) Result() map[ResultKey]string {
-	for _, t := range e.tokens {
-		if !t.IsExtracted {
-			log.Printf("token not found - token: '%s'", resultKeyNames[t.ResultKey])
-		}
-
-		if len(t.Value) >= 55 {
-			log.Printf("maybe token value is incorrect - token: '%s'", resultKeyNames[t.ResultKey])
-			log.Printf("token value: '%s'", t.Value)
-			// log.Printf("token: '%+v'", t)
-		}
-
-		// if t.ResultKey == OutorgadoEnderecoBairro {
-		// 	log.Printf("debug - token: '%s'", resultKeyNames[t.ResultKey])
-		// 	log.Printf("token value: '%s'", t.Value)
-		// }
-	}
-
-	return e.result
 }
 
 func extractTokenValue(text string, token token) (string, error) {
@@ -360,4 +373,11 @@ func extractTokenValue(text string, token token) (string, error) {
 	endIndex += startIndex
 
 	return strings.TrimSpace(text[startIndex:endIndex]), nil
+}
+
+var NotFoundDefaultSuffix = "NÃO ENCONTRADO"
+
+// defaultValue is just identifier name + not found string
+func defaultValue(i Identifier) string {
+	return fmt.Sprintf("[[%s %s]]", identifiersNames[i], NotFoundDefaultSuffix)
 }

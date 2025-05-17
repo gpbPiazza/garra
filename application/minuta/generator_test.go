@@ -241,3 +241,36 @@ func TestGenerate_one_to_one_maritial_status_with_value_divorciado_bug_3(t *test
 	require.NoError(t, err)
 	assert.Equal(t, expected, got)
 }
+
+func TestGenerate_not_found_case(t *testing.T) {
+	generatorApp := NewGeneratorApp()
+
+	expected := `
+<fragmento indice="CABECALHO" />
+<br>
+<u>TRANSMITENTE(S)</u>:> <span><strong>MARVI EMPREENDIMENTOS LTDA.</strong>, supraqualificada.</span>
+<br/>
+<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro CENTRO, Uruguaiana/RS.</span>
+<br>
+<u>FORMA DO TÍTULO</u>: Escritura Pública de [[Título do Ato NÃO ENCONTRADO]], lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 968, Folhas 108/110V, em 05/05/2025. 
+<br/><u>VALOR</u>: R$ [[Valor da escrita NÃO ENCONTRADO]].
+<br/><u>CONDIÇÕES</u>: Não constam.
+<br/><u>OBSERVAÇÕES</u>:
+<strong>ITBI</strong>: Recolhido no valor de R$ [[valor do ITBI NÃO ENCONTRADO]], com incidência sobre R$ [[Valor da incidência do ITBI NÃO ENCONTRADO]], devidamente quitado. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
+<fragmento indice="FINALIZACAO_ATO" />.
+`
+
+	doc, err := os.ReadFile("../../infra/test_files/ato_consultar_tjsc_1_to_1_not_found.txt")
+	require.NoError(t, err)
+
+	params := GenerateParams{
+		DocStr:                      string(doc),
+		IsTransmitenteOverqualified: true,
+		IsAdquirenteOverqualified:   false,
+	}
+
+	got, err := generatorApp.Generate(params)
+
+	require.NoError(t, err)
+	assert.Equal(t, expected, got)
+}

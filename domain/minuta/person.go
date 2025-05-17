@@ -6,6 +6,8 @@ import (
 	"log"
 	"regexp"
 	"strings"
+
+	"github.com/gpbPiazza/garra/domain/extractor"
 )
 
 type AddressParams struct {
@@ -124,10 +126,18 @@ func fisicalPerson(person PersonParams) (string, error) {
 }
 
 func formatName(name string) string {
+	if notFound(name) {
+		return name
+	}
+
 	return strings.TrimSpace(strings.ToUpper(name))
 }
 
 func formatMaritialStatus(maritialStatus string, personSex string) (string, error) {
+	if notFound(maritialStatus) {
+		return maritialStatus, nil
+	}
+
 	if maritialStatus == "" {
 		return "", errors.New("error - maritialStatus is required")
 	}
@@ -168,6 +178,10 @@ func formatMaritialStatus(maritialStatus string, personSex string) (string, erro
 }
 
 func formatCityUF(cityUF string) (string, error) {
+	if notFound(cityUF) {
+		return cityUF, nil
+	}
+
 	cityUFSplt := strings.Split(cityUF, "/")
 	if len(cityUFSplt) != 2 {
 		return "", errors.New("cityUF can not be splited by /")
@@ -180,6 +194,10 @@ func formatCityUF(cityUF string) (string, error) {
 }
 
 func formatNationality(nationality string) (string, error) {
+	if notFound(nationality) {
+		return nationality, nil
+	}
+
 	var fNationality string
 
 	switch strings.ToLower(nationality) {
@@ -193,6 +211,10 @@ func formatNationality(nationality string) (string, error) {
 }
 
 func formatCNPJDoc(docValue string) (string, error) {
+	if notFound(docValue) {
+		return docValue, nil
+	}
+
 	var formattedDoc string
 	docValue = strings.TrimSpace(docValue)
 
@@ -213,6 +235,10 @@ func formatCNPJDoc(docValue string) (string, error) {
 }
 
 func formatCPFDoc(docValue string) (string, error) {
+	if notFound(docValue) {
+		return docValue, nil
+	}
+
 	var formattedDoc string
 	docValue = strings.TrimSpace(docValue)
 
@@ -226,6 +252,10 @@ func formatCPFDoc(docValue string) (string, error) {
 }
 
 func formatNeighborhood(neighborhood string) (string, error) {
+	if notFound(neighborhood) {
+		return neighborhood, nil
+	}
+
 	if strings.Contains(neighborhood, "/") {
 		return removeDateFromStr(neighborhood), nil
 	}
@@ -235,8 +265,16 @@ func formatNeighborhood(neighborhood string) (string, error) {
 
 // Ex: "POÇO FUNDO24/04/2025" OUTPUT: "POÇO FUNDO"
 func removeDateFromStr(str string) string {
+	if notFound(str) {
+		return str
+	}
+
 	nSplited := strings.Split(str, "/")
 	str = nSplited[0]
 	str = str[:len(str)-2]
 	return str
+}
+
+func notFound(val string) bool {
+	return strings.Contains(val, extractor.NotFoundDefaultSuffix)
 }

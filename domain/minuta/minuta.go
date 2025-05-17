@@ -45,30 +45,15 @@ type MinutaParams struct {
 }
 
 func Minuta(params MinutaParams) (string, error) {
-	transmitante, err := minutaPerson(params.Transmitente)
-	if err != nil {
-		return "", err
-	}
+	transmitante, _ := minutaPerson(params.Transmitente)
 
-	adquidirente, err := minutaPerson(params.Adquirente)
-	if err != nil {
-		return "", err
-	}
+	adquidirente, _ := minutaPerson(params.Adquirente)
 
-	tabelionatoCityUF, err := formatCityUF(params.TabelionatoCityUF)
-	if err != nil {
-		return "", err
-	}
+	tabelionatoCityUF, _ := formatCityUF(params.TabelionatoCityUF)
 
-	escrituraMadeDate, err := formatDate(params.EscrituraMadeDate)
-	if err != nil {
-		return "", err
-	}
+	escrituraMadeDate, _ := formatDate(params.EscrituraMadeDate)
 
-	value, err := formatValue(params.EscrituraValor)
-	if err != nil {
-		return "", err
-	}
+	value, _ := formatValue(params.EscrituraValor)
 
 	replacer := strings.NewReplacer(
 		Transmitente.String(), transmitante,
@@ -89,6 +74,10 @@ func Minuta(params MinutaParams) (string, error) {
 }
 
 func capitalizeEachWord(sentence string) string {
+	if notFound(sentence) {
+		return sentence
+	}
+
 	words := strings.Split(sentence, " ")
 
 	for i, word := range words {
@@ -112,6 +101,10 @@ func capitalizeEachWord(sentence string) string {
 }
 
 func formatDate(dateStr string) (string, error) {
+	if notFound(dateStr) {
+		return dateStr, nil
+	}
+
 	if len(dateStr) == 24 { // This case formats the EscrituraMadeDate whenever the end key ends with the page
 		dateStr = dateStr[:len(dateStr)-10]
 	}
@@ -134,6 +127,10 @@ func formatDate(dateStr string) (string, error) {
 
 // Código feito por IA cuidado bixo
 func formatValue(val string) (string, error) {
+	if notFound(val) {
+		return val, nil
+	}
+
 	// Check if input is empty
 	if val == "" {
 		return "", fmt.Errorf("empty value provided")

@@ -40,20 +40,13 @@ func titleAtof(t string) string {
 
 func Cabecalho(params CabecalhoParams) string {
 	replacer := strings.NewReplacer(
-		TypeAto.String(),
-		params.AtoType,
-		NumAto.String(),
-		params.NumAto,
-		Matricula.String(),
-		params.Matricula,
-		DataRegistro.String(),
-		registroDatef(params.RegistroDate),
-		Protocolo.String(),
-		params.Protocolo,
-		DataProtocolo.String(),
-		params.ProtocoloDate.Format(DayMonthYearFormat),
-		TitleAto.String(),
-		titleAtof(params.TitleAto),
+		TypeAto.String(), params.AtoType,
+		NumAto.String(), params.NumAto,
+		Matricula.String(), params.Matricula,
+		DataRegistro.String(), registroDatef(params.RegistroDate),
+		Protocolo.String(), params.Protocolo,
+		DataProtocolo.String(), params.ProtocoloDate.Format(DayMonthYearFormat),
+		TitleAto.String(), titleAtof(params.TitleAto),
 	)
 
 	return replacer.Replace(cabecalhoTemplate)
