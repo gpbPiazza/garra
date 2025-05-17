@@ -142,3 +142,36 @@ func TestGenerate_one_to_one_buyer_CPF_and_sellerr_CNPJ_2(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, expected, got)
 }
+
+func TestGenerate_one_to_one_offset_of_some_key_in_between_pages_bug_1(t *testing.T) {
+	generatorApp := NewGeneratorApp()
+
+	expected := `
+<fragmento indice="CABECALHO" />
+<br>
+<u>TRANSMITENTE(S)</u>:> <span><strong>MORATTA EMPREENDIMENTOS IMOBILIÁRIOS LTDA.</strong>, CNPJ nº 08.475.810/0001-06, com sede na rua RUA MATHILDE SCHAEFER, nº 173, Bairro SÃO LUIZ, Brusque/SC.</span>
+<br/>
+<u>ADQUIRENTE(S)</u>:><span><strong>NADIR HASSMANN</strong>, brasileiro, divorciada, CPF nº 823.199.959-00, residente e domiciliado na RUA OTTO KRIEGER, nº 40, Bairro SÃO LUIZ, Brusque/SC.</span>
+<br>
+<u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 967, Folhas 018/020V, em 14/04/2025. 
+<br/><u>VALOR</u>: R$ 340.000,00 (trezentos e quarenta mil reais).
+<br/><u>CONDIÇÕES</u>: Não constam.
+<br/><u>OBSERVAÇÕES</u>:
+<strong>ITBI</strong>: Recolhido no valor de R$ 6.800,00, com incidência sobre R$ 340.000,00, devidamente quitado. No ato da lavratura da Escritura Pública, foram apresentadas as certidões previstas em Lei. Com as demais cláusulas e condições da Escritura Pública. <strong> NO PRAZO REGULAMENTAR SERÁ EMITIDA A DOI</strong>.
+<fragmento indice="FINALIZACAO_ATO" />.
+`
+
+	doc, err := os.ReadFile("../../infra/test_files/offset_of_some_key_in_between_pages_bug.txt")
+	require.NoError(t, err)
+
+	params := GenerateParams{
+		DocStr:                      string(doc),
+		IsTransmitenteOverqualified: false,
+		IsAdquirenteOverqualified:   false,
+	}
+
+	got, err := generatorApp.Generate(params)
+
+	require.NoError(t, err)
+	assert.Equal(t, expected, got)
+}
