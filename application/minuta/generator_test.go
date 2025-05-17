@@ -194,7 +194,7 @@ func TestGenerate_one_to_one_case_to_many_start_keys_bug_2(t *testing.T) {
 <fragmento indice="FINALIZACAO_ATO" />.
 `
 
-	doc, err := os.ReadFile("../../infra/test_files/test_bug_2.txt")
+	doc, err := os.ReadFile("../../infra/test_files/one_to_one_case_to_many_start_keys_bug.txt")
 	require.NoError(t, err)
 
 	params := GenerateParams{
