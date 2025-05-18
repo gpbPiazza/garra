@@ -5,8 +5,8 @@ import (
 )
 
 type ErrorInfo struct {
-	Message string `json:"message,omitempty"`
-	Code    string `json:"code,omitempty"`
+	Message string `json:"message"`
+	Code    string `json:"code"`
 }
 
 type Response struct {

@@ -19,8 +19,8 @@ type GenerateParams struct {
 }
 
 type GeneratorResponse struct {
-	MinutaHTML     string
-	TokensNotFound []string
+	MinutaHTML     string   `json:"minuta_html"`
+	TokensNotFound []string `json:"tokens_not_found"`
 }
 
 func (app *GeneratorApp) Generate(generateParams GenerateParams) (GeneratorResponse, error) {
