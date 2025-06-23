@@ -79,7 +79,7 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF_2(t *testing.T) {
 	expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span><strong>MARIA JOSE PEREIRA</strong>, supraqualificada.</span>
+<u>TRANSMITENTE(S)</u>:> <span><strong>MARIA JOSE PEREIRA</strong>, brasileiro, solteira, CPF nº 678.240.649-72, residente e domiciliado na Rua João Tormena, nº 422, Bairro Poço Fundo, Brusque/SC.</span>
 <br/>
 <u>ADQUIRENTE(S)</u>:><span><strong>BBK EMPREENDIMENTOS IMOBILIÁRIOS LTDA.</strong>, CNPJ nº 20.025.828/0001-01, com sede na rua Rua Alberto Klabunde, Nº 294 0, nº 294, Bairro Águas Claras, Brusque/SC.</span>
 <br>
@@ -100,7 +100,7 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF_2(t *testing.T) {
 
 	params := GenerateParams{
 		DocStr:                      string(doc),
-		IsTransmitenteOverqualified: true,
+		IsTransmitenteOverqualified: false,
 		IsAdquirenteOverqualified:   false,
 	}
 

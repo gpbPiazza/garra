@@ -262,7 +262,7 @@ func formatNeighborhood(neighborhood string) (string, error) {
 	}
 
 	if strings.Contains(neighborhood, "/") {
-		return removeDateFromStr(neighborhood), nil
+		neighborhood = removeDateFromStr(neighborhood)
 	}
 
 	return capitalizeEachWord(neighborhood), nil
