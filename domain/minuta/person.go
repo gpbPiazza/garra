@@ -64,11 +64,13 @@ func juridicPerson(person PersonParams) (string, error) {
 		return "", err
 	}
 
+	street := formatStreet(person.Address.Rua)
+
 	return fmt.Sprintf(
 		"<strong>%s.</strong>, CNPJ nº %s, com sede na rua %s, nº %s, Bairro %s, %s.",
 		name,
 		doc,
-		person.Address.Rua,
+		street,
 		person.Address.Num,
 		neighborhood,
 		cityUF,
@@ -106,6 +108,8 @@ func fisicalPerson(person PersonParams) (string, error) {
 		return "", err
 	}
 
+	street := formatStreet(person.Address.Rua)
+
 	maritialStatus, err := formatMaritialStatus(person.MaritalStatus, person.Sex)
 	if err != nil {
 		log.Printf("err on formatMaritialStatus err: %s", err)
@@ -117,8 +121,9 @@ func fisicalPerson(person PersonParams) (string, error) {
 		name,
 		nationality,
 		maritialStatus,
+		// "profissão do cara",
 		doc,
-		person.Address.Rua,
+		street,
 		person.Address.Num,
 		neighborhood,
 		cityUF,
@@ -260,7 +265,7 @@ func formatNeighborhood(neighborhood string) (string, error) {
 		return removeDateFromStr(neighborhood), nil
 	}
 
-	return neighborhood, nil
+	return capitalizeEachWord(neighborhood), nil
 }
 
 // Ex: "POÇO FUNDO24/04/2025" OUTPUT: "POÇO FUNDO"
@@ -277,4 +282,23 @@ func removeDateFromStr(str string) string {
 
 func notFound(val string) bool {
 	return strings.Contains(val, extractor.NotFoundDefaultSuffix)
+}
+
+func formatStreet(street string) string {
+	street = capitalizeEachWord(street)
+
+	words := strings.Split(street, " ")
+
+	for i, word := range words {
+		if strings.EqualFold(word, "De") {
+			words[i] = Lower(word)
+			continue
+		}
+
+		if len(word) <= 2 {
+			words[i] = Title(word)
+		}
+	}
+
+	return strings.Join(words, " ")
 }

@@ -3,6 +3,9 @@ package minuta
 import (
 	"fmt"
 	"strings"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 const minutaTemplate = `
@@ -84,7 +87,8 @@ func capitalizeEachWord(sentence string) string {
 		if len(word) == 0 {
 			continue
 		}
-		word = strings.ToLower(word)
+
+		word = Lower(word)
 
 		isLetter := len(word) == 1
 		isPreposition := len(word) == 2
@@ -93,8 +97,7 @@ func capitalizeEachWord(sentence string) string {
 			continue
 		}
 
-		firstLetter := strings.ToUpper(string(word[0]))
-		words[i] = firstLetter + word[1:]
+		words[i] = Title(word)
 	}
 
 	return strings.Join(words, " ")
@@ -190,4 +193,16 @@ func formatValue(val string) (string, error) {
 
 	// Final formatting
 	return fmt.Sprintf("%s %s", numericPart, textPart), nil
+}
+
+func Upper(str string) string {
+	return cases.Upper(language.BrazilianPortuguese, cases.Compact).String(str)
+}
+
+func Lower(str string) string {
+	return cases.Lower(language.BrazilianPortuguese, cases.Compact).String(str)
+}
+
+func Title(str string) string {
+	return cases.Title(language.BrazilianPortuguese, cases.Compact).String(str)
 }

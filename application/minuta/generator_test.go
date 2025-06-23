@@ -48,7 +48,7 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF(t *testing.T) {
 <br>
 <u>TRANSMITENTE(S)</u>:> <span><strong>MARIA EDUARDA DOS SANTOS</strong>, brasileiro, solteira, CPF nº 051.737.249-51, residente e domiciliado na Rua Nelson Carneiro Borges, nº 284, Bairro São Luiz, Brusque/SC.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>ABSOLUT CONSTRUTORA E INCORPORADORA LTDA.</strong>, CNPJ nº 05.768.477/0001-35, com sede na rua R CENTENARIO, nº 13, Bairro Santa Terezinha, Brusque/SC.</span>
+<u>ADQUIRENTE(S)</u>:><span><strong>ABSOLUT CONSTRUTORA E INCORPORADORA LTDA.</strong>, CNPJ nº 05.768.477/0001-35, com sede na rua R Centenario, nº 13, Bairro Santa Terezinha, Brusque/SC.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 965, Folhas 124/126V, em 26/03/2025. 
 <br/><u>VALOR</u>: R$ 210.000,00 (duzentos e dez mil reais).
@@ -81,7 +81,7 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF_2(t *testing.T) {
 <br>
 <u>TRANSMITENTE(S)</u>:> <span><strong>MARIA JOSE PEREIRA</strong>, supraqualificada.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>BBK EMPREENDIMENTOS IMOBILIÁRIOS LTDA.</strong>, CNPJ nº 20.025.828/0001-01, com sede na rua RUA ALBERTO KLABUNDE, Nº 294 0, nº 294, Bairro ÁGUAS CLARAS, Brusque/SC.</span>
+<u>ADQUIRENTE(S)</u>:><span><strong>BBK EMPREENDIMENTOS IMOBILIÁRIOS LTDA.</strong>, CNPJ nº 20.025.828/0001-01, com sede na rua Rua Alberto Klabunde, Nº 294 0, nº 294, Bairro Águas Claras, Brusque/SC.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 965, Folhas 110/112V, em 26/03/2025. 
 <br/><u>VALOR</u>: R$ 200.000,00 (duzentos mil reais).
@@ -149,9 +149,9 @@ func TestGenerate_one_to_one_offset_of_some_key_in_between_pages_bug_1(t *testin
 	expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span><strong>MORATTA EMPREENDIMENTOS IMOBILIÁRIOS LTDA.</strong>, CNPJ nº 08.475.810/0001-06, com sede na rua RUA MATHILDE SCHAEFER, nº 173, Bairro SÃO LUIZ, Brusque/SC.</span>
+<u>TRANSMITENTE(S)</u>:> <span><strong>MORATTA EMPREENDIMENTOS IMOBILIÁRIOS LTDA.</strong>, CNPJ nº 08.475.810/0001-06, com sede na rua Rua Mathilde Schaefer, nº 173, Bairro São Luiz, Brusque/SC.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>NADIR HASSMANN</strong>, brasileiro, divorciada, CPF nº 823.199.959-00, residente e domiciliado na RUA OTTO KRIEGER, nº 40, Bairro SÃO LUIZ, Brusque/SC.</span>
+<u>ADQUIRENTE(S)</u>:><span><strong>NADIR HASSMANN</strong>, brasileiro, divorciada, CPF nº 823.199.959-00, residente e domiciliado na Rua Otto Krieger, nº 40, Bairro São Luiz, Brusque/SC.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 967, Folhas 018/020V, em 14/04/2025. 
 <br/><u>VALOR</u>: R$ 340.000,00 (trezentos e quarenta mil reais).
@@ -217,7 +217,7 @@ func TestGenerate_one_to_one_maritial_status_with_value_divorciado_bug_3(t *test
 <br>
 <u>TRANSMITENTE(S)</u>:> <span><strong>MARVI EMPREENDIMENTOS LTDA.</strong>, CNPJ nº 12.941.307/0001-76, com sede na rua Rua Riachuelo, nº 205, Bairro Centro, Guabiruba/SC.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro CENTRO, Uruguaiana/RS.</span>
+<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro Centro, Uruguaiana/RS.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 968, Folhas 108/110V, em 05/05/2025. 
 <br/><u>VALOR</u>: R$ 350.000,00 (trezentos e cinquenta mil reais).
@@ -250,7 +250,7 @@ func TestGenerate_not_found_case(t *testing.T) {
 <br>
 <u>TRANSMITENTE(S)</u>:> <span><strong>MARVI EMPREENDIMENTOS LTDA.</strong>, supraqualificada.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro CENTRO, Uruguaiana/RS.</span>
+<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro Centro, Uruguaiana/RS.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de [[Título do Ato NÃO ENCONTRADO]], lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 968, Folhas 108/110V, em 05/05/2025. 
 <br/><u>VALOR</u>: R$ [[Valor da escrita NÃO ENCONTRADO]].
