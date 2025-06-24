@@ -1,10 +1,12 @@
 package extractor
 
-import "log"
+import (
+	"log"
+)
 
 type Extracted struct {
 	Result         map[Identifier]string
-	TokensNotFound []string
+	TokensNotFound []*Token
 }
 
 func (e *Extractor) Result() Extracted {
@@ -15,8 +17,8 @@ func (e *Extractor) Result() Extracted {
 
 	for _, t := range e.tokens {
 		if !t.IsExtracted {
-			log.Printf("token not found - token: '%s'", identifiersNames[t.Identifier])
-			extracted.TokensNotFound = append(extracted.TokensNotFound, identifiersNames[t.Identifier])
+			log.Printf("token not found - token: '%s'", IdentifiersNames[t.Identifier])
+			extracted.TokensNotFound = append(extracted.TokensNotFound, t)
 		}
 
 		// This if and logs still for debuggin porpuses now
@@ -24,7 +26,7 @@ func (e *Extractor) Result() Extracted {
 		// because we have a idea of how much long is the data that we want to extract
 		// for each token.
 		if len(t.Value) >= 55 {
-			log.Printf("maybe token value is incorrect - token: '%s'", identifiersNames[t.Identifier])
+			log.Printf("maybe token value is incorrect - token: '%s'", IdentifiersNames[t.Identifier])
 			log.Printf("token value: '%s'", t.Value)
 		}
 	}

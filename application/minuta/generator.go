@@ -80,8 +80,17 @@ func (app *GeneratorApp) Generate(generateParams GenerateParams) (GeneratorRespo
 		return GeneratorResponse{}, err
 	}
 
+	var tokensNotFoundIdentifiers []string
+	for _, t := range extracted.TokensNotFound {
+		if t.Identifier == extractor.OutorgadoJob && minuta.IsJuridicPerson(params.Adquirente.DocType) ||
+			t.Identifier == extractor.OutorganteJob && minuta.IsJuridicPerson(params.Transmitente.DocType) {
+			continue
+		}
+		tokensNotFoundIdentifiers = append(tokensNotFoundIdentifiers, extractor.IdentifiersNames[t.Identifier])
+	}
+
 	return GeneratorResponse{
 		MinutaHTML:     minutaHTML,
-		TokensNotFound: extracted.TokensNotFound,
+		TokensNotFound: tokensNotFoundIdentifiers,
 	}, nil
 }

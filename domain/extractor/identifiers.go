@@ -49,7 +49,7 @@ const (
 	ItbiIncidenciaValor
 )
 
-var identifiersNames = map[Identifier]string{
+var IdentifiersNames = map[Identifier]string{
 	TypeAto:                    "Tipo do Ato",
 	NumAto:                     "Número do Ato",
 	TitleAto:                   "Título do Ato",

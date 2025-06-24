@@ -25,15 +25,24 @@ type PersonParams struct {
 	Sex             string
 }
 
+func IsJuridicPerson(docType string) bool {
+	return strings.EqualFold("CNPJ", docType)
+}
+
+func IsFisicalPerson(docType string) bool {
+	return strings.EqualFold("CPF", docType)
+}
+
 func minutaPerson(person PersonParams) (string, error) {
-	switch strings.ToUpper(person.DocType) {
-	case "CNPJ":
+	if IsJuridicPerson(person.DocType) {
 		return juridicPerson(person)
-	case "CPF":
-		return fisicalPerson(person)
-	default:
-		return "", fmt.Errorf("docType not mapped - type %s", person.DocType)
 	}
+
+	if IsFisicalPerson(person.DocType) {
+		return fisicalPerson(person)
+	}
+
+	return "", fmt.Errorf("docType not mapped - type %s", person.DocType)
 }
 
 func juridicPerson(person PersonParams) (string, error) {

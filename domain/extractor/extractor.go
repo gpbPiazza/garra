@@ -7,12 +7,12 @@ import (
 	"strings"
 )
 
-// token is the relation between the data to find in a document and
+// Token is the relation between the data to find in a document and
 // the Key to replace in a minuta template.
 //
 // Uses start and end keys to find Value
-// Uses Replace to change Key into template by token.Value
-type token struct {
+// Uses Replace to change Key into template by Token.Value
+type Token struct {
 	StartKeys, EndKeys []string
 	Offset, EndOffset  string
 	Identifier         Identifier
@@ -22,13 +22,13 @@ type token struct {
 
 type Extractor struct {
 	result map[Identifier]string
-	tokens []*token
+	tokens []*Token
 }
 
 func New() *Extractor {
 	return &Extractor{
 		result: make(map[Identifier]string),
-		tokens: []*token{
+		tokens: []*Token{
 			{
 				StartKeys:   []string{"MATRÍCULA Nº"},
 				EndKeys:     []string{", CNM", ",CNM:"},
@@ -312,7 +312,7 @@ func (e *Extractor) Extract(text string) {
 
 		val, err := extractTokenValue(text, *token)
 		if err != nil {
-			log.Printf("extract token val err - token: %s - err: %s", identifiersNames[token.Identifier], err)
+			log.Printf("extract token val err - token: %s - err: %s", IdentifiersNames[token.Identifier], err)
 			continue
 		}
 
@@ -322,7 +322,7 @@ func (e *Extractor) Extract(text string) {
 	}
 }
 
-func extractTokenValue(text string, token token) (string, error) {
+func extractTokenValue(text string, token Token) (string, error) {
 	if len(token.StartKeys) == 0 {
 		return "", errors.New("token start key is empty")
 	}
@@ -389,5 +389,5 @@ var NotFoundDefaultSuffix = "NÃO ENCONTRADO"
 
 // defaultValue is just identifier name + not found string
 func defaultValue(i Identifier) string {
-	return fmt.Sprintf("[[%s %s]]", identifiersNames[i], NotFoundDefaultSuffix)
+	return fmt.Sprintf("[[%s %s]]", IdentifiersNames[i], NotFoundDefaultSuffix)
 }
