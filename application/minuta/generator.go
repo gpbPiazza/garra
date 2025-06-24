@@ -47,6 +47,7 @@ func (app *GeneratorApp) Generate(generateParams GenerateParams) (GeneratorRespo
 			DocNum_CPF_CNPJ: extracted.Result[extractor.OutorganteDocNumCPF_CNPJ],
 			DocType:         extracted.Result[extractor.OutorganteDocType],
 			Sex:             extracted.Result[extractor.OutorganteSex],
+			Job:             extracted.Result[extractor.OutorganteJob],
 			Address: minuta.AddressParams{
 				Rua:          extracted.Result[extractor.OutorganteEnderecoRua],
 				Num:          extracted.Result[extractor.OutorganteEnderecoN],
@@ -62,6 +63,7 @@ func (app *GeneratorApp) Generate(generateParams GenerateParams) (GeneratorRespo
 			DocNum_CPF_CNPJ: extracted.Result[extractor.OutorgadoDocNumCPF_CNPJ],
 			DocType:         extracted.Result[extractor.OutorgadoDocType],
 			Sex:             extracted.Result[extractor.OutorgadoSex],
+			Job:             extracted.Result[extractor.OutorgadoJob],
 			Address: minuta.AddressParams{
 				Rua:          extracted.Result[extractor.OutorgadoEnderecoRua],
 				Num:          extracted.Result[extractor.OutorgadoEnderecoN],

@@ -13,12 +13,11 @@ import (
 // Uses start and end keys to find Value
 // Uses Replace to change Key into template by token.Value
 type token struct {
-	StartKeys   []string
-	EndKeys     []string
-	Offset      string
-	Identifier  Identifier
-	Value       string
-	IsExtracted bool
+	StartKeys, EndKeys []string
+	Offset, EndOffset  string
+	Identifier         Identifier
+	Value              string
+	IsExtracted        bool
 }
 
 type Extractor struct {
@@ -59,13 +58,15 @@ func New() *Extractor {
 				IsExtracted: false,
 				Value:       defaultValue(OutorganteName),
 			},
-			// {
-			// 	Start:       []string{"Profissão: ",},
-			// 	End:         []string{" -"},
-			// 	Offset:      "Outorgante",
-			// 	ResultKey:   OutorganteJob,
-			// 	IsExtracted: false,
-			// },
+			{
+				StartKeys:   []string{"Profissão:"},
+				EndKeys:     []string{" - Nacionalidade:"},
+				Offset:      "Outorgante",
+				EndOffset:   "OutorgadoParte",
+				Identifier:  OutorganteJob,
+				IsExtracted: false,
+				Value:       defaultValue(OutorganteJob),
+			},
 			{
 				StartKeys:   []string{"Nacionalidade: "},
 				EndKeys:     []string{" -"},
@@ -146,13 +147,14 @@ func New() *Extractor {
 				IsExtracted: false,
 				Value:       defaultValue(OutorgadoName),
 			},
-			// {
-			// 	Start:       []string{"Profissão:",},
-			// 	End:         []string{"- Nacionalidade:"},
-			// 	Offset:      "OutorgadoParte",
-			// 	ResultKey:   OutorgadoJob,
-			// 	IsExtracted: false,
-			// },
+			{
+				StartKeys:   []string{"Profissão:"},
+				EndKeys:     []string{"- Nacionalidade:"},
+				Offset:      "OutorgadoParte",
+				Identifier:  OutorgadoJob,
+				IsExtracted: false,
+				Value:       defaultValue(OutorgadoJob),
+			},
 			{
 				StartKeys:   []string{"Nacionalidade:"},
 				EndKeys:     []string{"- Sexo:"},
@@ -334,6 +336,14 @@ func extractTokenValue(text string, token token) (string, error) {
 			return "", fmt.Errorf("offset '%s' not found in text", token.Offset)
 		}
 		text = text[offSetIndex+len(token.Offset):]
+	}
+
+	if token.EndOffset != "" {
+		endOffSetIndex := strings.Index(text, token.EndOffset)
+		if endOffSetIndex == -1 {
+			return "", fmt.Errorf("offset '%s' not found in text", token.EndOffset)
+		}
+		text = text[:endOffSetIndex+len(token.EndOffset)]
 	}
 
 	startIndex := -1

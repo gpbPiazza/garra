@@ -16,7 +16,7 @@ func TestGenerate_one_to_one_buyer_CPF_and_seller_CNPJ(t *testing.T) {
 <br>
 <u>TRANSMITENTE(S)</u>:> <span><strong>CONSTRUARTE CONSTRUTORA E INCORPORADORA LTDA.</strong>, CNPJ nº 29.235.977/0001-70, com sede na rua Rua Luiz Eccel, nº 1, Bairro Paquetá, Brusque/SC.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>SIDNEI ANTONIO GATTIS</strong>, brasileiro, solteiro, CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC.</span>
+<u>ADQUIRENTE(S)</u>:><span><strong>SIDNEI ANTONIO GATTIS</strong>, brasileiro, solteiro, empresário, CPF nº 037.561.669-10, residente e domiciliado na Rua Azambuja, nº 541, Bairro Azambuja, Brusque/SC.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 965, Folhas 121/123V, em 26/03/2025. 
 <br/><u>VALOR</u>: R$ 120.000,00 (cento e vinte mil reais).
@@ -46,7 +46,7 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF(t *testing.T) {
 	expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span><strong>MARIA EDUARDA DOS SANTOS</strong>, brasileiro, solteira, CPF nº 051.737.249-51, residente e domiciliado na Rua Nelson Carneiro Borges, nº 284, Bairro São Luiz, Brusque/SC.</span>
+<u>TRANSMITENTE(S)</u>:> <span><strong>MARIA EDUARDA DOS SANTOS</strong>, brasileiro, solteira, [[Outorgante trabalho NÃO ENCONTRADO]], CPF nº 051.737.249-51, residente e domiciliado na Rua Nelson Carneiro Borges, nº 284, Bairro São Luiz, Brusque/SC.</span>
 <br/>
 <u>ADQUIRENTE(S)</u>:><span><strong>ABSOLUT CONSTRUTORA E INCORPORADORA LTDA.</strong>, CNPJ nº 05.768.477/0001-35, com sede na rua R Centenario, nº 13, Bairro Santa Terezinha, Brusque/SC.</span>
 <br>
@@ -79,7 +79,7 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF_2(t *testing.T) {
 	expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span><strong>MARIA JOSE PEREIRA</strong>, brasileiro, solteira, CPF nº 678.240.649-72, residente e domiciliado na Rua João Tormena, nº 422, Bairro Poço Fundo, Brusque/SC.</span>
+<u>TRANSMITENTE(S)</u>:> <span><strong>MARIA JOSE PEREIRA</strong>, brasileiro, solteira, tintureiro, CPF nº 678.240.649-72, residente e domiciliado na Rua João Tormena, nº 422, Bairro Poço Fundo, Brusque/SC.</span>
 <br/>
 <u>ADQUIRENTE(S)</u>:><span><strong>BBK EMPREENDIMENTOS IMOBILIÁRIOS LTDA.</strong>, CNPJ nº 20.025.828/0001-01, com sede na rua Rua Alberto Klabunde, Nº 294 0, nº 294, Bairro Águas Claras, Brusque/SC.</span>
 <br>
@@ -118,7 +118,7 @@ func TestGenerate_one_to_one_buyer_CPF_and_sellerr_CNPJ_2(t *testing.T) {
 <br>
 <u>TRANSMITENTE(S)</u>:> <span><strong>RMP;AMP;R INCORPORAÇÃO LTDA.</strong>, CNPJ nº 00.334.504/0001-48, com sede na rua Avenida Primeiro de Maio, nº 346, Bairro Primeiro de Maio, São João do Itaperiú/SC.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>VILMAR PALOSCHI</strong>, brasileiro, divorciado, CPF nº 548.480.839-15, residente e domiciliado na Rua Vice Prefeito Pedro Merizio, nº 399, Bairro Centro, São João do Itaperiú/SC.</span>
+<u>ADQUIRENTE(S)</u>:><span><strong>VILMAR PALOSCHI</strong>, brasileiro, divorciado, empresário, CPF nº 548.480.839-15, residente e domiciliado na Rua Vice Prefeito Pedro Merizio, nº 399, Bairro Centro, São João do Itaperiú/SC.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 965, Folhas 018/020V, em 20/03/2025. 
 <br/><u>VALOR</u>: R$ 505.000,00 (quinhentos e cinco mil reais).
@@ -151,7 +151,7 @@ func TestGenerate_one_to_one_offset_of_some_key_in_between_pages_bug_1(t *testin
 <br>
 <u>TRANSMITENTE(S)</u>:> <span><strong>MORATTA EMPREENDIMENTOS IMOBILIÁRIOS LTDA.</strong>, CNPJ nº 08.475.810/0001-06, com sede na rua Rua Mathilde Schaefer, nº 173, Bairro São Luiz, Brusque/SC.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>NADIR HASSMANN</strong>, brasileiro, divorciada, CPF nº 823.199.959-00, residente e domiciliado na Rua Otto Krieger, nº 40, Bairro São Luiz, Brusque/SC.</span>
+<u>ADQUIRENTE(S)</u>:><span><strong>NADIR HASSMANN</strong>, brasileiro, divorciada, tintureiro, CPF nº 823.199.959-00, residente e domiciliado na Rua Otto Krieger, nº 40, Bairro São Luiz, Brusque/SC.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 967, Folhas 018/020V, em 14/04/2025. 
 <br/><u>VALOR</u>: R$ 340.000,00 (trezentos e quarenta mil reais).
@@ -182,9 +182,9 @@ func TestGenerate_one_to_one_case_to_many_start_keys_bug_2(t *testing.T) {
 	expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span><strong>FABRICIA RIBEIRO DOS SANTOS</strong>, brasileiro, casada, CPF nº 902.091.845-15, residente e domiciliado na Dom Joaquim, nº 155, Bairro Cedrinho, Brusque/SC.</span>
+<u>TRANSMITENTE(S)</u>:> <span><strong>FABRICIA RIBEIRO DOS SANTOS</strong>, brasileiro, casada, do lar, CPF nº 902.091.845-15, residente e domiciliado na Dom Joaquim, nº 155, Bairro Cedrinho, Brusque/SC.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>JOÃO PAULO MENDONÇA MELO</strong>, brasileiro, solteiro, CPF nº 075.979.619-01, residente e domiciliado na Rua Francisco Debatin, nº 22, Bairro Águas Claras, Brusque/SC.</span>
+<u>ADQUIRENTE(S)</u>:><span><strong>JOÃO PAULO MENDONÇA MELO</strong>, brasileiro, solteiro, corretor de imóveis, CPF nº 075.979.619-01, residente e domiciliado na Rua Francisco Debatin, nº 22, Bairro Águas Claras, Brusque/SC.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 968, Folhas 095/097V, em 02/05/2025. 
 <br/><u>VALOR</u>: R$ 180.000,00 (cento e oitenta mil reais).
@@ -217,7 +217,7 @@ func TestGenerate_one_to_one_maritial_status_with_value_divorciado_bug_3(t *test
 <br>
 <u>TRANSMITENTE(S)</u>:> <span><strong>MARVI EMPREENDIMENTOS LTDA.</strong>, CNPJ nº 12.941.307/0001-76, com sede na rua Rua Riachuelo, nº 205, Bairro Centro, Guabiruba/SC.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro Centro, Uruguaiana/RS.</span>
+<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, [[Outorgado trabalho NÃO ENCONTRADO]], CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro Centro, Uruguaiana/RS.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 968, Folhas 108/110V, em 05/05/2025. 
 <br/><u>VALOR</u>: R$ 350.000,00 (trezentos e cinquenta mil reais).
@@ -250,7 +250,7 @@ func TestGenerate_not_found_case(t *testing.T) {
 <br>
 <u>TRANSMITENTE(S)</u>:> <span><strong>MARVI EMPREENDIMENTOS LTDA.</strong>, supraqualificada.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro Centro, Uruguaiana/RS.</span>
+<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, [[Outorgado trabalho NÃO ENCONTRADO]], CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro Centro, Uruguaiana/RS.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de [[Título do Ato NÃO ENCONTRADO]], lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 968, Folhas 108/110V, em 05/05/2025. 
 <br/><u>VALOR</u>: R$ [[Valor da escrita NÃO ENCONTRADO]].
