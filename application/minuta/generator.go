@@ -80,17 +80,23 @@ func (app *GeneratorApp) Generate(generateParams GenerateParams) (GeneratorRespo
 		return GeneratorResponse{}, err
 	}
 
-	var tokensNotFoundIdentifiers []string
-	for _, t := range extracted.TokensNotFound {
+	return GeneratorResponse{
+		MinutaHTML:     minutaHTML,
+		TokensNotFound: app.mapTokensNotFound(extracted.TokensNotFound, params),
+	}, nil
+}
+
+func (app *GeneratorApp) mapTokensNotFound(tokens []*extractor.Token, params minuta.MinutaParams) []string {
+	var result []string
+
+	for _, t := range tokens {
 		if t.Identifier == extractor.OutorgadoJob && minuta.IsJuridicPerson(params.Adquirente.DocType) ||
 			t.Identifier == extractor.OutorganteJob && minuta.IsJuridicPerson(params.Transmitente.DocType) {
 			continue
 		}
-		tokensNotFoundIdentifiers = append(tokensNotFoundIdentifiers, extractor.IdentifiersNames[t.Identifier])
+
+		result = append(result, extractor.IdentifiersNames[t.Identifier])
 	}
 
-	return GeneratorResponse{
-		MinutaHTML:     minutaHTML,
-		TokensNotFound: tokensNotFoundIdentifiers,
-	}, nil
+	return result
 }
