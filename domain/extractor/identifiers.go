@@ -47,6 +47,18 @@ const (
 	EscrituraValor
 	ItbiValor
 	ItbiIncidenciaValor
+
+	Name
+	Job
+	Sex
+	Nationality
+	MaritialStatus
+	DocNumCPF_CNPJ
+	DocType
+	AddressStreet
+	AddressN
+	AddressNeighborhood
+	AddressCityUF
 )
 
 var IdentifiersNames = map[Identifier]string{
@@ -86,4 +98,16 @@ var IdentifiersNames = map[Identifier]string{
 	EscrituraValor:             "Valor da escrita",
 	ItbiValor:                  "valor do ITBI",
 	ItbiIncidenciaValor:        "Valor da incidência do ITBI",
+	//
+	Name:                "Nome",
+	Job:                 "Trabalho",
+	Sex:                 "Sexo",
+	Nationality:         "Nacionalidade",
+	MaritialStatus:      "Estado Civil",
+	DocNumCPF_CNPJ:      "Número do documento CPF_CNPJ",
+	DocType:             "Tipo do documento",
+	AddressStreet:       "Rua do endereço",
+	AddressN:            "Número do endereço",
+	AddressNeighborhood: "Bairro do endereço",
+	AddressCityUF:       "CidadeUF do endereço",
 }

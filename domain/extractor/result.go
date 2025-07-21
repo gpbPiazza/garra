@@ -7,6 +7,7 @@ import (
 type Extracted struct {
 	Result         map[Identifier]string
 	TokensNotFound []*Token
+	Scripture      Scripture
 }
 
 func (e *Extractor) Result() Extracted {
