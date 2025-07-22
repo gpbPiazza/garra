@@ -39,7 +39,6 @@ func TestGenerate_one_to_one_buyer_CPF_and_seller_CNPJ(t *testing.T) {
 	got, err := generatorApp.Generate(params)
 	require.NoError(t, err)
 	assert.Equal(t, expected, got.MinutaHTML)
-	assert.Empty(t, got.TokensNotFound)
 }
 
 func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF(t *testing.T) {
@@ -49,7 +48,7 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF(t *testing.T) {
 	expected := `
 <fragmento indice="CABECALHO" />
 <br>
-<u>TRANSMITENTE(S)</u>:> <span><strong>MARIA EDUARDA DOS SANTOS</strong>, brasileiro, solteira, [[Outorgante trabalho NÃO ENCONTRADO]], CPF nº 051.737.249-51, residente e domiciliado na Rua Nelson Carneiro Borges, nº 284, Bairro São Luiz, Brusque/SC.</span>
+<u>TRANSMITENTE(S)</u>:> <span><strong>MARIA EDUARDA DOS SANTOS</strong>, brasileiro, solteira, [[Trabalho NÃO ENCONTRADO]], CPF nº 051.737.249-51, residente e domiciliado na Rua Nelson Carneiro Borges, nº 284, Bairro São Luiz, Brusque/SC.</span>
 <br/>
 <u>ADQUIRENTE(S)</u>:><span><strong>ABSOLUT CONSTRUTORA E INCORPORADORA LTDA.</strong>, CNPJ nº 05.768.477/0001-35, com sede na rua R Centenario, nº 13, Bairro Santa Terezinha, Brusque/SC.</span>
 <br>
@@ -74,8 +73,6 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.Equal(t, expected, got.MinutaHTML)
-	assert.Len(t, got.TokensNotFound, 1)
-	assert.Equal(t, got.TokensNotFound[0], "Outorgante trabalho")
 }
 
 func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF_2(t *testing.T) {
@@ -114,7 +111,6 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF_2(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.Equal(t, expected, got.MinutaHTML)
-	assert.Empty(t, got.TokensNotFound)
 }
 
 func TestGenerate_one_to_one_buyer_CPF_and_sellerr_CNPJ_2(t *testing.T) {
@@ -149,7 +145,6 @@ func TestGenerate_one_to_one_buyer_CPF_and_sellerr_CNPJ_2(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.Equal(t, expected, got.MinutaHTML)
-	assert.Empty(t, got.TokensNotFound)
 }
 
 func TestGenerate_one_to_one_offset_of_some_key_in_between_pages_bug_1(t *testing.T) {
@@ -184,7 +179,6 @@ func TestGenerate_one_to_one_offset_of_some_key_in_between_pages_bug_1(t *testin
 
 	require.NoError(t, err)
 	assert.Equal(t, expected, got.MinutaHTML)
-	assert.Empty(t, got.TokensNotFound)
 }
 
 func TestGenerate_one_to_one_case_to_many_start_keys_bug_2(t *testing.T) {
@@ -219,7 +213,6 @@ func TestGenerate_one_to_one_case_to_many_start_keys_bug_2(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.Equal(t, expected, got.MinutaHTML)
-	assert.Empty(t, got.TokensNotFound)
 }
 
 func TestGenerate_one_to_one_maritial_status_with_value_divorciado_bug_3(t *testing.T) {
@@ -231,7 +224,7 @@ func TestGenerate_one_to_one_maritial_status_with_value_divorciado_bug_3(t *test
 <br>
 <u>TRANSMITENTE(S)</u>:> <span><strong>MARVI EMPREENDIMENTOS LTDA.</strong>, CNPJ nº 12.941.307/0001-76, com sede na rua Rua Riachuelo, nº 205, Bairro Centro, Guabiruba/SC.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, [[Outorgado trabalho NÃO ENCONTRADO]], CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro Centro, Uruguaiana/RS.</span>
+<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, [[Trabalho NÃO ENCONTRADO]], CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro Centro, Uruguaiana/RS.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de Compra e Venda, lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 968, Folhas 108/110V, em 05/05/2025. 
 <br/><u>VALOR</u>: R$ 350.000,00 (trezentos e cinquenta mil reais).
@@ -254,8 +247,6 @@ func TestGenerate_one_to_one_maritial_status_with_value_divorciado_bug_3(t *test
 
 	require.NoError(t, err)
 	assert.Equal(t, expected, got.MinutaHTML)
-	assert.Len(t, got.TokensNotFound, 1)
-	assert.Equal(t, got.TokensNotFound[0], "Outorgado trabalho")
 }
 
 func TestGenerate_not_found_case(t *testing.T) {
@@ -267,7 +258,7 @@ func TestGenerate_not_found_case(t *testing.T) {
 <br>
 <u>TRANSMITENTE(S)</u>:> <span><strong>MARVI EMPREENDIMENTOS LTDA.</strong>, supraqualificada.</span>
 <br/>
-<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, [[Outorgado trabalho NÃO ENCONTRADO]], CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro Centro, Uruguaiana/RS.</span>
+<u>ADQUIRENTE(S)</u>:><span><strong>GISLANE MARQUES BORTOLUZZI</strong>, brasileiro, divorciada, [[Trabalho NÃO ENCONTRADO]], CPF nº 304.478.790-49, residente e domiciliado na Rua General Câmara, nº 2055, Bairro Centro, Uruguaiana/RS.</span>
 <br>
 <u>FORMA DO TÍTULO</u>: Escritura Pública de [[Título do Ato NÃO ENCONTRADO]], lavrada pelo 1º Tabelionato de Notas e de Protesto de Brusque/SC, Livro 968, Folhas 108/110V, em 05/05/2025. 
 <br/><u>VALOR</u>: R$ [[Valor da escrita NÃO ENCONTRADO]].
@@ -290,12 +281,4 @@ func TestGenerate_not_found_case(t *testing.T) {
 
 	require.NoError(t, err)
 	assert.Equal(t, expected, got.MinutaHTML)
-	assert.Len(t, got.TokensNotFound, 5)
-	assert.ElementsMatch(t, got.TokensNotFound, []string{
-		"Título do Ato",
-		"Outorgado trabalho",
-		"Valor da escrita",
-		"valor do ITBI",
-		"Valor da incidência do ITBI",
-	})
 }

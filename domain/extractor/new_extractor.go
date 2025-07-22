@@ -48,7 +48,7 @@ const (
 	outorgadoEndOffSet   = "EscrituraAssinada na Serventia"
 
 	outorganteStartOffSet = "Outorgante"
-	outorganteEndOffSet   = "OutorgadoParte"
+	outorganteEndOffSet   = "Outorgado"
 )
 
 var (
@@ -61,15 +61,15 @@ var (
 func (e *Extractor) extractPersons(text string, startOffSet, endOffSet string, separators []string) []Person {
 	var result []Person
 
-	text, err := cutOffSet(text, startOffSet, endOffSet)
+	personTxt, err := cutOffSet(text, startOffSet, endOffSet)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	persons := strings.Split(text, separators[0])
+	persons := strings.SplitAfter(personTxt, separators[0])
 
 	for _, p := range persons {
-		if p == "" {
+		if p == "" || strings.Contains(p, "ParcialParte") || strings.HasPrefix(p, "Parte") {
 			continue
 		}
 		result = append(result, e.extractPerson(p))
@@ -104,7 +104,7 @@ func (e *Extractor) extractPerson(text string) Person {
 		MaritalStatus:   identifierByToken[MaritialStatus].Value,
 		DocNum_CPF_CNPJ: identifierByToken[DocNumCPF_CNPJ].Value,
 		DocType:         identifierByToken[DocType].Value,
-		Sex:             identifierByToken[Nationality].Value,
+		Sex:             identifierByToken[Sex].Value,
 		Address: Address{
 			Street:       identifierByToken[AddressStreet].Value,
 			Num:          identifierByToken[AddressN].Value,
@@ -192,6 +192,7 @@ func (e *Extractor) Result2() Extracted {
 		}
 	}
 
+	result.TokensNotFound = e.TokensNotFound
 	result.Scripture = Scripture{
 		Outorgantes: e.outorgantePersons,
 		Outorgados:  e.outorgadoPersons,
@@ -215,7 +216,7 @@ func (e *Extractor) Result2() Extracted {
 func NewPersonTokens2() []*Token {
 	return []*Token{
 		{
-			StartKeys:   []string{"Parte :"},
+			StartKeys:   []string{"Parte :", ":"},
 			EndKeys:     []string{"Pessoa:", "Data de Nascimento:"},
 			Identifier:  Name,
 			IsExtracted: false,
@@ -237,7 +238,7 @@ func NewPersonTokens2() []*Token {
 		},
 		{
 			StartKeys:   []string{"Estado Civil: "},
-			EndKeys:     []string{" -"},
+			EndKeys:     []string{" -", "- Profissão"},
 			Identifier:  MaritialStatus,
 			IsExtracted: false,
 			Value:       defaultValue(MaritialStatus),
@@ -252,7 +253,6 @@ func NewPersonTokens2() []*Token {
 		{
 			StartKeys:   []string{"Doc. Nº:"},
 			EndKeys:     []string{"/", "Doc. Tipo:", "EndereçosLogradouro:"},
-			StartOffset: "Outorgante",
 			Identifier:  DocNumCPF_CNPJ,
 			IsExtracted: false,
 			Value:       defaultValue(DocNumCPF_CNPJ),

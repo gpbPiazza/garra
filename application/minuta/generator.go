@@ -19,8 +19,7 @@ type GenerateParams struct {
 }
 
 type GeneratorResponse struct {
-	MinutaHTML     string   `json:"minuta_html"`
-	TokensNotFound []string `json:"tokens_not_found"`
+	MinutaHTML string `json:"minuta_html"`
 }
 
 func (app *GeneratorApp) Generate(generateParams GenerateParams) (GeneratorResponse, error) {
@@ -73,8 +72,8 @@ func (app *GeneratorApp) Generate(generateParams GenerateParams) (GeneratorRespo
 				Neighborhood: extracted.Scripture.Outorgados[0].Address.Neighborhood,
 			},
 		},
-		InitialBookPages: extracted.Scripture.TitleAto,
-		FinalBookPages:   extracted.Scripture.TitleAto,
+		InitialBookPages: extracted.Scripture.InitialBookPages,
+		FinalBookPages:   extracted.Scripture.FinalBookPages,
 	}
 
 	// params := minuta.MinutaParams{
@@ -128,22 +127,6 @@ func (app *GeneratorApp) Generate(generateParams GenerateParams) (GeneratorRespo
 	}
 
 	return GeneratorResponse{
-		MinutaHTML:     minutaHTML,
-		TokensNotFound: app.mapTokensNotFound(extracted.TokensNotFound, params),
+		MinutaHTML: minutaHTML,
 	}, nil
-}
-
-func (app *GeneratorApp) mapTokensNotFound(tokens []*extractor.Token, params minuta.MinutaParams) []string {
-	var result []string
-
-	for _, t := range tokens {
-		if t.Identifier == extractor.OutorgadoJob && minuta.IsJuridicPerson(params.Adquirente.DocType) ||
-			t.Identifier == extractor.OutorganteJob && minuta.IsJuridicPerson(params.Transmitente.DocType) {
-			continue
-		}
-
-		result = append(result, extractor.IdentifiersNames[t.Identifier])
-	}
-
-	return result
 }

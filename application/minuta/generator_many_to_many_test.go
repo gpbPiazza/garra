@@ -41,5 +41,4 @@ func TestGenerate_many_buyers_to_one_seller(t *testing.T) {
 	require.NoError(t, err)
 
 	assert.Equal(t, expected, got.MinutaHTML)
-	assert.Empty(t, got.TokensNotFound)
 }
