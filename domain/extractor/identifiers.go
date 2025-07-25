@@ -3,16 +3,16 @@ package extractor
 type Identifier int
 
 const (
-	TypeAto Identifier = iota
-	NumAto
-	TitleAto
-	Matricula
-	DataRegistro
-	Protocolo
-	DataProtocolo
+	TypeAtoID Identifier = iota
+	NumAtoID
+	TitleAtoID
+	MatriculaID
+	DataRegistroID
+	ProtocoloID
+	DataProtocoloID
 
-	Outorgante
-	Outorgado
+	OutorganteID
+	OutorgadoID
 
 	OutorganteName
 	OutorganteJob
@@ -38,39 +38,42 @@ const (
 	OutorgadoEnderecoBairro
 	OutorgadoEnderecoCidadeUF
 
-	TabelionatoName
-	TabelionatoCityUF
-	InitialBookPages
-	FinalBookPages
-	BookNum
-	EscrituraMadeDate
-	EscrituraValor
-	ItbiValor
-	ItbiIncidenciaValor
+	TabelionatoNameID
+	TabelionatoCityUFID
+	InitialBookPagesID
+	FinalBookPagesID
+	BookNumID
+	EscrituraMadeDateID
+	EscrituraValorID
+	ItbiValorID
+	ItbiIncidenciaValorID
 
-	Name
-	Job
-	Sex
-	Nationality
-	MaritialStatus
-	DocNumCPF_CNPJ
-	DocType
-	AddressStreet
-	AddressN
-	AddressNeighborhood
-	AddressCityUF
+	NameID
+	JobID
+	SexID
+	NationalityID
+	MaritialStatusID
+	DocNumCPF_CNPJID
+	DocTypeID
+	AddressStreetID
+	AddressNID
+	AddressNeighborhoodID
+	AddressCityUFID
+
+	InFavorToWhoID
+	WhoDoesID
 )
 
 var IdentifiersNames = map[Identifier]string{
-	TypeAto:                    "Tipo do Ato",
-	NumAto:                     "Número do Ato",
-	TitleAto:                   "Título do Ato",
-	Matricula:                  "Matrícula",
-	DataRegistro:               "Data de registro",
-	Protocolo:                  "Protocolo",
-	DataProtocolo:              "Data do protocolo",
-	Outorgante:                 "Outorgante",
-	Outorgado:                  "Outorgado",
+	TypeAtoID:                  "Tipo do Ato",
+	NumAtoID:                   "Número do Ato",
+	TitleAtoID:                 "Título do Ato",
+	MatriculaID:                "Matrícula",
+	DataRegistroID:             "Data de registro",
+	ProtocoloID:                "Protocolo",
+	DataProtocoloID:            "Data do protocolo",
+	OutorganteID:               "Outorgante",
+	OutorgadoID:                "Outorgado",
 	OutorganteName:             "Outorgante nome",
 	OutorganteJob:              "Outorgante trabalho",
 	OutorganteNationality:      "Outorgante nacionalidade",
@@ -89,25 +92,25 @@ var IdentifiersNames = map[Identifier]string{
 	OutorgadoEnderecoN:         "Outorgado número do endereço",
 	OutorgadoEnderecoBairro:    "Outorgado endereço bairro",
 	OutorgadoEnderecoCidadeUF:  "Outorgado endereço cidade e UF",
-	TabelionatoName:            "Tabelionato nome",
-	TabelionatoCityUF:          "Tabelionato cidade e UF",
-	InitialBookPages:           "Páginas iniciais do livro",
-	FinalBookPages:             "Páginas finais do livro",
-	BookNum:                    "Número do livro",
-	EscrituraMadeDate:          "Data da escritura",
-	EscrituraValor:             "Valor da escrita",
-	ItbiValor:                  "valor do ITBI",
-	ItbiIncidenciaValor:        "Valor da incidência do ITBI",
+	TabelionatoNameID:          "Tabelionato nome",
+	TabelionatoCityUFID:        "Tabelionato cidade e UF",
+	InitialBookPagesID:         "Páginas iniciais do livro",
+	FinalBookPagesID:           "Páginas finais do livro",
+	BookNumID:                  "Número do livro",
+	EscrituraMadeDateID:        "Data da escritura",
+	EscrituraValorID:           "Valor da escrita",
+	ItbiValorID:                "valor do ITBI",
+	ItbiIncidenciaValorID:      "Valor da incidência do ITBI",
 	//
-	Name:                "Nome",
-	Job:                 "Trabalho",
-	Sex:                 "Sexo",
-	Nationality:         "Nacionalidade",
-	MaritialStatus:      "Estado Civil",
-	DocNumCPF_CNPJ:      "Número do documento CPF_CNPJ",
-	DocType:             "Tipo do documento",
-	AddressStreet:       "Rua do endereço",
-	AddressN:            "Número do endereço",
-	AddressNeighborhood: "Bairro do endereço",
-	AddressCityUF:       "CidadeUF do endereço",
+	NameID:                "Nome",
+	JobID:                 "Trabalho",
+	SexID:                 "Sexo",
+	NationalityID:         "Nacionalidade",
+	MaritialStatusID:      "Estado Civil",
+	DocNumCPF_CNPJID:      "Número do documento CPF_CNPJ",
+	DocTypeID:             "Tipo do documento",
+	AddressStreetID:       "Rua do endereço",
+	AddressNID:            "Número do endereço",
+	AddressNeighborhoodID: "Bairro do endereço",
+	AddressCityUFID:       "CidadeUF do endereço",
 }

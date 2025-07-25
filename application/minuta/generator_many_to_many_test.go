@@ -9,7 +9,6 @@ import (
 )
 
 func TestGenerate_many_buyers_to_one_seller(t *testing.T) {
-	t.SkipNow()
 	t.Parallel()
 	generatorApp := NewGeneratorApp()
 
@@ -32,9 +31,9 @@ func TestGenerate_many_buyers_to_one_seller(t *testing.T) {
 	require.NoError(t, err)
 
 	params := GenerateParams{
-		DocStr:                      string(doc),
-		IsTransmitenteOverqualified: true,
-		IsAdquirenteOverqualified:   false,
+		DocStr:               string(doc),
+		IsTransOverqualified: true,
+		IsAdquiOverqualified: false,
 	}
 
 	got, err := generatorApp.Generate(params)

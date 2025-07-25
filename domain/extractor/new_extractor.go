@@ -21,6 +21,10 @@ type Person struct {
 	DocType         string
 	Address         Address
 	Sex             string
+	// InFavorToWho is a string where contains the list of all persons
+	// favority in this scripture, there we can extract informations about the
+	// relation between the persons.
+	InFavorToWho string
 }
 
 type Tablionato struct {
@@ -28,15 +32,21 @@ type Tablionato struct {
 	CityUF string
 }
 
+type Party struct {
+	Persons       []Person
+	Beneficiaries string // List of names who benefit from this party's actions
+}
+
 type Scripture struct {
-	Outorgantes []Person
-	Outorgados  []Person
+	Outorgantes Party
+	Outorgados  Party
 	Tablionato  Tablionato
 
+	BookNum          string
+	InitialBookPages string
+	FinalBookPages   string
+
 	TitleAto            string
-	BookNum             string
-	InitialBookPages    string
-	FinalBookPages      string
 	EscrituraMadeDate   string
 	EscrituraValor      string
 	ItbiValor           string
@@ -78,14 +88,14 @@ func (e *Extractor) extractPersons(text string, startOffSet, endOffSet string, s
 	return result
 }
 
-func (e *Extractor) extractPerson(text string) Person {
+func (e *Extractor) extractPerson(personOffSetTxt string) Person {
 	tokens := NewPersonTokens2()
 	identifierByToken := make(map[Identifier]*Token)
 
 	for _, t := range tokens {
 		identifierByToken[t.Identifier] = t
 
-		val, err := extractTokenValue(text, *t)
+		val, err := extractTokenValue(personOffSetTxt, *t)
 		if err != nil {
 			log.Printf("extract token val err - token: %s - err: %s", IdentifiersNames[t.Identifier], err)
 			e.TokensNotFound = append(e.TokensNotFound, t)
@@ -98,18 +108,18 @@ func (e *Extractor) extractPerson(text string) Person {
 	}
 
 	return Person{
-		Name:            identifierByToken[Name].Value,
-		Nationality:     identifierByToken[Nationality].Value,
-		Job:             identifierByToken[Job].Value,
-		MaritalStatus:   identifierByToken[MaritialStatus].Value,
-		DocNum_CPF_CNPJ: identifierByToken[DocNumCPF_CNPJ].Value,
-		DocType:         identifierByToken[DocType].Value,
-		Sex:             identifierByToken[Sex].Value,
+		Name:            identifierByToken[NameID].Value,
+		Nationality:     identifierByToken[NationalityID].Value,
+		Job:             identifierByToken[JobID].Value,
+		MaritalStatus:   identifierByToken[MaritialStatusID].Value,
+		DocNum_CPF_CNPJ: identifierByToken[DocNumCPF_CNPJID].Value,
+		DocType:         identifierByToken[DocTypeID].Value,
+		Sex:             identifierByToken[SexID].Value,
 		Address: Address{
-			Street:       identifierByToken[AddressStreet].Value,
-			Num:          identifierByToken[AddressN].Value,
-			CityUF:       identifierByToken[AddressCityUF].Value,
-			Neighborhood: identifierByToken[AddressNeighborhood].Value,
+			Street:       identifierByToken[AddressStreetID].Value,
+			Num:          identifierByToken[AddressNID].Value,
+			CityUF:       identifierByToken[AddressCityUFID].Value,
+			Neighborhood: identifierByToken[AddressNeighborhoodID].Value,
 		},
 	}
 }
@@ -194,20 +204,20 @@ func (e *Extractor) Result2() Extracted {
 
 	result.TokensNotFound = e.TokensNotFound
 	result.Scripture = Scripture{
-		Outorgantes: e.outorgantePersons,
-		Outorgados:  e.outorgadoPersons,
+		Outorgantes: Party{Persons: e.outorgantePersons, Beneficiaries: e.result2[WhoDoesID].Value},
+		Outorgados:  Party{Persons: e.outorgadoPersons, Beneficiaries: e.result2[InFavorToWhoID].Value},
 		Tablionato: Tablionato{
-			Name:   e.result2[TabelionatoName].Value,
-			CityUF: e.result2[TabelionatoCityUF].Value,
+			Name:   e.result2[TabelionatoNameID].Value,
+			CityUF: e.result2[TabelionatoCityUFID].Value,
 		},
-		TitleAto:            e.result2[TitleAto].Value,
-		BookNum:             e.result2[BookNum].Value,
-		InitialBookPages:    e.result2[InitialBookPages].Value,
-		FinalBookPages:      e.result2[FinalBookPages].Value,
-		EscrituraMadeDate:   e.result2[EscrituraMadeDate].Value,
-		EscrituraValor:      e.result2[EscrituraValor].Value,
-		ItbiValor:           e.result2[ItbiValor].Value,
-		ItbiIncidenciaValor: e.result2[ItbiIncidenciaValor].Value,
+		TitleAto:            e.result2[TitleAtoID].Value,
+		BookNum:             e.result2[BookNumID].Value,
+		InitialBookPages:    e.result2[InitialBookPagesID].Value,
+		FinalBookPages:      e.result2[FinalBookPagesID].Value,
+		EscrituraMadeDate:   e.result2[EscrituraMadeDateID].Value,
+		EscrituraValor:      e.result2[EscrituraValorID].Value,
+		ItbiValor:           e.result2[ItbiValorID].Value,
+		ItbiIncidenciaValor: e.result2[ItbiIncidenciaValorID].Value,
 	}
 
 	return result
@@ -218,79 +228,79 @@ func NewPersonTokens2() []*Token {
 		{
 			StartKeys:   []string{"Parte :", ":"},
 			EndKeys:     []string{"Pessoa:", "Data de Nascimento:"},
-			Identifier:  Name,
+			Identifier:  NameID,
 			IsExtracted: false,
-			Value:       defaultValue(Name),
+			Value:       defaultValue(NameID),
 		},
 		{
 			StartKeys:   []string{"Profissão:"},
 			EndKeys:     []string{" - Nacionalidade:"},
-			Identifier:  Job,
+			Identifier:  JobID,
 			IsExtracted: false,
-			Value:       defaultValue(Job),
+			Value:       defaultValue(JobID),
 		},
 		{
 			StartKeys:   []string{"Nacionalidade: "},
 			EndKeys:     []string{"- Sexo:", " -"},
-			Identifier:  Nationality,
+			Identifier:  NationalityID,
 			IsExtracted: false,
-			Value:       defaultValue(Nationality),
+			Value:       defaultValue(NationalityID),
 		},
 		{
 			StartKeys:   []string{"Estado Civil: "},
 			EndKeys:     []string{" -", "- Profissão"},
-			Identifier:  MaritialStatus,
+			Identifier:  MaritialStatusID,
 			IsExtracted: false,
-			Value:       defaultValue(MaritialStatus),
+			Value:       defaultValue(MaritialStatusID),
 		},
 		{
 			StartKeys:   []string{"Sexo:"},
 			EndKeys:     []string{"DocumentosDoc."},
-			Identifier:  Sex,
+			Identifier:  SexID,
 			IsExtracted: false,
-			Value:       defaultValue(Sex),
+			Value:       defaultValue(SexID),
 		},
 		{
 			StartKeys:   []string{"Doc. Nº:"},
 			EndKeys:     []string{"/", "Doc. Tipo:", "EndereçosLogradouro:"},
-			Identifier:  DocNumCPF_CNPJ,
+			Identifier:  DocNumCPF_CNPJID,
 			IsExtracted: false,
-			Value:       defaultValue(DocNumCPF_CNPJ),
+			Value:       defaultValue(DocNumCPF_CNPJID),
 		},
 		{
 			StartKeys:   []string{"Doc. Tipo:", "DocumentosDoc. Tipo: "},
 			EndKeys:     []string{"Doc."},
-			Identifier:  DocType,
+			Identifier:  DocTypeID,
 			IsExtracted: false,
-			Value:       defaultValue(DocType),
+			Value:       defaultValue(DocTypeID),
 		},
 		{
 			StartKeys:   []string{"EndereçosLogradouro:"},
 			EndKeys:     []string{"Número:"},
-			Identifier:  AddressStreet,
+			Identifier:  AddressStreetID,
 			IsExtracted: false,
-			Value:       defaultValue(AddressStreet),
+			Value:       defaultValue(AddressStreetID),
 		},
 		{
 			StartKeys:   []string{"Número:"},
 			EndKeys:     []string{"Bairro:"},
-			Identifier:  AddressN,
+			Identifier:  AddressNID,
 			IsExtracted: false,
-			Value:       defaultValue(AddressN),
+			Value:       defaultValue(AddressNID),
 		},
 		{
 			StartKeys:   []string{"Bairro:"},
 			EndKeys:     []string{"Complemento", "Cidade/UF:", "CEP:", "Cidade:", ","},
-			Identifier:  AddressNeighborhood,
+			Identifier:  AddressNeighborhoodID,
 			IsExtracted: false,
-			Value:       defaultValue(AddressNeighborhood),
+			Value:       defaultValue(AddressNeighborhoodID),
 		},
 		{
 			StartKeys:   []string{"Cidade/UF: "},
 			EndKeys:     []string{"CEP:"},
-			Identifier:  AddressCityUF,
+			Identifier:  AddressCityUFID,
 			IsExtracted: false,
-			Value:       defaultValue(AddressCityUF),
+			Value:       defaultValue(AddressCityUFID),
 		},
 	}
 }

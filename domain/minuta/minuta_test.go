@@ -3,23 +3,26 @@ package minuta
 import (
 	"testing"
 
+	"github.com/gpbPiazza/garra/domain/extractor"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestMinutaPerson(t *testing.T) {
 	t.Run("Valid person with CPF", func(t *testing.T) {
 		person := PersonParams{
-			Name:            "SIDNEI ANTÔNIO GATTIS",
-			Nationality:     "Brasil",
-			MaritalStatus:   "solteiro",
-			DocNum_CPF_CNPJ: "03756166910",
-			DocType:         "CPF",
-			Sex:             "Masculino (a)",
-			Address: AddressParams{
-				Rua:          "Rua Azambuja",
-				Num:          "541",
-				Neighborhood: "Azambuja",
-				CityUF:       "Brusque/SC",
+			Person: extractor.Person{
+				Name:            "SIDNEI ANTÔNIO GATTIS",
+				Nationality:     "Brasil",
+				MaritalStatus:   "solteiro",
+				DocNum_CPF_CNPJ: "03756166910",
+				DocType:         "CPF",
+				Sex:             "Masculino (a)",
+				Address: extractor.Address{
+					Street:       "Rua Azambuja",
+					Num:          "541",
+					Neighborhood: "Azambuja",
+					CityUF:       "Brusque/SC",
+				},
 			},
 		}
 
@@ -31,17 +34,19 @@ func TestMinutaPerson(t *testing.T) {
 
 	t.Run("valid person with CNPJ and name always return in UPPER case", func(t *testing.T) {
 		person := PersonParams{
-			Name:            "some name",
-			Nationality:     "Brasil",
-			MaritalStatus:   "solteiro",
-			DocNum_CPF_CNPJ: "12345678000195",
-			DocType:         "CNPJ",
-			Sex:             "Masculino (a)",
-			Address: AddressParams{
-				Rua:          "Rua Azambuja",
-				Num:          "541",
-				Neighborhood: "Azambuja",
-				CityUF:       "Brusque/SC",
+			Person: extractor.Person{
+				Name:            "some name",
+				Nationality:     "Brasil",
+				MaritalStatus:   "solteiro",
+				DocNum_CPF_CNPJ: "12345678000195",
+				DocType:         "CNPJ",
+				Sex:             "Masculino (a)",
+				Address: extractor.Address{
+					Street:       "Rua Azambuja",
+					Num:          "541",
+					Neighborhood: "Azambuja",
+					CityUF:       "Brusque/SC",
+				},
 			},
 		}
 
@@ -53,9 +58,11 @@ func TestMinutaPerson(t *testing.T) {
 
 	t.Run("return supraqualificada when person IsOverqualified", func(t *testing.T) {
 		person := PersonParams{
-			Name:            "RUZZU CONSTRUTORA E INCORPORADORA LTDA",
-			DocNum_CPF_CNPJ: "12345678000195",
-			DocType:         "CNPJ",
+			Person: extractor.Person{
+				Name:            "RUZZU CONSTRUTORA E INCORPORADORA LTDA",
+				DocNum_CPF_CNPJ: "12345678000195",
+				DocType:         "CNPJ",
+			},
 			IsOverqualified: true,
 		}
 
@@ -67,16 +74,18 @@ func TestMinutaPerson(t *testing.T) {
 
 	t.Run("Invalid CPF format only 10 digits", func(t *testing.T) {
 		person := PersonParams{
-			Name:            "JOÃO DA SILVA",
-			Nationality:     "Brasil",
-			MaritalStatus:   "solteiro",
-			DocNum_CPF_CNPJ: "0375616691",
-			DocType:         "CPF",
-			Address: AddressParams{
-				Rua:          "Rua Azambuja",
-				Num:          "541",
-				Neighborhood: "Bairro Azambuja",
-				CityUF:       "Brusque/SC",
+			Person: extractor.Person{
+				Name:            "JOÃO DA SILVA",
+				Nationality:     "Brasil",
+				MaritalStatus:   "solteiro",
+				DocNum_CPF_CNPJ: "0375616691",
+				DocType:         "CPF",
+				Address: extractor.Address{
+					Street:       "Rua Azambuja",
+					Num:          "541",
+					Neighborhood: "Bairro Azambuja",
+					CityUF:       "Brusque/SC",
+				},
 			},
 		}
 
@@ -89,9 +98,11 @@ func TestMinutaPerson(t *testing.T) {
 
 	t.Run("Invalid CNPJ format only 13 digits", func(t *testing.T) {
 		person := PersonParams{
-			Name:            "EMPRESA LTDA.",
-			DocNum_CPF_CNPJ: "1234567890123",
-			DocType:         "CNPJ",
+			Person: extractor.Person{
+				Name:            "EMPRESA LTDA.",
+				DocNum_CPF_CNPJ: "1234567890123",
+				DocType:         "CNPJ",
+			},
 		}
 
 		got, err := minutaPerson(person)
@@ -103,9 +114,11 @@ func TestMinutaPerson(t *testing.T) {
 
 	t.Run("UNKNOWN docType", func(t *testing.T) {
 		person := PersonParams{
-			Name:            "EMPRESA LTDA.",
-			DocNum_CPF_CNPJ: "1234567890123",
-			DocType:         "UNKNOWN",
+			Person: extractor.Person{
+				Name:            "EMPRESA LTDA.",
+				DocNum_CPF_CNPJ: "1234567890123",
+				DocType:         "UNKNOWN",
+			},
 		}
 
 		got, err := minutaPerson(person)
@@ -117,16 +130,18 @@ func TestMinutaPerson(t *testing.T) {
 
 	t.Run("Invalid nationality", func(t *testing.T) {
 		person := PersonParams{
-			Name:            "JOÃO DA SILVA",
-			Nationality:     "Argentina",
-			MaritalStatus:   "solteiro",
-			DocNum_CPF_CNPJ: "03756166910",
-			DocType:         "CPF",
-			Address: AddressParams{
-				Rua:          "Rua Azambuja",
-				Num:          "541",
-				Neighborhood: "Bairro Azambuja",
-				CityUF:       "Brusque/SC",
+			Person: extractor.Person{
+				Name:            "JOÃO DA SILVA",
+				Nationality:     "Argentina",
+				MaritalStatus:   "solteiro",
+				DocNum_CPF_CNPJ: "03756166910",
+				DocType:         "CPF",
+				Address: extractor.Address{
+					Street:       "Rua Azambuja",
+					Num:          "541",
+					Neighborhood: "Bairro Azambuja",
+					CityUF:       "Brusque/SC",
+				},
 			},
 		}
 
@@ -139,16 +154,18 @@ func TestMinutaPerson(t *testing.T) {
 
 	t.Run("Invalid cityUF format - missing slash", func(t *testing.T) {
 		person := PersonParams{
-			Name:            "JOÃO DA SILVA",
-			Nationality:     "Brasil",
-			MaritalStatus:   "solteiro",
-			DocNum_CPF_CNPJ: "03756166910",
-			DocType:         "CPF",
-			Address: AddressParams{
-				Rua:          "Rua Azambuja",
-				Num:          "541",
-				Neighborhood: "Bairro Azambuja",
-				CityUF:       "Brusque SC",
+			Person: extractor.Person{
+				Name:            "JOÃO DA SILVA",
+				Nationality:     "Brasil",
+				MaritalStatus:   "solteiro",
+				DocNum_CPF_CNPJ: "03756166910",
+				DocType:         "CPF",
+				Address: extractor.Address{
+					Street:       "Rua Azambuja",
+					Num:          "541",
+					Neighborhood: "Bairro Azambuja",
+					CityUF:       "Brusque SC",
+				},
 			},
 		}
 
@@ -161,16 +178,18 @@ func TestMinutaPerson(t *testing.T) {
 
 	t.Run("Invalid cityUF format - empty string", func(t *testing.T) {
 		person := PersonParams{
-			Name:            "JOÃO DA SILVA",
-			Nationality:     "Brasil",
-			MaritalStatus:   "solteiro",
-			DocNum_CPF_CNPJ: "03756166910",
-			DocType:         "CPF",
-			Address: AddressParams{
-				Rua:          "Rua Azambuja",
-				Num:          "541",
-				Neighborhood: "Bairro Azambuja",
-				CityUF:       "",
+			Person: extractor.Person{
+				Name:            "JOÃO DA SILVA",
+				Nationality:     "Brasil",
+				MaritalStatus:   "solteiro",
+				DocNum_CPF_CNPJ: "03756166910",
+				DocType:         "CPF",
+				Address: extractor.Address{
+					Street:       "Rua Azambuja",
+					Num:          "541",
+					Neighborhood: "Bairro Azambuja",
+					CityUF:       "",
+				},
 			},
 		}
 
@@ -183,17 +202,19 @@ func TestMinutaPerson(t *testing.T) {
 
 	t.Run("Valid cityUF input with extra spaces", func(t *testing.T) {
 		person := PersonParams{
-			Name:            "JOÃO DA SILVA",
-			Nationality:     "BRASIL",
-			MaritalStatus:   "solteiro",
-			DocNum_CPF_CNPJ: "03756166910",
-			DocType:         "CPF",
-			Sex:             "Masculino (a)",
-			Address: AddressParams{
-				Rua:          "Rua Azambuja",
-				Num:          "541",
-				Neighborhood: "Azambuja",
-				CityUF:       "  Brusque / SC  ",
+			Person: extractor.Person{
+				Name:            "JOÃO DA SILVA",
+				Nationality:     "BRASIL",
+				MaritalStatus:   "solteiro",
+				DocNum_CPF_CNPJ: "03756166910",
+				DocType:         "CPF",
+				Sex:             "Masculino (a)",
+				Address: extractor.Address{
+					Street:       "Rua Azambuja",
+					Num:          "541",
+					Neighborhood: "Azambuja",
+					CityUF:       "  Brusque / SC  ",
+				},
 			},
 		}
 		got, err := minutaPerson(person)

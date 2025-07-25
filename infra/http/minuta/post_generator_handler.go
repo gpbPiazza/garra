@@ -35,9 +35,9 @@ func PostGeneratorHandler(c *fiber.Ctx) error {
 	pdfContentStr := pdf.ContentStr(formFile)
 
 	params := minuta.GenerateParams{
-		DocStr:                      pdfContentStr,
-		IsTransmitenteOverqualified: is_transmitente_overqualified == "true",
-		IsAdquirenteOverqualified:   is_adquirente_overqualified == "true",
+		DocStr:               pdfContentStr,
+		IsTransOverqualified: is_transmitente_overqualified == "true",
+		IsAdquiOverqualified: is_adquirente_overqualified == "true",
 	}
 
 	resp, err := minutaGenerator.Generate(params)

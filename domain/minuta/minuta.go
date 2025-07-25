@@ -1,7 +1,10 @@
 package minuta
 
 import (
+	"errors"
 	"strings"
+
+	"github.com/gpbPiazza/garra/domain/extractor"
 )
 
 const minutaTemplate = `
@@ -43,31 +46,39 @@ type MinutaParams struct {
 	ItbiIncidenciaValor string
 }
 
-func Minuta(params MinutaParams) (string, error) {
-	transmitante, _ := minutaPerson(params.Transmitente)
+func Minuta(params extractor.Scripture, IsTransOverqualified, IsAdquiOverqualified bool) (string, error) {
+	transmitante, _ := minutaPersons(params.Outorgantes, IsTransOverqualified)
 
-	adquidirente, _ := minutaPerson(params.Adquirente)
+	adquidirente, _ := minutaPersons(params.Outorgados, IsAdquiOverqualified)
 
-	tabelionatoCityUF, _ := formatCityUF(params.TabelionatoCityUF)
+	tabelionatoCityUF, _ := formatCityUF(params.Tablionato.CityUF)
 
 	escrituraMadeDate, _ := formatDate(params.EscrituraMadeDate)
 
 	value, _ := formatValue(params.EscrituraValor)
 
 	replacer := strings.NewReplacer(
-		Transmitente.String(), transmitante,
-		Adquirente.String(), adquidirente,
-		TitleAto.String(), capitalizeEachWord(params.TitleAto),
-		TabelionatoName.String(), capitalizeEachWord(params.TabelionatoName),
-		TabelionatoCityUF.String(), tabelionatoCityUF,
-		BookNum.String(), params.BookNum,
-		InitialBookPages.String(), params.InitialBookPages,
-		FinalBookPages.String(), params.FinalBookPages,
-		EscrituraMadeDate.String(), escrituraMadeDate,
-		EscrituraValor.String(), value,
-		ItbiValor.String(), params.ItbiValor,
-		ItbiIncidenciaValor.String(), params.ItbiIncidenciaValor,
+		TransmitenteRK.String(), transmitante,
+		AdquirenteRK.String(), adquidirente,
+		TitleAtoRK.String(), capitalizeEachWord(params.TitleAto),
+		TabelionatoNameRK.String(), capitalizeEachWord(params.Tablionato.Name),
+		TabelionatoCityUFRK.String(), tabelionatoCityUF,
+		BookNumRK.String(), params.BookNum,
+		InitialBookPagesRK.String(), params.InitialBookPages,
+		FinalBookPagesRK.String(), params.FinalBookPages,
+		EscrituraMadeDateRK.String(), escrituraMadeDate,
+		EscrituraValorRK.String(), value,
+		ItbiValorRK.String(), params.ItbiValor,
+		ItbiIncidenciaValorRK.String(), params.ItbiIncidenciaValor,
 	)
 
 	return replacer.Replace(minutaTemplate), nil
+}
+
+func minutaPersons(party extractor.Party, isOverQualified bool) (string, error) {
+	if len(party.Persons) == 1 {
+		return minutaPerson(PersonParams{IsOverqualified: isOverQualified, Person: party.Persons[0]})
+	}
+
+	return "", errors.New("BIXO DEU RUIM minutaPersons")
 }

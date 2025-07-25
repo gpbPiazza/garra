@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"strings"
+
+	"github.com/gpbPiazza/garra/domain/extractor"
 )
 
 type AddressParams struct {
@@ -14,15 +16,8 @@ type AddressParams struct {
 }
 
 type PersonParams struct {
-	Name            string
-	Nationality     string
-	Job             string
-	MaritalStatus   string
-	DocNum_CPF_CNPJ string
-	DocType         string
-	Address         AddressParams
+	extractor.Person
 	IsOverqualified bool
-	Sex             string
 }
 
 func IsJuridicPerson(docType string) bool {
@@ -70,7 +65,7 @@ func juridicPerson(person PersonParams) (string, error) {
 		return "", err
 	}
 
-	street := formatStreet(person.Address.Rua)
+	street := formatStreet(person.Address.Street)
 
 	return fmt.Sprintf(
 		"<strong>%s.</strong>, CNPJ nº %s, com sede na rua %s, nº %s, Bairro %s, %s.",
@@ -114,7 +109,7 @@ func fisicalPerson(person PersonParams) (string, error) {
 		return "", err
 	}
 
-	street := formatStreet(person.Address.Rua)
+	street := formatStreet(person.Address.Street)
 
 	maritialStatus, err := formatMaritialStatus(person.MaritalStatus, person.Sex)
 	if err != nil {

@@ -31,9 +31,9 @@ func TestGenerate_one_to_one_buyer_CPF_and_seller_CNPJ(t *testing.T) {
 	require.NoError(t, err)
 
 	params := GenerateParams{
-		DocStr:                      string(doc),
-		IsTransmitenteOverqualified: false,
-		IsAdquirenteOverqualified:   false,
+		DocStr:               string(doc),
+		IsTransOverqualified: false,
+		IsAdquiOverqualified: false,
 	}
 
 	got, err := generatorApp.Generate(params)
@@ -64,9 +64,9 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF(t *testing.T) {
 	require.NoError(t, err)
 
 	params := GenerateParams{
-		DocStr:                      string(doc),
-		IsTransmitenteOverqualified: false,
-		IsAdquirenteOverqualified:   false,
+		DocStr:               string(doc),
+		IsTransOverqualified: false,
+		IsAdquiOverqualified: false,
 	}
 
 	got, err := generatorApp.Generate(params)
@@ -102,9 +102,9 @@ func TestGenerate_one_to_one_buyer_CNPJ_and_sellerr_CPF_2(t *testing.T) {
 	require.NoError(t, err)
 
 	params := GenerateParams{
-		DocStr:                      string(doc),
-		IsTransmitenteOverqualified: false,
-		IsAdquirenteOverqualified:   false,
+		DocStr:               string(doc),
+		IsTransOverqualified: false,
+		IsAdquiOverqualified: false,
 	}
 
 	got, err := generatorApp.Generate(params)
@@ -136,9 +136,9 @@ func TestGenerate_one_to_one_buyer_CPF_and_sellerr_CNPJ_2(t *testing.T) {
 	require.NoError(t, err)
 
 	params := GenerateParams{
-		DocStr:                      string(doc),
-		IsTransmitenteOverqualified: false,
-		IsAdquirenteOverqualified:   false,
+		DocStr:               string(doc),
+		IsTransOverqualified: false,
+		IsAdquiOverqualified: false,
 	}
 
 	got, err := generatorApp.Generate(params)
@@ -170,9 +170,9 @@ func TestGenerate_one_to_one_offset_of_some_key_in_between_pages_bug_1(t *testin
 	require.NoError(t, err)
 
 	params := GenerateParams{
-		DocStr:                      string(doc),
-		IsTransmitenteOverqualified: false,
-		IsAdquirenteOverqualified:   false,
+		DocStr:               string(doc),
+		IsTransOverqualified: false,
+		IsAdquiOverqualified: false,
 	}
 
 	got, err := generatorApp.Generate(params)
@@ -204,9 +204,9 @@ func TestGenerate_one_to_one_case_to_many_start_keys_bug_2(t *testing.T) {
 	require.NoError(t, err)
 
 	params := GenerateParams{
-		DocStr:                      string(doc),
-		IsTransmitenteOverqualified: false,
-		IsAdquirenteOverqualified:   false,
+		DocStr:               string(doc),
+		IsTransOverqualified: false,
+		IsAdquiOverqualified: false,
 	}
 
 	got, err := generatorApp.Generate(params)
@@ -238,9 +238,9 @@ func TestGenerate_one_to_one_maritial_status_with_value_divorciado_bug_3(t *test
 	require.NoError(t, err)
 
 	params := GenerateParams{
-		DocStr:                      string(doc),
-		IsTransmitenteOverqualified: false,
-		IsAdquirenteOverqualified:   false,
+		DocStr:               string(doc),
+		IsTransOverqualified: false,
+		IsAdquiOverqualified: false,
 	}
 
 	got, err := generatorApp.Generate(params)
@@ -272,9 +272,9 @@ func TestGenerate_not_found_case(t *testing.T) {
 	require.NoError(t, err)
 
 	params := GenerateParams{
-		DocStr:                      string(doc),
-		IsTransmitenteOverqualified: true,
-		IsAdquirenteOverqualified:   false,
+		DocStr:               string(doc),
+		IsTransOverqualified: true,
+		IsAdquiOverqualified: false,
 	}
 
 	got, err := generatorApp.Generate(params)
