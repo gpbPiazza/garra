@@ -162,10 +162,10 @@ func formatMaritialStatus(maritialStatus string, personSex string) (string, erro
 		return "", errors.New("error - personSex is required")
 	}
 
-	maritialStatus = strings.ToLower(maritialStatus)
+	maritialStatus = Lower(maritialStatus)
 	if strings.Contains(maritialStatus, "separado") ||
 		strings.Contains(maritialStatus, "divorciado") {
-		switch strings.ToLower(personSex) {
+		switch Lower(personSex) {
 		case "masculino":
 			return "divorciado", nil
 		default:
@@ -174,7 +174,7 @@ func formatMaritialStatus(maritialStatus string, personSex string) (string, erro
 	}
 
 	if strings.Contains(maritialStatus, "solteiro") {
-		switch strings.ToLower(personSex) {
+		switch Lower(personSex) {
 		case "masculino":
 			return "solteiro", nil
 		default:
@@ -183,7 +183,7 @@ func formatMaritialStatus(maritialStatus string, personSex string) (string, erro
 	}
 
 	if strings.Contains(maritialStatus, "casado") {
-		switch strings.ToLower(personSex) {
+		switch Lower(personSex) {
 		case "masculino":
 			return "casado", nil
 		default:
@@ -210,21 +210,22 @@ func formatCityUF(cityUF string) (string, error) {
 	return fmt.Sprintf("%s/%s", city, UF), nil
 }
 
-func formatNationality(nationality string) (string, error) {
+func formatNationality(nationality, personSex string) (string, error) {
 	if notFound(nationality) {
 		return nationality, nil
 	}
 
-	var fNationality string
+	nationalityLower := Lower(nationality)
 
-	switch strings.ToLower(nationality) {
-	case "brasil":
-		fNationality = "brasileiro"
-	default:
-		return fNationality, fmt.Errorf("nationality not mapped - got %s", nationality)
+	if nationalityLower != "brasil" {
+		return "", fmt.Errorf("nationality not mapped - got %s", nationalityLower)
 	}
 
-	return fNationality, nil
+	if Lower(personSex) == "masculino" {
+		return "brasileiro", nil
+	}
+
+	return "brasileira", nil
 }
 
 func formatCNPJDoc(docValue string) (string, error) {

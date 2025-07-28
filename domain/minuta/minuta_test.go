@@ -136,6 +136,7 @@ func TestMinutaPerson(t *testing.T) {
 				MaritalStatus:   "solteiro",
 				DocNum_CPF_CNPJ: "03756166910",
 				DocType:         "CPF",
+				Sex:             "masculino",
 				Address: extractor.Address{
 					Street:       "Rua Azambuja",
 					Num:          "541",
@@ -148,7 +149,7 @@ func TestMinutaPerson(t *testing.T) {
 		got, err := minutaPerson(person)
 
 		assert.Error(t, err)
-		assert.ErrorContains(t, err, "nationality not mapped - got Argentina")
+		assert.ErrorContains(t, err, "nationality not mapped - got argentina")
 		assert.Empty(t, got)
 	})
 
@@ -160,6 +161,7 @@ func TestMinutaPerson(t *testing.T) {
 				MaritalStatus:   "solteiro",
 				DocNum_CPF_CNPJ: "03756166910",
 				DocType:         "CPF",
+				Sex:             "masculino",
 				Address: extractor.Address{
 					Street:       "Rua Azambuja",
 					Num:          "541",
@@ -184,6 +186,7 @@ func TestMinutaPerson(t *testing.T) {
 				MaritalStatus:   "solteiro",
 				DocNum_CPF_CNPJ: "03756166910",
 				DocType:         "CPF",
+				Sex:             "masculino",
 				Address: extractor.Address{
 					Street:       "Rua Azambuja",
 					Num:          "541",

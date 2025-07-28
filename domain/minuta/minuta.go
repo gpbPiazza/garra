@@ -80,5 +80,33 @@ func minutaPersons(party extractor.Party, isOverQualified bool) (string, error) 
 		return minutaPerson(PersonParams{IsOverqualified: isOverQualified, Person: party.Persons[0]})
 	}
 
-	return "", errors.New("BIXO DEU RUIM minutaPersons")
+	isMarried, _ := isTwoPartiesMarried(party)
+	if isMarried {
+		return minutaMarried(party, isOverQualified)
+	}
+
+	return "", errors.New("unknow minutaPersons case")
+}
+
+func isTwoPartiesMarried(party extractor.Party) (bool, error) {
+	if notFound(party.Beneficiaries) {
+		return false, nil
+	}
+
+	if party.Beneficiaries == "" {
+		return false, errors.New("error - party.Beneficiaries is required")
+	}
+
+	benef := Lower(party.Beneficiaries)
+
+	if !strings.Contains(benef, "esposa") && !strings.Contains(benef, "marido") {
+		return false, nil
+	}
+
+	benefs := strings.Split(benef, "e sua esposa")
+
+	isTwoPersonsMarried := len(benefs) == 2 &&
+		len(party.Persons) == 2
+
+	return isTwoPersonsMarried, nil
 }

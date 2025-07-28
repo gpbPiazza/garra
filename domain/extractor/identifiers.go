@@ -113,4 +113,7 @@ var IdentifiersNames = map[Identifier]string{
 	AddressNID:            "Número do endereço",
 	AddressNeighborhoodID: "Bairro do endereço",
 	AddressCityUFID:       "CidadeUF do endereço",
+
+	InFavorToWhoID: "Em favor de quem",
+	WhoDoesID:      "Quem faz",
 }
